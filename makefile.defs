@@ -1,0 +1,4 @@
+OBJS := $(OBJS:tests/test.o=)
+OBJS := $(OBJS:tests/PictureTest.o=)
+OBJS := $(OBJS:tests/PictureTestRunner.o=)
+OBJS := $(OBJS:./=)
