@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/tests.o \
 	${OBJECTDIR}/cube_codec.o \
+	${OBJECTDIR}/WaveletTransform.o \
 	${OBJECTDIR}/Subcube.o \
 	${OBJECTDIR}/Encoder.o \
 	${OBJECTDIR}/cube_io.o \
@@ -76,37 +77,42 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cube: ${OBJECTFILES}
 ${OBJECTDIR}/tests.o: tests.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests.o tests.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests.o tests.cpp
 
 ${OBJECTDIR}/cube_codec.o: cube_codec.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec.o cube_codec.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec.o cube_codec.cpp
+
+${OBJECTDIR}/WaveletTransform.o: WaveletTransform.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp
 
 ${OBJECTDIR}/Subcube.o: Subcube.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube.o Subcube.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube.o Subcube.cpp
 
 ${OBJECTDIR}/Encoder.o: Encoder.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Encoder.o Encoder.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Encoder.o Encoder.cpp
 
 ${OBJECTDIR}/cube_io.o: cube_io.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_io.o cube_io.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_io.o cube_io.cpp
 
 ${OBJECTDIR}/CoeffCube.o: CoeffCube.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/CoeffCube.o CoeffCube.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/CoeffCube.o CoeffCube.cpp
 
 ${OBJECTDIR}/PictureBuffer.o: PictureBuffer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureBuffer.o PictureBuffer.cpp
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureBuffer.o PictureBuffer.cpp
 
 # Subprojects
 .build-subprojects:
@@ -121,13 +127,13 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/PictureTest.o ${TESTDIR}/tests/Picture
 ${TESTDIR}/tests/PictureTest.o: tests/PictureTest.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTest.o tests/PictureTest.cpp
+	$(COMPILE.cc) -g -Wall -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTest.o tests/PictureTest.cpp
 
 
 ${TESTDIR}/tests/PictureTestRunner.o: tests/PictureTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
+	$(COMPILE.cc) -g -Wall -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
 
 
 ${OBJECTDIR}/tests_nomain.o: ${OBJECTDIR}/tests.o tests.cpp 
@@ -138,7 +144,7 @@ ${OBJECTDIR}/tests_nomain.o: ${OBJECTDIR}/tests.o tests.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests_nomain.o tests.cpp;\
+	    $(COMPILE.cc) -g -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests_nomain.o tests.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/tests.o ${OBJECTDIR}/tests_nomain.o;\
 	fi
@@ -151,9 +157,22 @@ ${OBJECTDIR}/cube_codec_nomain.o: ${OBJECTDIR}/cube_codec.o cube_codec.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec_nomain.o cube_codec.cpp;\
+	    $(COMPILE.cc) -g -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec_nomain.o cube_codec.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/cube_codec.o ${OBJECTDIR}/cube_codec_nomain.o;\
+	fi
+
+${OBJECTDIR}/WaveletTransform_nomain.o: ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/WaveletTransform.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform_nomain.o WaveletTransform.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/WaveletTransform.o ${OBJECTDIR}/WaveletTransform_nomain.o;\
 	fi
 
 ${OBJECTDIR}/Subcube_nomain.o: ${OBJECTDIR}/Subcube.o Subcube.cpp 
@@ -164,7 +183,7 @@ ${OBJECTDIR}/Subcube_nomain.o: ${OBJECTDIR}/Subcube.o Subcube.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube_nomain.o Subcube.cpp;\
+	    $(COMPILE.cc) -g -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube_nomain.o Subcube.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Subcube.o ${OBJECTDIR}/Subcube_nomain.o;\
 	fi
@@ -177,7 +196,7 @@ ${OBJECTDIR}/Encoder_nomain.o: ${OBJECTDIR}/Encoder.o Encoder.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Encoder_nomain.o Encoder.cpp;\
+	    $(COMPILE.cc) -g -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Encoder_nomain.o Encoder.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Encoder.o ${OBJECTDIR}/Encoder_nomain.o;\
 	fi
@@ -190,7 +209,7 @@ ${OBJECTDIR}/cube_io_nomain.o: ${OBJECTDIR}/cube_io.o cube_io.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_io_nomain.o cube_io.cpp;\
+	    $(COMPILE.cc) -g -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_io_nomain.o cube_io.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/cube_io.o ${OBJECTDIR}/cube_io_nomain.o;\
 	fi
@@ -203,7 +222,7 @@ ${OBJECTDIR}/CoeffCube_nomain.o: ${OBJECTDIR}/CoeffCube.o CoeffCube.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/CoeffCube_nomain.o CoeffCube.cpp;\
+	    $(COMPILE.cc) -g -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/CoeffCube_nomain.o CoeffCube.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/CoeffCube.o ${OBJECTDIR}/CoeffCube_nomain.o;\
 	fi
@@ -216,7 +235,7 @@ ${OBJECTDIR}/PictureBuffer_nomain.o: ${OBJECTDIR}/PictureBuffer.o PictureBuffer.
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureBuffer_nomain.o PictureBuffer.cpp;\
+	    $(COMPILE.cc) -g -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureBuffer_nomain.o PictureBuffer.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/PictureBuffer.o ${OBJECTDIR}/PictureBuffer_nomain.o;\
 	fi

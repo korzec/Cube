@@ -3,7 +3,6 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="Cube" displayName="Cube" projectFiles="true">
       <itemPath>a</itemPath>
-      <itemPath>p.localdec.yuv</itemPath>
     </logicalFolder>
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -12,7 +11,9 @@
       <itemPath>Encoder.h</itemPath>
       <itemPath>PictureBuffer.h</itemPath>
       <itemPath>Subcube.h</itemPath>
+      <itemPath>WaveletTransform.h</itemPath>
       <itemPath>cube_io.h</itemPath>
+      <itemPath>other.h</itemPath>
       <itemPath>tests.h</itemPath>
       <itemPath>types.h</itemPath>
     </logicalFolder>
@@ -27,6 +28,7 @@
       <itemPath>Encoder.cpp</itemPath>
       <itemPath>PictureBuffer.cpp</itemPath>
       <itemPath>Subcube.cpp</itemPath>
+      <itemPath>WaveletTransform.cpp</itemPath>
       <itemPath>cube_codec.cpp</itemPath>
       <itemPath>cube_io.cpp</itemPath>
       <itemPath>tests.cpp</itemPath>
@@ -62,16 +64,21 @@
         <compilerSet>default</compilerSet>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <warningLevel>2</warningLevel>
+        </ccTool>
       </compileType>
       <folder path="TestFiles/f1">
         <cTool>
           <incDir>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
+            <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
           </incDir>
@@ -109,10 +116,12 @@
           <incDir>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
+            <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
           </incDir>

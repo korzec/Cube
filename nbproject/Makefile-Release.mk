@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/tests.o \
 	${OBJECTDIR}/cube_codec.o \
+	${OBJECTDIR}/WaveletTransform.o \
 	${OBJECTDIR}/Subcube.o \
 	${OBJECTDIR}/Encoder.o \
 	${OBJECTDIR}/cube_io.o \
@@ -83,6 +84,11 @@ ${OBJECTDIR}/cube_codec.o: cube_codec.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec.o cube_codec.cpp
 
+${OBJECTDIR}/WaveletTransform.o: WaveletTransform.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp
+
 ${OBJECTDIR}/Subcube.o: Subcube.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -121,13 +127,13 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/PictureTest.o ${TESTDIR}/tests/Picture
 ${TESTDIR}/tests/PictureTest.o: tests/PictureTest.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTest.o tests/PictureTest.cpp
+	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTest.o tests/PictureTest.cpp
 
 
 ${TESTDIR}/tests/PictureTestRunner.o: tests/PictureTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
+	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
 
 
 ${OBJECTDIR}/tests_nomain.o: ${OBJECTDIR}/tests.o tests.cpp 
@@ -154,6 +160,19 @@ ${OBJECTDIR}/cube_codec_nomain.o: ${OBJECTDIR}/cube_codec.o cube_codec.cpp
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec_nomain.o cube_codec.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/cube_codec.o ${OBJECTDIR}/cube_codec_nomain.o;\
+	fi
+
+${OBJECTDIR}/WaveletTransform_nomain.o: ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/WaveletTransform.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform_nomain.o WaveletTransform.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/WaveletTransform.o ${OBJECTDIR}/WaveletTransform_nomain.o;\
 	fi
 
 ${OBJECTDIR}/Subcube_nomain.o: ${OBJECTDIR}/Subcube.o Subcube.cpp 

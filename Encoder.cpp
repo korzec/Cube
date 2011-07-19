@@ -9,7 +9,6 @@
 
 Encoder::Encoder() : pictureBuffer(0)
 {
-    coeffCube = CoeffCube(params.width, params.height, params.cubeDepth);
 }
 
 bool Encoder::LoadNextPicture(Picture& picture)
@@ -32,6 +31,7 @@ void Encoder::SetParams(CodingParams params)
 {
     this->params = params;
     pictureBuffer = PictureBuffer(params.cubeDepth);
+    coeffCube = CoeffCube(params.width, params.height, params.cubeDepth);
 }
 
 EncoderState Encoder::Encode()
@@ -39,24 +39,22 @@ EncoderState Encoder::Encode()
     //check if enough pictures are available
     if (pictureBuffer.GetCount() >= params.cubeDepth)
     {
-        int buffer = pictureBuffer.GetCount();
         //copy the pictures to the coeffCube
         PictureVector gop;
         pictureBuffer.GetGOP(params.cubeDepth, gop);
-        int size = gop.size();
-        assert(gop.size() == 4);
+        assert(gop.size() == (size_t) params.cubeDepth);
         //if we have valid gop
-        if(gop.size() == params.cubeDepth)
+        if(gop.size() == (size_t) params.cubeDepth)
         {
             bool ret = coeffCube.LoadGOP(gop);
             assert(ret == true);
-//            coeffCube.Forward();
-//            coeffCube.Split();
-//            coeffCube.Synth();
-//            coeffCube.Backward();
+            if( coeffCube.ForwardTransform() && coeffCube.ReverseTransform())
+                return PICAVAIL;
+            else
+                return INVALID;
         }
-        
-        return PICAVAIL;
+        else //when buffer was enough but not gop
+            return INVALID;
     }
     else //if not enough buffer
     {

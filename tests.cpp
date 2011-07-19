@@ -4,10 +4,71 @@
 #include "types.h"
 #include "Encoder.h"
 #include "PictureBuffer.h"
+#include "WaveletTransform.h"
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <cassert>
+
+
+int testSplit()
+{
+    int len = 10;
+    CoeffArray3D arrayW(boost::extents[1][1][len]);
+    CoeffArray3D arrayH(boost::extents[1][len][1]);
+    CoeffArray3D arrayD(boost::extents[len][1][1]);
+    
+    Coords3D dims(len,1,1);
+    ///set values;
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                arrayW[d][h][w] = (d+h+w)%255;
+                arrayH[d][w][h] = (d+h+w)%255;
+                arrayD[w][h][d] = (d+h+w)%255;           
+            }
+        }
+    }
+    
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                assert(arrayW[d][h][w] == arrayH[d][w][h]);
+                assert(arrayH[d][w][h] == arrayD[w][h][d]);  
+                std::cout << arrayW[d][h][w] << " " << arrayH[d][w][h]
+                        <<" " << arrayD[w][h][d] << std::endl;
+            }
+        }
+    }
+    
+    WaveletTransform transform;
+    transform.Forward(arrayW);
+    transform.Forward(arrayH);
+    transform.Forward(arrayD);
+    
+    /// compare if results are the same for each direction
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                assert(arrayW[d][h][w] == arrayH[d][w][h]);
+                assert(arrayH[d][w][h] == arrayD[w][h][d]);           
+                std::cout << arrayW[d][h][w] << " " << arrayH[d][w][h]
+                        <<" " << arrayD[w][h][d] << std::endl;
+            }
+        }
+    }
+    
+    return 0;
+}
 
 int testGetGOP()
 {
@@ -28,7 +89,7 @@ int testGetGOP()
     ret = buffer.GetGOP(4, gop);
     assert(ret == true);
     assert(gop.size() == 4);
-    
+    return 0;
 }
 
 int testVectorPicture()
@@ -40,8 +101,7 @@ int testVectorPicture()
     v->assign(2,pic);
     
     delete v;
-    
-    int i;
+    return 0;
 }
 
 int testPictureRefCount()
@@ -90,7 +150,7 @@ int testPictureRefCount()
     ptr[1] = &gop[1];
     //ptr[2] = &gop[2];
     
-    int a;
+    return 0;
 }
 
 int testLoadGOP()
@@ -128,24 +188,26 @@ int testLoadGOP()
     cube.LoadGOP(gop);
     CoeffType coeff = cube.Y()[0][0][0];
     ValueType value = gop[0].Y()[0][0];
+    assert(coeff == value);
     assert(cube.Y()[0][0][0] == gop[0].Y()[0][0]);
     
     //validate values;
     for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
         {
-            for (int h = 0; h < dims.height; h++)
+            for (int w = 0; w < dims.width; w++)
             {
-                for (int w = 0; w < dims.width; w++)
-                {
-                    assert(cube.Y()[d][h][w] == (d+h+w)%255);
-                }
+                assert(cube.Y()[d][h][w] == CoeffType ((d+h+w)%255));
             }
         }
+    }
     
     
     
     
     std::cout << "loadGOP tested" <<std::endl;
+    return 0;
 }
 
 int testOutput() {
@@ -172,6 +234,7 @@ int testOutput() {
 
     std::cout << "result: " << WritePicture(*OutputFile, picture) << std::endl;
     OutputFile->close();
+    return 0;
 }
 
 int testTypesConctructors() {
@@ -262,6 +325,7 @@ int testPictureIO() {
 }
 
 int runTests() {
+    testSplit();
     testGetGOP();
     testVectorPicture();
     //testPictureRefCount();

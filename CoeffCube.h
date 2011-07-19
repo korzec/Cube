@@ -11,35 +11,29 @@
 #include "types.h"
 #include <vector>
 #include <boost/multi_array.hpp>
+#include "WaveletTransform.h"
 
 /// performs a 3d transform on a GOP
 class CoeffCube {
 private:
-    CoeffArray3D* arrayY;
+    CoeffArray3DPtr arrayY;
     int CubeNumber;
+    WaveletTransform transform;
 public:
     CoeffCube();
     CoeffCube(int width, int height, int depth);
     
-    CoeffCube(const CoeffCube& orig);
-    virtual ~CoeffCube();
-
     CoeffArray3D& Y();
     
     bool LoadGOP(PictureVector& gop);
     
-    void Forward();
-    void Backward();
+    bool ForwardTransform();
+    bool ReverseTransform();
 
     /// Load images and pad the data to allow wavelet transform
     void LoadImages(PictureVector pictures);
     /// returns Y array dimensions
     Coords3D Dimensionality();
-    
-    void Split();
-    void Synth();
-    void Interleave();
-    void DeInterleave();
 
 };
 

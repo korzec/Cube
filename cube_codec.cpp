@@ -6,6 +6,7 @@
 // Description : Hello World in C, Ansi-style
 //============================================================================
 
+//#define VERSION 0.1
 #include "types.h"
 #include "Encoder.h"
 
@@ -20,6 +21,7 @@ static void display_help()
 {
     cout << "\nCube wavelet video coder.";
     cout << "\n";
+    cout << "\nusage: program -width x -height y inputfile" ;
     cout << "\nwidth             ulong   -        Width of frame";
     cout << "\nheight            ulong   -        Length of frame";
     cout << endl;
@@ -98,7 +100,7 @@ int main(int argc, char* argv[])
     if (state == PICAVAIL)
         std::cout << "Picture available " << state << std::endl;
 
-    
+    //TODO: loop loading a picture and checking the state;
     
     
     

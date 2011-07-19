@@ -19,7 +19,7 @@
 //using namespace blitz;
 using namespace boost;
 
-typedef int CoeffType;
+typedef float CoeffType;
 typedef unsigned char ValueType;
 typedef int PictureNumber;
 typedef int CubeNumber;
@@ -30,17 +30,23 @@ public:
     int width;
     int height;
     int depth;
+    Coords3D() : width(0), height(0), depth(0)
+    {
+        
+    }
+    Coords3D(int width, int height, int depth)
+    {
+         this->width = width;
+         this->height = height;
+         this->depth = depth;
+    }
 };
 
 class CubeCoords
 {
 public:
-    int width;
-    int height;
-    int depth;
-    int wPos;
-    int hPos;
-    int dPos;
+    Coords3D lower;
+    Coords3D higher;
 };
 
 enum EncoderState
@@ -62,11 +68,9 @@ public:
     bool nolocal;
     int fields_factor;
 
-    CodingParams() : start_pos(0), end_pos(-1), verbose(false)
-    , nolocal(false), fields_factor(1)
-    , cubeDepth(4)
+    CodingParams() : width(0), height(0), cubeDepth(4),
+    start_pos(0), end_pos(-1), verbose(false), nolocal(false), fields_factor(1)
     {
-
     }
 };
 
@@ -105,7 +109,7 @@ public:
     }
     ///reset pointers and free memory
 
-    ~FrameBuffer()
+    virtual ~FrameBuffer()
     {
         buf[0] = NULL;
         buf[1] = NULL;
@@ -132,120 +136,15 @@ public:
 };
 
 typedef boost::multi_array_ref<ValueType, 2 > ValueArray2Dref;
-typedef boost::multi_array<ValueType, 2 > ValueArray2D;
-
-typedef boost::multi_array<ValueType, 3 > ValueArray3D;
-
 typedef boost::multi_array<CoeffType, 3 > CoeffArray3D;
 
-class PictureCount
-{
-public:
-    ValueArray2Dref* arrayY;
-    //ValueArray2D U;
-    //ValueArray2D V;
-    //boost::shared_ptr<FrameBuffer> frame;
-    FrameBuffer* frame;
-    int pictureNumber;
+typedef boost::multi_array_ref<CoeffType, 3 > CoeffArray3Dref;
+typedef boost::shared_ptr<CoeffArray3Dref> CoeffArray3DrefPtr;
 
-    int width()
-    {
-        if (!frame)
-            return 0;
-
-        return frame->width;
-        //return Y().shape()[0];
-    }
-
-    int height()
-    {
-        if (!frame)
-            return 0;
-        return frame->height;
-        //return Y().shape()[1];
-    }
-
-    ValueArray2Dref& Y()
-    {
-        return *arrayY;
-    }
-
-    PictureCount& operator=(const PictureCount &rhs)
-    {
-        // Check for self-assignment!
-        if (this == &rhs) // Same object?
-            return *this; // Yes, so skip assignment, and just return *this.
-
-        pictureNumber = rhs.pictureNumber;
-        if (frame)
-            frame->refCount--;
-        frame = rhs.frame;
-        if (frame)
-            frame->refCount++;
-        arrayY = rhs.arrayY;
-
-        return *this;
-    }
-
-    PictureCount(const PictureCount& orig)
-    {
-        pictureNumber = orig.pictureNumber;
-        arrayY = orig.arrayY;
-        frame = orig.frame;
-        frame->refCount++;
-    }
-
-    PictureCount() : frame(NULL)
-    {
-        //Y(NULL, boost::extents[0][0]);
-        arrayY = new ValueArray2Dref(NULL, boost::extents[0][0]);
-    }
-
-    PictureCount(FrameBuffer* _frame)
-    {
-        //frame = boost::shared_ptr<FrameBuffer > (_frame);
-
-        frame = _frame;
-        ///dereferencing external pointer maybe produce problems with bad usage
-        if (!frame || !(frame->data))
-            return;
-        arrayY = new ValueArray2Dref(frame->buf[0],
-                                     boost::extents[frame->height][frame->width]);
-        frame->refCount++;
-    }
-
-    PictureCount(int width, int height)
-    {
-        frame = new FrameBuffer(width, height);
-        arrayY = new ValueArray2Dref(frame->buf[0],
-                                     boost::extents[frame->height][frame->width]);
-        frame->refCount++;
-    }
-
-    ~PictureCount()
-    {
-        //delate data if its the only owner
-        if (frame)
-        {
-
-            frame->refCount--;
-            if (frame->refCount == 0)
-            {
-                //deleting external memory
-                delete frame;
-                delete arrayY;
-            }
-
-        }
-        else //delete mapping if thers no data;
-            delete arrayY;
-
-
-    }
-};
 
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;
+typedef boost::shared_ptr<CoeffArray3D> CoeffArray3DPtr;
 
 class Picture
 {
@@ -259,9 +158,7 @@ public:
     {
         if (!frame)
             return 0;
-
         return frame->width;
-        //return Y().shape()[0];
     }
 
     int height()
@@ -269,37 +166,12 @@ public:
         if (!frame)
             return 0;
         return frame->height;
-        //return Y().shape()[1];
     }
 
     ValueArray2Dref& Y()
     {
         return *arrayY;
     }
-
-//    PictureAuto& operator=(const Picture &rhs)
-//    {
-//        // Check for self-assignment!
-//        if (this == &rhs) // Same object?
-//            return *this; // Yes, so skip assignment, and just return *this.
-//
-//        pictureNumber = rhs.pictureNumber;
-//        if (frame)
-//            frame->refCount--;
-//        frame = rhs.frame;
-//        if (frame)
-//            frame->refCount++;
-//        arrayY = rhs.arrayY;
-//
-//        return *this;
-//    }
-//    PictureAuto(const Picture& orig)
-//    {
-//        pictureNumber = orig.pictureNumber;
-//        arrayY = orig.arrayY;
-//        frame = orig.frame;
-//        frame->refCount++;
-//    }
 
     Picture() 
     {
@@ -324,29 +196,10 @@ public:
         arrayY = ValueArray2DrefPtr(new ValueArray2Dref
                 (frame->buf[0], boost::extents[frame->height][frame->width]));
     }
-
-//    ~PictureAuto()
-//    {
-//        //delate data if its the only owner
-//        if (frame)
-//        {
-//
-//            frame->refCount--;
-//            if (frame->refCount == 0)
-//            {
-//                //deleting external memory
-//                delete frame;
-//                delete arrayY;
-//            }
-//
-//        }
-//        else //delete mapping if thers no data;
-//            delete arrayY;
-//    }
 };
 
 typedef std::vector<Picture> PictureVector;
 
-
+#include "other.h"
 
 #endif /* CUBE_CODEC_H_ */

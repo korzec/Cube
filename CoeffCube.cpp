@@ -9,20 +9,14 @@
 
 CoeffCube::CoeffCube()
 {
-    arrayY = new CoeffArray3D();
 }
 
 CoeffCube::CoeffCube(int width, int height, int depth)
 {
-    arrayY = new CoeffArray3D(boost::extents[depth][height][width]);
-}
-
-CoeffCube::CoeffCube(const CoeffCube & orig)
-{
-}
-
-CoeffCube::~CoeffCube()
-{
+    arrayY = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height][width]));
+    //arrayY = new CoeffArray3D(boost::extents[depth][height][width]);
+    //boost::array<CoeffArray3D::index, 3> dims = {{depth, height, width}};
+    //arrayY.resize(boost::extents[depth][height][width]);
 }
 
 CoeffArray3D & CoeffCube::Y()
@@ -33,7 +27,7 @@ CoeffArray3D & CoeffCube::Y()
 bool CoeffCube::LoadGOP(PictureVector& gop)
 {
     ///if the gop size matches the cube depth
-    if (gop.size() == Dimensionality().depth)
+    if (gop.size() == (size_t) Dimensionality().depth)
     {
         Coords3D dims = Dimensionality();
         ///copy the gop to the cube
@@ -67,4 +61,14 @@ Coords3D CoeffCube::Dimensionality()
     dims.height = Y().shape()[1];
     dims.width = Y().shape()[2]; 
     return dims;
+}
+
+bool CoeffCube::ForwardTransform()
+{
+    return transform.Forward(Y());
+}
+
+bool CoeffCube::ReverseTransform()
+{
+    return transform.Reverse(Y());
 }

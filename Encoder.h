@@ -11,16 +11,14 @@
 #include "types.h"
 #include "PictureBuffer.h"
 #include "CoeffCube.h"
-
 /// Main encoder class
 
 class Encoder {
 private:
-    PictureBuffer pictureBuffer;
-    //PictureCube pictureCube;
-    CoeffCube coeffCube;
     CodingParams params;
-
+    PictureBuffer pictureBuffer;
+    CoeffCube coeffCube;
+    
 public:
 
     Encoder();
@@ -32,7 +30,6 @@ public:
     CoeffCube GetCoeffCube();
     /// decodes the coeffcube
     void Decode();
-
 
     int DecodedFrameAvailable();
     int GetFrameBufferSize();
