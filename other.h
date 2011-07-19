@@ -115,5 +115,8 @@ public:
     }
 };
 
+typedef std::vector<PictureCount> PictureCountVector;
+
+
 #endif	/* OTHER_H */
 

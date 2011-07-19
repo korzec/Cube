@@ -5,11 +5,97 @@
 #include "Encoder.h"
 #include "PictureBuffer.h"
 #include "WaveletTransform.h"
+#include "other.h"
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <cassert>
 
+int testEncode()
+{
+    Encoder encoder;
+    CodingParams params;
+    params.width = 16;
+    params.height = 20;
+    params.cubeDepth = 4;
+    encoder.SetParams(params);
+    
+    Picture picture(params.width, params.height);
+    
+    assert(encoder.GetParams().cubeDepth == 4);
+    encoder.LoadNextPicture(picture);
+    encoder.LoadNextPicture(picture);
+    encoder.LoadNextPicture(picture);
+    encoder.LoadNextPicture(picture);
+    EncoderState state = encoder.Encode();
+    assert(state == PICAVAIL);
+    if (state == PICAVAIL)
+        std::cout << "Picture available " << state << std::endl;
+    
+    return 0;    
+}
+
+int testDeinterleave()
+{
+    Coords3D dims(10,2,2);
+    CoeffArray3D arrayW(boost::extents[dims.depth][dims.height][dims.width]);
+
+    ///set values;
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                arrayW[d][h][w] = (d+h+w)%255;          
+            }
+        }
+    }
+    
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                std::cout << arrayW[d][h][w] <<" ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
+    
+    WaveletTransform transform;
+    transform.Forward(arrayW);
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                std::cout << arrayW[d][h][w] <<" ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
+    transform.Reverse(arrayW);
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                std::cout << arrayW[d][h][w] <<" ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
+    
+    return 0;
+    
+}
 
 int testSplit()
 {
@@ -106,17 +192,18 @@ int testVectorPicture()
 
 int testPictureRefCount()
 {
-    Picture pic3(33,33);
-    Picture* p4 = new Picture(pic3);
+    PictureCount pic3(33,33);
+    PictureCount* p4 = new PictureCount(pic3);
     assert(p4->frame == pic3.frame);
     delete p4;
     assert(pic3.frame->refCount == 1);
     
-    Picture pic(6,6);
+    PictureCount pic(6,6);
     assert( pic.frame->refCount == 1);
+    
     //copy few times;
     
-    PictureVector gop;
+    PictureCountVector gop;
     //make 3 copies;
     gop.assign(3,pic);
     assert(gop[0].frame == pic.frame);
@@ -126,14 +213,14 @@ int testPictureRefCount()
     assert(pic.frame->refCount == 4);
     
     //copy a pic;
-    Picture pic2(pic);
+    PictureCount pic2(pic);
     
     pic2 = pic;
     assert(pic.frame == pic2.frame);
     assert(pic.frame->refCount == 5);
     assert(pic2.frame->refCount == 5);
        
-    gop[2] = Picture(5,5);
+    gop[2] = PictureCount(5,5);
     assert(pic.frame->refCount ==4);
             
     assert(gop[0].frame == pic.frame);
@@ -145,7 +232,7 @@ int testPictureRefCount()
    
     assert(gop.size() == 2);
     
-    Picture* ptr[2];
+    PictureCount* ptr[2];
     ptr[0] = &gop[0];
     ptr[1] = &gop[1];
     //ptr[2] = &gop[2];
@@ -325,10 +412,12 @@ int testPictureIO() {
 }
 
 int runTests() {
+    testEncode();
+    testDeinterleave();
     testSplit();
     testGetGOP();
     testVectorPicture();
-    //testPictureRefCount();
+    testPictureRefCount();
     testLoadGOP();
     testOutput();
     testTypesConctructors();

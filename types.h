@@ -91,9 +91,11 @@ public:
         buf[2] = NULL;
     }
 
-    FrameBuffer(int _width, int _height)
+    FrameBuffer(int _width, int _height) : data(NULL), width(0), height(0), refCount(0)
     {
-        FrameBuffer();
+        buf[0] = NULL;
+        buf[1] = NULL;
+        buf[2] = NULL;
         if (_width < 0 || _height < 0)
             return;
         width = _width;
@@ -138,8 +140,8 @@ public:
 typedef boost::multi_array_ref<ValueType, 2 > ValueArray2Dref;
 typedef boost::multi_array<CoeffType, 3 > CoeffArray3D;
 
-typedef boost::multi_array_ref<CoeffType, 3 > CoeffArray3Dref;
-typedef boost::shared_ptr<CoeffArray3Dref> CoeffArray3DrefPtr;
+//typedef boost::multi_array_ref<CoeffType, 3 > CoeffArray3Dref;
+//typedef boost::shared_ptr<CoeffArray3Dref> CoeffArray3DrefPtr;
 
 
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;

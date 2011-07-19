@@ -91,18 +91,9 @@ int main(int argc, char* argv[])
 
     std::cout << "Picture read" << std::endl;
 
-    assert(encoder.GetParams().cubeDepth == 4);
-    encoder.LoadNextPicture(picture);
-    encoder.LoadNextPicture(picture);
-    encoder.LoadNextPicture(picture);
-    encoder.LoadNextPicture(picture);
-    EncoderState state = encoder.Encode();
-    if (state == PICAVAIL)
-        std::cout << "Picture available " << state << std::endl;
 
-    //TODO: loop loading a picture and checking the state;
-    
-    
+//TODO: loop loading a picture and checking the state;
+
     
     // open the decoded ouput file
     std::ofstream *outputPicture = NULL;

@@ -31,7 +31,7 @@ private:
     
     bool Interleave(CoeffArray3D&);
     
-    
+    bool deinterleave1d(CoeffArray3D&);
 };
 
 #endif	/* WAVELETTRANSFORM_H */
