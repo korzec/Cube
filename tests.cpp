@@ -5,7 +5,6 @@
 #include "Encoder.h"
 #include "PictureBuffer.h"
 #include "WaveletTransform.h"
-#include "other.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -190,56 +189,6 @@ int testVectorPicture()
     return 0;
 }
 
-int testPictureRefCount()
-{
-    PictureCount pic3(33,33);
-    PictureCount* p4 = new PictureCount(pic3);
-    assert(p4->frame == pic3.frame);
-    delete p4;
-    assert(pic3.frame->refCount == 1);
-    
-    PictureCount pic(6,6);
-    assert( pic.frame->refCount == 1);
-    
-    //copy few times;
-    
-    PictureCountVector gop;
-    //make 3 copies;
-    gop.assign(3,pic);
-    assert(gop[0].frame == pic.frame);
-    assert(gop[1].frame == pic.frame);
-    assert(gop[2].frame == pic.frame);
-    
-    assert(pic.frame->refCount == 4);
-    
-    //copy a pic;
-    PictureCount pic2(pic);
-    
-    pic2 = pic;
-    assert(pic.frame == pic2.frame);
-    assert(pic.frame->refCount == 5);
-    assert(pic2.frame->refCount == 5);
-       
-    gop[2] = PictureCount(5,5);
-    assert(pic.frame->refCount ==4);
-            
-    assert(gop[0].frame == pic.frame);
-    assert(gop[1].frame == pic.frame);
-    assert(gop[2].frame->refCount == 1);
-    
-    gop.erase(gop.begin());
-    assert(pic.frame->refCount == 3);
-   
-    assert(gop.size() == 2);
-    
-    PictureCount* ptr[2];
-    ptr[0] = &gop[0];
-    ptr[1] = &gop[1];
-    //ptr[2] = &gop[2];
-    
-    return 0;
-}
-
 int testLoadGOP()
 {
     //create cube
@@ -417,7 +366,6 @@ int runTests() {
     testSplit();
     testGetGOP();
     testVectorPicture();
-    testPictureRefCount();
     testLoadGOP();
     testOutput();
     testTypesConctructors();

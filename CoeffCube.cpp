@@ -14,9 +14,6 @@ CoeffCube::CoeffCube()
 CoeffCube::CoeffCube(int width, int height, int depth)
 {
     arrayY = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height][width]));
-    //arrayY = new CoeffArray3D(boost::extents[depth][height][width]);
-    //boost::array<CoeffArray3D::index, 3> dims = {{depth, height, width}};
-    //arrayY.resize(boost::extents[depth][height][width]);
 }
 
 CoeffArray3D & CoeffCube::Y()

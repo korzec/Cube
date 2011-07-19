@@ -13,7 +13,6 @@
       <itemPath>Subcube.h</itemPath>
       <itemPath>WaveletTransform.h</itemPath>
       <itemPath>cube_io.h</itemPath>
-      <itemPath>other.h</itemPath>
       <itemPath>tests.h</itemPath>
       <itemPath>types.h</itemPath>
     </logicalFolder>

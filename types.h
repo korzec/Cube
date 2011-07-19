@@ -11,7 +11,6 @@
 
 #include "boost/multi_array.hpp"
 #include <boost/smart_ptr.hpp>
-//#include <blitz/array.h>
 
 #include <exception>
 #include <iostream>
@@ -82,16 +81,15 @@ public:
     unsigned char *buf[3];
     int width;
     int height;
-    int refCount;
 
-    FrameBuffer() : data(NULL), width(0), height(0), refCount(0)
+    FrameBuffer() : data(NULL), width(0), height(0)
     {
         buf[0] = NULL;
         buf[1] = NULL;
         buf[2] = NULL;
     }
 
-    FrameBuffer(int _width, int _height) : data(NULL), width(0), height(0), refCount(0)
+    FrameBuffer(int _width, int _height) : data(NULL), width(0), height(0)
     {
         buf[0] = NULL;
         buf[1] = NULL;
@@ -116,7 +114,8 @@ public:
         buf[0] = NULL;
         buf[1] = NULL;
         buf[2] = NULL;
-        delete [] data;
+        if(data)        
+            delete [] data;
         data = NULL;
     }
 
@@ -139,10 +138,6 @@ public:
 
 typedef boost::multi_array_ref<ValueType, 2 > ValueArray2Dref;
 typedef boost::multi_array<CoeffType, 3 > CoeffArray3D;
-
-//typedef boost::multi_array_ref<CoeffType, 3 > CoeffArray3Dref;
-//typedef boost::shared_ptr<CoeffArray3Dref> CoeffArray3DrefPtr;
-
 
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;
@@ -177,9 +172,6 @@ public:
 
     Picture() 
     {
-        frame = FrameBufferPtr();
-        //arrayY = ValueArray2DrefPtr
-        //        (new ValueArray2Dref(NULL, boost::extents[0][0]));
     }
 
     Picture(FrameBuffer* _frame)
@@ -201,7 +193,5 @@ public:
 };
 
 typedef std::vector<Picture> PictureVector;
-
-#include "other.h"
 
 #endif /* CUBE_CODEC_H_ */
