@@ -17,8 +17,9 @@ class Encoder {
 private:
     CodingParams params;
     PictureBuffer pictureBuffer;
+    PictureBuffer pictureOutputBuffer;
     CoeffCube coeffCube;
-    
+    int pictureNumber;
 public:
 
     Encoder();
@@ -33,9 +34,16 @@ public:
 
     int DecodedFrameAvailable();
     int GetFrameBufferSize();
+    
+    ///check if encoder output buffer is ready
+    EncoderState OutputState();
+    
+    //finish encoding without further frames
+    bool EndOfSequence();
 
     CodingParams GetParams() const;
     void SetParams(CodingParams params);
+    
 
 };
 

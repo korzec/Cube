@@ -17,9 +17,11 @@ class PictureBuffer
     PictureVector pictures;
 public:
     /// initializes buffer with max size
-    PictureBuffer(int);
+    PictureBuffer(size_t);
     ///adds picture to the buffer
     bool Add(Picture&);
+    ///adds group of pictures
+    bool AddGOP(PictureVector&);
     ///removes oldest picture
     bool RemoveOldest();
     ///outputs current buffer size

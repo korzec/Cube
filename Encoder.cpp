@@ -7,7 +7,7 @@
 
 #include "Encoder.h"
 
-Encoder::Encoder() : pictureBuffer(0)
+Encoder::Encoder() : pictureBuffer(0), pictureOutputBuffer(0), pictureNumber(0)
 {
 }
 
@@ -31,6 +31,7 @@ void Encoder::SetParams(CodingParams params)
 {
     this->params = params;
     pictureBuffer = PictureBuffer(params.cubeDepth);
+    pictureOutputBuffer = PictureBuffer(params.cubeDepth);
     coeffCube = CoeffCube(params.width, params.height, params.cubeDepth);
 }
 
@@ -47,9 +48,21 @@ EncoderState Encoder::Encode()
         if(gop.size() == (size_t) params.cubeDepth)
         {
             bool ret = coeffCube.LoadGOP(gop);
+            pictureBuffer.RemoveOldGOP(params.cubeDepth);
             assert(ret == true);
             if( coeffCube.ForwardTransform() && coeffCube.ReverseTransform())
-                return PICAVAIL;
+            {
+                PictureVector* outputGOP = coeffCube.GetGOP();
+                bool ret = pictureOutputBuffer.AddGOP(*outputGOP);
+                delete outputGOP;
+                ///check if gop could have been added
+                ///if not return WAIT state; or just PIC AVAILABLE ?
+                ///or INVALID if there was no space for new pictures;
+                if(ret == false)
+                    return INVALID;
+                return PICTURE_AVAILABLE;
+
+            }
             else
                 return INVALID;
         }
@@ -58,7 +71,12 @@ EncoderState Encoder::Encode()
     }
     else //if not enough buffer
     {
-        return NEEDBUFFER;
+        return NEED_BUFFER;
     }
         
+}
+
+bool Encoder::EndOfSequence()
+{
+    return true;
 }

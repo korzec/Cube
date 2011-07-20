@@ -30,8 +30,9 @@
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 16 -height 16 a p</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 src7.yuv codedfile</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -width 16 -height 16 a p</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -width 720 -height 576 src7.yuv codedfile</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

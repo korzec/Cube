@@ -25,13 +25,14 @@ public:
     
     CoeffArray3D& Y();
     
+    /// Load images and pad the data to allow wavelet transform
     bool LoadGOP(PictureVector& gop);
+    
+    PictureVector* GetGOP();
     
     bool ForwardTransform();
     bool ReverseTransform();
 
-    /// Load images and pad the data to allow wavelet transform
-    void LoadImages(PictureVector pictures);
     /// returns Y array dimensions
     Coords3D Dimensionality();
 

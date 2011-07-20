@@ -27,8 +27,8 @@ int testEncode()
     encoder.LoadNextPicture(picture);
     encoder.LoadNextPicture(picture);
     EncoderState state = encoder.Encode();
-    assert(state == PICAVAIL);
-    if (state == PICAVAIL)
+    assert(state == PICTURE_AVAILABLE);
+    if (state == PICTURE_AVAILABLE)
         std::cout << "Picture available " << state << std::endl;
     
     return 0;    

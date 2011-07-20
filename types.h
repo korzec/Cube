@@ -50,7 +50,8 @@ public:
 
 enum EncoderState
 {
-    PICAVAIL, NEEDBUFFER, FINISHED, INVALID
+    PICTURE_AVAILABLE, NEED_BUFFER, END_OF_SEQUENCE, INVALID,
+    OUTPUT_AVAILABLE
 };
 
 class CodingParams
@@ -168,6 +169,11 @@ public:
     ValueArray2Dref& Y()
     {
         return *arrayY;
+    }
+    
+    bool isValid()
+    {
+        return frame->Size() > 0;
     }
 
     Picture() 

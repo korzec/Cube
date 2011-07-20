@@ -37,8 +37,8 @@ bool CoeffCube::LoadGOP(PictureVector& gop)
                 //get pointer to a row in the picture
                 ValueType* picRow = &pic->Y()[h][0];
                 //get pointer to a row in one slice
-                CoeffType* sliceRow = &Y()[d][h][0]; 
-                
+                CoeffType* sliceRow = &Y()[d][h][0];
+
                 //copy a row from pic to cube
                 for (int w = 0; w < dims.width; w++)
                 {
@@ -51,12 +51,42 @@ bool CoeffCube::LoadGOP(PictureVector& gop)
     return false;
 }
 
+PictureVector* CoeffCube::GetGOP()
+{
+    Coords3D dims = Dimensionality();
+    PictureVector* gop = new PictureVector();
+    if (dims.depth > 0)
+    {
+        //copy cube data into a gop
+        for (int d = 0; d < dims.depth; d++)
+        {
+            ///copy a slice to the Picture
+            Picture picture(dims.width, dims.height);
+            for (int h = 0; h < dims.height; h++)
+            {
+                //get pointer to a row in the picture
+                ValueType* picRow = &picture.Y()[h][0];
+                //get pointer to a row in one slice
+                CoeffType* sliceRow = &Y()[d][h][0];
+                //copy a row from pic to cube
+                for (int w = 0; w < dims.width; w++)
+                {
+                    picRow[w] = ValueType(sliceRow[w]);
+                }
+            }
+            gop->push_back(picture);
+        }
+
+    }
+    return gop;
+}
+
 Coords3D CoeffCube::Dimensionality()
 {
     Coords3D dims;
     dims.depth = Y().shape()[0];
     dims.height = Y().shape()[1];
-    dims.width = Y().shape()[2]; 
+    dims.width = Y().shape()[2];
     return dims;
 }
 
