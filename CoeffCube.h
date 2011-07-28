@@ -17,18 +17,21 @@
 class CoeffCube {
 private:
     CoeffArray3DPtr arrayY;
-    int CubeNumber;
+    CoeffArray3DPtr arrayU;
+    CoeffArray3DPtr arrayV;
     WaveletTransform transform;
 public:
     CoeffCube();
     CoeffCube(int width, int height, int depth);
     
     CoeffArray3D& Y();
+    CoeffArray3D& U();
+    CoeffArray3D& V();
     
     /// Load images and pad the data to allow wavelet transform
     bool LoadGOP(PictureVector& gop);
     
-    PictureVector* GetGOP();
+    PictureVectorPtr GetGOP();
     
     bool ForwardTransform();
     bool ReverseTransform();

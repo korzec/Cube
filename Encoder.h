@@ -44,6 +44,11 @@ public:
     CodingParams GetParams() const;
     void SetParams(CodingParams params);
     
+    Picture GetNextDecodedPicture();
+    
+    PictureVectorPtr GetDecodedGOP();
+    
+    bool DeleteOldOutputGOP();
 
 };
 

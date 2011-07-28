@@ -10,6 +10,54 @@
 #include <fstream>
 #include <cassert>
 
+int testPictureReadWrite() {
+    string input = "src7.yuv";
+    std::ifstream inputPicture(input.c_str(), std::ios::in | std::ios::binary);
+    if (!inputPicture) {
+        std::cerr << std::endl <<
+                "Can't open input data file: " << input << std::endl;
+        return EXIT_FAILURE;
+    } else
+        std::cout << "opened file " << input << std::endl;
+
+    //std::cout << "w " <<  << "h " << encoder.params.height << std::endl;
+    Picture picture = ReadPicture(inputPicture, 720, 576);
+
+    assert(picture.width() == 720);
+    assert(picture.height() == 576);
+    
+    /// open the decoded output file
+    std::ofstream *outputPicture = NULL;
+
+    std::string outputPictureName = input + ".test.yuv";
+    outputPicture = new std::ofstream(outputPictureName.c_str(), std::ios::out | std::ios::binary);
+
+    Picture outPicture(720, 576);
+    outPicture = picture;
+
+    for (int i = 0; i < picture.height(); i++)
+        for (int j = 0; j < picture.width(); j++)
+            //for (int i = 0; i < fb->width*fb->height; i++)
+        {
+            assert(picture.Y()[i][j] == outPicture.Y()[i][j]);
+        }
+    for (int i = 0; i < picture.chromaHeight(); i++)
+        for (int j = 0; j < picture.chromaWidth(); j++)
+            //for (int i = 0; i < fb->width*fb->height; i++)
+        {
+            assert(picture.U()[i][j] == outPicture.U()[i][j]);
+            assert(picture.V()[i][j] == outPicture.V()[i][j]);
+        }
+
+    WritePicture(*outputPicture, outPicture);
+    outputPicture->close();
+    delete outputPicture;
+    
+    std::cout << "tests completed" << std::endl;
+
+    return 0;
+}
+
 int testEncode()
 {
     Encoder encoder;
@@ -353,14 +401,26 @@ int testPictureIO() {
             //for (int i = 0; i < fb->width*fb->height; i++)
         {
             assert(picture.Y()[i][j] == 0);
+            //assert(picture.U()[i>>1][j>>1] == 0);
+            //assert(picture.V()[i>>1][j>>1] == 0);
+        }
+    
+    for (int i = 0; i < picture.chromaHeight(); i++)
+        for (int j = 0; j < picture.chromaWidth(); j++)
+            //for (int i = 0; i < fb->width*fb->height; i++)
+        {
+            //assert(picture.Y()[i][j] == 0);
+            assert(picture.U()[i][j] == 0);
+            assert(picture.V()[i][j] == 0);
         }
 
-    std::cout << "tests completed" << std::endl;
+    std::cout << "basic picture IO finished " << std::endl;
 
     return 0;
 }
 
 int runTests() {
+    testPictureReadWrite();
     testEncode();
     testDeinterleave();
     testSplit();

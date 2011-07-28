@@ -14,15 +14,27 @@ CoeffCube::CoeffCube()
 CoeffCube::CoeffCube(int width, int height, int depth)
 {
     arrayY = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height][width]));
+    arrayU = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
+    arrayV = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
 }
 
 CoeffArray3D & CoeffCube::Y()
 {
     return *arrayY;
 }
+CoeffArray3D & CoeffCube::U()
+{
+    return *arrayU;
+}
+CoeffArray3D & CoeffCube::V()
+{
+    return *arrayV;
+}
 
 bool CoeffCube::LoadGOP(PictureVector& gop)
 {
+    ///get a picture and a slice
+    
     ///if the gop size matches the cube depth
     if (gop.size() == (size_t) Dimensionality().depth)
     {
@@ -32,6 +44,13 @@ bool CoeffCube::LoadGOP(PictureVector& gop)
         {
             //get pointer to the pic 
             Picture* pic = &gop[d];
+            
+            //CoeffArray2D slice =  this->U()[d];
+            
+            //CoeffArray3D::array_view<2> slice = Y()[ boost::indices[d][range()][range()] ];
+            
+           // slice[1][2] = 4;
+            
             for (int h = 0; h < dims.height; h++)
             {
                 //get pointer to a row in the picture
@@ -51,10 +70,10 @@ bool CoeffCube::LoadGOP(PictureVector& gop)
     return false;
 }
 
-PictureVector* CoeffCube::GetGOP()
+PictureVectorPtr CoeffCube::GetGOP()
 {
     Coords3D dims = Dimensionality();
-    PictureVector* gop = new PictureVector();
+    PictureVectorPtr gop(new PictureVector());
     if (dims.depth > 0)
     {
         //copy cube data into a gop

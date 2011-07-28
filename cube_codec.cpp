@@ -14,8 +14,11 @@
 #include <stdlib.h>
 #include "cube_io.h"
 #include <string>
+#include <cstring>
 
 #include "tests.h"
+//#define cimg_display 2
+//#include "cimg/CImg.h"
 
 static void display_help()
 {
@@ -32,6 +35,7 @@ int main(int argc, char* argv[])
 {
 
     runTests();
+    //return 0;
 
     puts("Cube codec welcomes");
 
@@ -130,6 +134,7 @@ int main(int argc, char* argv[])
          {
              //should encode 1 picture at a time
              state  = encoder.Encode();
+             PictureVectorPtr gop;
              switch (state)
              {
              case OUTPUT_AVAILABLE:
@@ -139,6 +144,12 @@ int main(int argc, char* argv[])
              case PICTURE_AVAILABLE:
                  ///if decoded picture is available
                  ///write output picture and continue
+                 gop = encoder.GetDecodedGOP();
+                 for(size_t i=0; i<gop->size(); i++ )
+                 {
+                     WritePicture(*outputPicture, gop->at(i));
+                 }
+                 encoder.DeleteOldOutputGOP();
                  break;
              case NEED_BUFFER:
                  ///if need more pictures to continue encoding
@@ -169,6 +180,7 @@ int main(int argc, char* argv[])
     inputPicture.close();
     outputPicture->close();
 
+    std::cout << "finished everyting" << std::endl;
     return EXIT_SUCCESS;
 }
 

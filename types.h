@@ -138,7 +138,9 @@ public:
 };
 
 typedef boost::multi_array_ref<ValueType, 2 > ValueArray2Dref;
+
 typedef boost::multi_array<CoeffType, 3 > CoeffArray3D;
+typedef boost::multi_array<CoeffType, 2 > CoeffArray2D;
 
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;
@@ -148,10 +150,11 @@ class Picture
 {
 public:
     ValueArray2DrefPtr arrayY;
-    //ValueArray2D U;
-    //ValueArray2D V;
+    ValueArray2DrefPtr arrayU;
+    ValueArray2DrefPtr arrayV;
     FrameBufferPtr frame;
     int pictureNumber;
+public:
     int width()
     {
         if (!frame)
@@ -164,12 +167,24 @@ public:
         if (!frame)
             return 0;
         return frame->height;
+    }    
+    int chromaWidth()
+    {
+        if (!frame)
+            return 0;
+        return frame->width>>1;
     }
 
-    ValueArray2Dref& Y()
+    int chromaHeight()
     {
-        return *arrayY;
+        if (!frame)
+            return 0;
+        return frame->height>>1;
     }
+
+    ValueArray2Dref& Y() { return *arrayY; }
+    ValueArray2Dref& U() { return *arrayU; }
+    ValueArray2Dref& V() { return *arrayV; }
     
     bool isValid()
     {
@@ -188,6 +203,10 @@ public:
             return;
         arrayY = ValueArray2DrefPtr(new ValueArray2Dref
                 (frame->buf[0], boost::extents[frame->height][frame->width]));
+        arrayU = ValueArray2DrefPtr(new ValueArray2Dref
+                (frame->buf[1], boost::extents[frame->height>>1][frame->width>>1]));
+        arrayV = ValueArray2DrefPtr(new ValueArray2Dref
+                (frame->buf[2], boost::extents[frame->height>>1][frame->width>>1]));
     }
 
     Picture(int width, int height)
@@ -195,9 +214,17 @@ public:
         frame = FrameBufferPtr(new FrameBuffer(width, height));
         arrayY = ValueArray2DrefPtr(new ValueArray2Dref
                 (frame->buf[0], boost::extents[frame->height][frame->width]));
+        arrayU = ValueArray2DrefPtr(new ValueArray2Dref
+                (frame->buf[1], boost::extents[frame->height>>1][frame->width>>1]));
+        arrayV = ValueArray2DrefPtr(new ValueArray2Dref
+                (frame->buf[2], boost::extents[frame->height>>1][frame->width>>1]));
+ 
     }
 };
 
 typedef std::vector<Picture> PictureVector;
+typedef boost::shared_ptr<PictureVector> PictureVectorPtr;
+
+typedef boost::multi_array_types::index_range range;
 
 #endif /* CUBE_CODEC_H_ */
