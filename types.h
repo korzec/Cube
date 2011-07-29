@@ -189,6 +189,8 @@ public:
     
     bool isValid()
     {
+        if(frame == NULL)
+            return false;
         return frame->Size() > 0;
     }
 

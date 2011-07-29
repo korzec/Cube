@@ -48,7 +48,7 @@ FrameBuffer* ReadPictureData(std::ifstream &fdata, int width, int height)
     } catch (...) {
         delete fb;
         fb = NULL;
-        std::cout << "reading error " << std::endl;
+        std::cout << "file ended or reading error " << std::endl;
     }
     fdata.exceptions(oldExceptions);
     return fb;

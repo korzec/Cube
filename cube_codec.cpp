@@ -125,7 +125,7 @@ int main(int argc, char* argv[])
          }
          else
          {
-             std::cout << "invalid picture read" << std::endl;
+             std::cout << "no more pictures to read" << std::endl;
              encoder.EndOfSequence();
              break;
          }
