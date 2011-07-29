@@ -20,6 +20,10 @@ private:
     CoeffArray3DPtr arrayU;
     CoeffArray3DPtr arrayV;
     WaveletTransform transform;
+    /// available to receive next picture
+    bool available;
+    ///the index of slice pointing to next available space (where next picture will be copied)
+    int nextIndex;
 public:
     CoeffCube();
     CoeffCube(int width, int height, int depth);
@@ -27,6 +31,9 @@ public:
     CoeffArray3D& Y();
     CoeffArray3D& U();
     CoeffArray3D& V();
+    
+    bool LoadNextPicture(Picture&);
+    bool MakeAvailable();
     
     /// Load images and pad the data to allow wavelet transform
     bool LoadGOP(PictureVector& gop);
@@ -38,6 +45,8 @@ public:
 
     /// returns Y array dimensions
     Coords3D Dimensionality();
+    
+    Coords3D ChromaDimensionality();
 
 };
 

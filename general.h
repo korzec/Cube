@@ -35,7 +35,7 @@ bool copyArrayFromValueToCoeff(ValueArray2Dref& from ,CoeffView2D& to)
         }
     }
     
-    return false;
+    return true;
 }
 
 bool copyArrayFromCoeffToValue(CoeffView2D& from ,ValueArray2Dref& to)
@@ -58,7 +58,7 @@ bool copyArrayFromCoeffToValue(CoeffView2D& from ,ValueArray2Dref& to)
         }
     }
     
-    return false;
+    return true;
 }
 
 #endif	/* GENERAL_H */

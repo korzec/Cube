@@ -19,6 +19,11 @@ WaveletTransform::~WaveletTransform()
 {
 }
 
+bool WaveletTransform::ForwardSlice(CoeffArray3D& cube, int slice)
+{
+    
+}
+
 bool WaveletTransform::Forward(CoeffArray3D& cube)
 {
     if(Split(cube) && Deinterleave(cube))
@@ -37,8 +42,10 @@ bool WaveletTransform::Reverse(CoeffArray3D& cube)
 
 bool WaveletTransform::Split(CoeffArray3D& cube)
 {
+    assert(cube.size() != 0);
     if(cube.size() == 0)
         return false;
+   
     
     Coords3D dims(cube.shape()[2], cube.shape()[1], cube.shape()[0]);
     
@@ -90,6 +97,7 @@ bool WaveletTransform::Split(CoeffArray3D& cube)
 
 bool WaveletTransform::Synth(CoeffArray3D& cube)
 {
+    assert(cube.size() != 0);
     if(cube.size() == 0)
         return false;
     

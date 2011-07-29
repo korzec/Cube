@@ -8,11 +8,11 @@
 #include "CoeffCube.h"
 #include "general.h"
 
-CoeffCube::CoeffCube()
+CoeffCube::CoeffCube() : available(false), nextIndex(-1)
 {
 }
 
-CoeffCube::CoeffCube(int width, int height, int depth)
+CoeffCube::CoeffCube(int width, int height, int depth) : available(false), nextIndex(-1)
 {
     arrayY = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height][width]));
     arrayU = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
@@ -32,8 +32,34 @@ CoeffArray3D & CoeffCube::V()
     return *arrayV;
 }
 
+bool CoeffCube::LoadNextPicture(Picture& picture)
+{
+    if(!available)
+        return false;
+    assert(nextIndex < Dimensionality().depth);
+    assert(nextIndex >= 0);
+    ///destination slice
+    CoeffView2D sliceY =  this->Y()[nextIndex];
+    copyArrayFromValueToCoeff(picture.Y(), sliceY);
+    
+    nextIndex++;
+    if(nextIndex == Dimensionality().depth)
+    {
+        available = false;
+    }
+}
+
+bool CoeffCube::MakeAvailable()
+{
+    available = true;
+    nextIndex = 0;
+    
+    return true;
+}
+
 bool CoeffCube::LoadGOP(PictureVector& gop)
 {
+
     ///get a picture and a slice
     
     ///if the gop size matches the cube depth
@@ -56,6 +82,9 @@ bool CoeffCube::LoadGOP(PictureVector& gop)
             copyArrayFromValueToCoeff(pic->V(), sliceV);
 
         }
+        //set availability
+        available = false;
+        nextIndex = Dimensionality().depth;
         return true;
     }
     return false;
@@ -97,9 +126,22 @@ Coords3D CoeffCube::Dimensionality()
     return dims;
 }
 
+Coords3D CoeffCube::ChromaDimensionality()
+{
+    Coords3D dims;
+    dims.depth = U().shape()[0];
+    dims.height = U().shape()[1];
+    dims.width = U().shape()[2];
+    return dims;
+}
+
 bool CoeffCube::ForwardTransform()
 {
-    return transform.Forward(Y());
+    ///if fully loaded and ready to transofrm
+    if(!available && nextIndex == Dimensionality().depth)
+        return transform.Forward(Y());
+    else
+        return false;
 }
 
 bool CoeffCube::ReverseTransform()
