@@ -6,6 +6,7 @@
  */
 
 #include "CoeffCube.h"
+#include "general.h"
 
 CoeffCube::CoeffCube()
 {
@@ -44,26 +45,16 @@ bool CoeffCube::LoadGOP(PictureVector& gop)
         {
             //get pointer to the pic 
             Picture* pic = &gop[d];
+           
+            CoeffView2D sliceY =  this->Y()[d];
+            copyArrayFromValueToCoeff(pic->Y(), sliceY);
             
-            //CoeffArray2D slice =  this->U()[d];
+            CoeffView2D sliceU =  this->U()[d];
+            copyArrayFromValueToCoeff(pic->U(), sliceU);
             
-            //CoeffArray3D::array_view<2> slice = Y()[ boost::indices[d][range()][range()] ];
-            
-           // slice[1][2] = 4;
-            
-            for (int h = 0; h < dims.height; h++)
-            {
-                //get pointer to a row in the picture
-                ValueType* picRow = &pic->Y()[h][0];
-                //get pointer to a row in one slice
-                CoeffType* sliceRow = &Y()[d][h][0];
+            CoeffView2D sliceV =  this->V()[d];
+            copyArrayFromValueToCoeff(pic->V(), sliceV);
 
-                //copy a row from pic to cube
-                for (int w = 0; w < dims.width; w++)
-                {
-                    sliceRow[w] = CoeffType(picRow[w]);
-                }
-            }
         }
         return true;
     }
@@ -79,20 +70,17 @@ PictureVectorPtr CoeffCube::GetGOP()
         //copy cube data into a gop
         for (int d = 0; d < dims.depth; d++)
         {
-            ///copy a slice to the Picture
             Picture picture(dims.width, dims.height);
-            for (int h = 0; h < dims.height; h++)
-            {
-                //get pointer to a row in the picture
-                ValueType* picRow = &picture.Y()[h][0];
-                //get pointer to a row in one slice
-                CoeffType* sliceRow = &Y()[d][h][0];
-                //copy a row from pic to cube
-                for (int w = 0; w < dims.width; w++)
-                {
-                    picRow[w] = ValueType(sliceRow[w]);
-                }
-            }
+              ///copy a slice to the Picture          
+            CoeffView2D sliceY =  this->Y()[d];
+            copyArrayFromCoeffToValue(sliceY, picture.Y());
+
+            CoeffView2D sliceU =  this->U()[d];
+            copyArrayFromCoeffToValue(sliceU, picture.U());
+            
+            CoeffView2D sliceV =  this->V()[d];
+            copyArrayFromCoeffToValue(sliceV, picture.V());
+            
             gop->push_back(picture);
         }
 

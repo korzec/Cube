@@ -141,6 +141,7 @@ typedef boost::multi_array_ref<ValueType, 2 > ValueArray2Dref;
 
 typedef boost::multi_array<CoeffType, 3 > CoeffArray3D;
 typedef boost::multi_array<CoeffType, 2 > CoeffArray2D;
+typedef boost::detail::multi_array::sub_array<CoeffType, 2> CoeffView2D;
 
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;
