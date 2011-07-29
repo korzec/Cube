@@ -21,7 +21,7 @@ WaveletTransform::~WaveletTransform()
 
 bool WaveletTransform::ForwardSlice(CoeffArray3D& cube, int slice)
 {
-    
+    return false;
 }
 
 bool WaveletTransform::Forward(CoeffArray3D& cube)

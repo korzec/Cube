@@ -7,6 +7,7 @@
 
 #include "CoeffCube.h"
 #include "general.h"
+#include <omp.h>
 
 CoeffCube::CoeffCube() : available(false), nextIndex(-1)
 {
@@ -47,6 +48,7 @@ bool CoeffCube::LoadNextPicture(Picture& picture)
     {
         available = false;
     }
+    return true;
 }
 
 bool CoeffCube::MakeAvailable()
@@ -139,12 +141,37 @@ bool CoeffCube::ForwardTransform()
 {
     ///if fully loaded and ready to transofrm
     if(!available && nextIndex == Dimensionality().depth)
-        return transform.Forward(Y());
+    {
+        bool state = true;
+        #pragma omp parallel sections reduction(&& : state)
+        {   
+        #pragma omp section
+            state = state && transform.Forward(Y());
+        #pragma omp section
+            {
+            state = state && transform.Forward(U());     
+            state = state && transform.Forward(V());
+            }
+        }
+        return state;
+    }
     else
         return false;
 }
 
 bool CoeffCube::ReverseTransform()
 {
-    return transform.Reverse(Y());
+    bool state = true;
+    #pragma omp parallel sections reduction(&& : state)
+    {   
+    #pragma omp section
+        state = state && transform.Reverse(Y());
+    #pragma omp section
+        {
+        state = state && transform.Reverse(U());
+        state = state && transform.Reverse(V());
+        }
+    
+}
+    return state;
 }

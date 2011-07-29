@@ -48,8 +48,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-fopenmp
+CXXFLAGS=-fopenmp
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -71,42 +71,42 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cube: ${OBJECTFILES}
 ${OBJECTDIR}/tests.o: tests.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests.o tests.cpp
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests.o tests.cpp
 
 ${OBJECTDIR}/cube_codec.o: cube_codec.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec.o cube_codec.cpp
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec.o cube_codec.cpp
 
 ${OBJECTDIR}/WaveletTransform.o: WaveletTransform.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp
 
 ${OBJECTDIR}/Subcube.o: Subcube.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube.o Subcube.cpp
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube.o Subcube.cpp
 
 ${OBJECTDIR}/Encoder.o: Encoder.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Encoder.o Encoder.cpp
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Encoder.o Encoder.cpp
 
 ${OBJECTDIR}/cube_io.o: cube_io.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_io.o cube_io.cpp
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_io.o cube_io.cpp
 
 ${OBJECTDIR}/CoeffCube.o: CoeffCube.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/CoeffCube.o CoeffCube.cpp
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/CoeffCube.o CoeffCube.cpp
 
 ${OBJECTDIR}/PictureBuffer.o: PictureBuffer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureBuffer.o PictureBuffer.cpp
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureBuffer.o PictureBuffer.cpp
 
 # Subprojects
 .build-subprojects:
