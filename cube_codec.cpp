@@ -19,17 +19,7 @@
 #include "tests.h"
 //#define cimg_display 2
 //#include "cimg/CImg.h"
-
-static void display_help()
-{
-    cout << "\nCube wavelet video coder.";
-    cout << "\n";
-    cout << "\nusage: program -width x -height y inputfile" ;
-    cout << "\nwidth             ulong   -        Width of frame";
-    cout << "\nheight            ulong   -        Length of frame";
-    cout << endl;
-}
-bool parse_command_line(CodingParams& params, int argc, char **argv);
+#include "parse_cmd.h"
 
 int main(int argc, char* argv[])
 {
@@ -46,6 +36,7 @@ int main(int argc, char* argv[])
 
     if (!parse_command_line(params, argc, argv))
         return EXIT_FAILURE;
+    
     encoder.SetParams(params);
 
     if (argc < 2)
@@ -106,13 +97,23 @@ int main(int argc, char* argv[])
     int frameNumber = 0;
     bool go = true;
     EncoderState state;
+    
+    //skip frames
+    for (int i=0; i<params.start_pos; ++i)
+    {
+        ReadPicture(inputPicture,
+                           encoder.GetParams().width, 
+                           encoder.GetParams().height);
+    }
+    
     do
     {
          picture = ReadPicture(inputPicture,
                            encoder.GetParams().width, 
                            encoder.GetParams().height);
          //handle a new picture read
-         if(picture.isValid())
+         if( frameNumber <= (params.end_pos - params.start_pos) &&
+                 picture.isValid())
          {
              picture.pictureNumber = frameNumber;
              bool ret = encoder.LoadNextPicture(picture);
@@ -122,6 +123,8 @@ int main(int argc, char* argv[])
                  return EXIT_FAILURE;
              }
              frameNumber++;
+             std::cout << "frame: " << frameNumber << std::endl; 
+             
          }
          else
          {
@@ -184,103 +187,4 @@ int main(int argc, char* argv[])
     return EXIT_SUCCESS;
 }
 
-bool parse_command_line(CodingParams& params, int argc, char **argv)
-{
-    /**********  command line parameter parsing*********/
-
-    // An array indicating whether a parameter has been parsed
-    bool* parsed = new bool[argc];
-
-    // Program name has been parsed
-    parsed[0] = true;
-
-    // No other parameters
-    for (int i = 1; i < argc; ++i)
-        parsed[i] = false;
-
-    // The start and end-points of the parts of the file to be coded
-    // (end_pos set to -1 means code to the end)
-
-    //Now do the options
-    // initialise the CodingParams
-    //now go over again and override video format presets with other values
-    for (int i = 1; i < argc;)
-    {
-        if (strcmp(argv[i], "-width") == 0)
-        {
-            parsed[i] = true;
-            i++;
-            params.width =
-                    strtoul(argv[i], NULL, 10);
-            parsed[i] = true;
-        }
-        else if (strcmp(argv[i], "-height") == 0)
-        {
-            parsed[i] = true;
-            i++;
-            params.height =
-                    strtoul(argv[i], NULL, 10);
-            parsed[i] = true;
-        }
-        i++;
-    }
-
-    for (int i = 0; i < argc;)
-    {
-        if (strcmp(argv[i], "-verbose") == 0)
-        {
-            parsed[i] = true;
-            params.verbose = true;
-        }
-        else if (strcmp(argv[i], "-local") == 0)
-        {
-            parsed[i] = true;
-            params.nolocal = false;
-        }
-        else if (strcmp(argv[i], "-start") == 0)
-        {
-            parsed[i] = true;
-            i++;
-            params.start_pos = strtoul(argv[i], NULL, 10);
-            parsed[i] = true;
-        }
-        else if (strcmp(argv[i], "-stop") == 0)
-        {
-            parsed[i] = true;
-            i++;
-            params.end_pos = strtoul(argv[i], NULL, 10);
-            parsed[i] = true;
-        }
-        i++;
-    }//opt
-
-    // check we have parsed everything
-    bool all_parsed = true;
-    for (int i = 0; i < argc - 2; ++i)
-    {
-        if (!parsed[i])
-        {
-            all_parsed = false;
-            std::cerr << std::endl << "Unknown option " << argv[i];
-        }
-    }
-    if (!all_parsed)
-    {
-        display_help();
-        return false;
-    }
-
-    /* check that we have been suplied with input and output files */
-    if (argc < 2 || parsed[argc - 2] || parsed[argc - 1])
-    {
-        display_help();
-        std::cerr << std::endl << "Insufficient arguments" << std::endl;
-        return false;
-    }
-
-
-    delete[] parsed;
-
-    return true;
-}
 

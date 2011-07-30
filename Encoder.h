@@ -20,6 +20,7 @@ private:
     PictureBuffer pictureOutputBuffer;
     CoeffCube coeffCube;
     int pictureNumber;
+    int cubeNumber;
 public:
 
     Encoder();

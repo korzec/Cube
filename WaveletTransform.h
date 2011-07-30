@@ -22,6 +22,9 @@ public:
     
     bool Reverse(CoeffArray3D&);
     
+    /// zero the H band in temporal axis
+    bool SmoothTemporal(CoeffArray3D&);
+    
 private:
     
     //trasform a single slice;

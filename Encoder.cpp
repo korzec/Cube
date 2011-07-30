@@ -7,7 +7,7 @@
 
 #include "Encoder.h"
 
-Encoder::Encoder() : pictureBuffer(0), pictureOutputBuffer(0), pictureNumber(0)
+Encoder::Encoder() : pictureBuffer(0), pictureOutputBuffer(0), pictureNumber(0), cubeNumber(0)
 {
 }
 
@@ -47,11 +47,23 @@ EncoderState Encoder::Encode()
         //if we have valid gop
         if(gop.size() == (size_t) params.cubeDepth)
         {
+            cubeNumber++;
             bool ret = coeffCube.LoadGOP(gop);
             pictureBuffer.RemoveOldGOP(params.cubeDepth);
             assert(ret == true);
-            if( coeffCube.ForwardTransform() && coeffCube.ReverseTransform())
+            
+            if( coeffCube.ForwardTransform() )
             {
+                std::stringstream ss1;
+                ss1 << OUTDIR << "tr" <<cubeNumber <<"cube.raw";
+                coeffCube.dump(ss1.str());
+                coeffCube.SmoothTime();
+                std::stringstream ss2;
+                ss2 << OUTDIR << "sm" <<cubeNumber <<"cube.raw";
+                coeffCube.dump(ss2.str());
+                coeffCube.ReverseTransform();
+               
+                
                 PictureVectorPtr outputGOP = coeffCube.GetGOP();
                 bool ret = pictureOutputBuffer.AddGOP(*outputGOP);
                 //delete outputGOP;

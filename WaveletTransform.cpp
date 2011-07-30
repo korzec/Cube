@@ -19,6 +19,33 @@ WaveletTransform::~WaveletTransform()
 {
 }
 
+bool WaveletTransform::SmoothTemporal(CoeffArray3D& cube)
+{
+    //zero the tempotal H
+    assert(cube.size() != 0);
+    if(cube.size() == 0)
+        return false;
+   
+    
+    Coords3D dims(cube.shape()[2], cube.shape()[1], cube.shape()[0]);
+    
+    ///do filtering in depth
+    for (int d = dims.depth/2; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                /// zero the band
+                CoeffType* coeff = &cube[d][h][w];
+                //if(*coeff < 10)
+                    *coeff = 0;
+            }
+        }
+    }
+    return true;
+}
+
 bool WaveletTransform::ForwardSlice(CoeffArray3D& cube, int slice)
 {
     return false;

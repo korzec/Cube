@@ -22,6 +22,7 @@ private:
     WaveletTransform transform;
     /// available to receive next picture
     bool available;
+    int cubeNumber;
     ///the index of slice pointing to next available space (where next picture will be copied)
     int nextIndex;
 public:
@@ -42,12 +43,15 @@ public:
     
     bool ForwardTransform();
     bool ReverseTransform();
+    
+    bool SmoothTime();
 
     /// returns Y array dimensions
     Coords3D Dimensionality();
     
     Coords3D ChromaDimensionality();
 
+    bool dump(std::string);
 };
 
 #endif	/* COEFFCUBE_H */

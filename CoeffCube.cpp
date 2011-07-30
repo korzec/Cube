@@ -9,11 +9,11 @@
 #include "general.h"
 #include <omp.h>
 
-CoeffCube::CoeffCube() : available(false), nextIndex(-1)
+CoeffCube::CoeffCube() : available(false), cubeNumber(-1), nextIndex(-1)
 {
 }
 
-CoeffCube::CoeffCube(int width, int height, int depth) : available(false), nextIndex(-1)
+CoeffCube::CoeffCube(int width, int height, int depth) : available(false), cubeNumber(-1), nextIndex(-1)
 {
     arrayY = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height][width]));
     arrayU = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
@@ -137,6 +137,13 @@ Coords3D CoeffCube::ChromaDimensionality()
     return dims;
 }
 
+bool CoeffCube::SmoothTime()
+{
+    return transform.SmoothTemporal(Y());
+    return transform.SmoothTemporal(U());
+    return transform.SmoothTemporal(V());
+}
+
 bool CoeffCube::ForwardTransform()
 {
     ///if fully loaded and ready to transofrm
@@ -174,4 +181,9 @@ bool CoeffCube::ReverseTransform()
     
 }
     return state;
+}
+
+bool CoeffCube::dump(std::string fileName)
+{
+    return dumpCube(Y(), fileName);
 }

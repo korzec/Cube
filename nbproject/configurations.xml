@@ -11,6 +11,7 @@
       <itemPath>WaveletTransform.h</itemPath>
       <itemPath>cube_io.h</itemPath>
       <itemPath>general.h</itemPath>
+      <itemPath>parse_cmd.h</itemPath>
       <itemPath>tests.h</itemPath>
       <itemPath>types.h</itemPath>
     </logicalFolder>

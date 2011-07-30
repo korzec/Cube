@@ -8,6 +8,8 @@
 #ifndef CUBE_CODEC_H_
 #define CUBE_CODEC_H_
 
+#define OUTDIR "out/"
+
 
 #include "boost/multi_array.hpp"
 #include <boost/smart_ptr.hpp>
@@ -69,7 +71,7 @@ public:
     int fields_factor;
 
     CodingParams() : width(0), height(0), cubeDepth(4),
-    start_pos(0), end_pos(-1), verbose(false), nolocal(false), fields_factor(1)
+    start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(false), fields_factor(1)
     {
     }
 };
