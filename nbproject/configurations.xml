@@ -5,10 +5,12 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>CoeffCube.h</itemPath>
+      <itemPath>CubeTransform.h</itemPath>
       <itemPath>Encoder.h</itemPath>
       <itemPath>PictureBuffer.h</itemPath>
       <itemPath>SubbandList.h</itemPath>
       <itemPath>Subcube.h</itemPath>
+      <itemPath>SubcubeIndex.h</itemPath>
       <itemPath>WaveletTransform.h</itemPath>
       <itemPath>cube_io.h</itemPath>
       <itemPath>general.h</itemPath>
@@ -24,10 +26,12 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>CoeffCube.cpp</itemPath>
+      <itemPath>CubeTransform.cpp</itemPath>
       <itemPath>Encoder.cpp</itemPath>
       <itemPath>PictureBuffer.cpp</itemPath>
       <itemPath>SubbandList.cpp</itemPath>
       <itemPath>Subcube.cpp</itemPath>
+      <itemPath>SubcubeIndex.cpp</itemPath>
       <itemPath>WaveletTransform.cpp</itemPath>
       <itemPath>cube_codec.cpp</itemPath>
       <itemPath>cube_io.cpp</itemPath>

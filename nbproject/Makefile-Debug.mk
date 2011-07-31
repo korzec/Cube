@@ -36,10 +36,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/tests.o \
 	${OBJECTDIR}/cube_codec.o \
+	${OBJECTDIR}/SubcubeIndex.o \
 	${OBJECTDIR}/WaveletTransform.o \
 	${OBJECTDIR}/Subcube.o \
 	${OBJECTDIR}/SubbandList.o \
 	${OBJECTDIR}/Encoder.o \
+	${OBJECTDIR}/CubeTransform.o \
 	${OBJECTDIR}/cube_io.o \
 	${OBJECTDIR}/CoeffCube.o \
 	${OBJECTDIR}/PictureBuffer.o
@@ -79,6 +81,11 @@ ${OBJECTDIR}/cube_codec.o: cube_codec.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec.o cube_codec.cpp
 
+${OBJECTDIR}/SubcubeIndex.o: SubcubeIndex.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubcubeIndex.o SubcubeIndex.cpp
+
 ${OBJECTDIR}/WaveletTransform.o: WaveletTransform.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -98,6 +105,11 @@ ${OBJECTDIR}/Encoder.o: Encoder.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Encoder.o Encoder.cpp
+
+${OBJECTDIR}/CubeTransform.o: CubeTransform.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeTransform.o CubeTransform.cpp
 
 ${OBJECTDIR}/cube_io.o: cube_io.cpp 
 	${MKDIR} -p ${OBJECTDIR}

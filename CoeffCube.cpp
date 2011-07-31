@@ -7,6 +7,7 @@
 
 #include "CoeffCube.h"
 #include "general.h"
+#include "CubeTransform.h"
 #include <omp.h>
 
 CoeffCube::CoeffCube() : available(false), cubeNumber(-1), nextIndex(-1)
@@ -144,9 +145,9 @@ Coords3D CoeffCube::ChromaDimensionality()
 
 bool CoeffCube::SmoothTime()
 {
-    return transform.SmoothTemporal(subbandsY.GetSubband(0, LLL));
-    return transform.SmoothTemporal(subbandsU.GetSubband(0, LLL));
-    return transform.SmoothTemporal(subbandsV.GetSubband(0, LLL));
+    return CubeTransform::SmoothTemporal(subbandsY.GetSubband(0, LLL));
+    return CubeTransform::SmoothTemporal(subbandsU.GetSubband(0, LLL));
+    return CubeTransform::SmoothTemporal(subbandsV.GetSubband(0, LLL));
     //return transform.SmoothTemporal(V());
 }
 

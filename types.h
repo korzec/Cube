@@ -61,14 +61,20 @@ public:
          this->height = dimensionality[1];
          this->depth = dimensionality[0];
     }
+    void Set(int width, int height, int depth)
+    {
+         this->width = width;
+         this->height = height;
+         this->depth = depth;
+    }
 };
 
-class CubeCoords
-{
-public:
-    Coords3D lower;
-    Coords3D higher;
-};
+//class CubeCoords
+//{
+//public:
+//    Coords3D lower;
+//    Coords3D higher;
+//};
 
 enum EncoderState
 {
@@ -168,6 +174,7 @@ typedef boost::multi_array<CoeffType, 2 > CoeffArray2D;
 typedef boost::detail::multi_array::sub_array<CoeffType, 2> CoeffView2D;
 
 typedef CoeffArray3D::array_view<3>::type CoeffView3D;
+typedef boost::shared_ptr<CoeffView3D> CoeffView3DPtr;
 
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;

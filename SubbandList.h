@@ -21,8 +21,6 @@ public:
     
     SubbandList(CoeffArray3D& cube, int levels);
     SubbandList();
-    SubbandList(const SubbandList& orig);
-    virtual ~SubbandList();
     
 private:
     std::vector< std::vector<CoeffView3D> > list;

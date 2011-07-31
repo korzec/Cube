@@ -64,13 +64,6 @@ void SubbandList::Init(CoeffArray3D& cube, int levels)
     }
 }
 
-SubbandList::SubbandList(const SubbandList& orig)
-{
-}
-
-SubbandList::~SubbandList()
-{
-}
 
 int SubbandList::GetLevel()
 {

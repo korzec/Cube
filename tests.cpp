@@ -5,21 +5,106 @@
 #include "Encoder.h"
 #include "PictureBuffer.h"
 #include "WaveletTransform.h"
+#include "Subcube.h"
+#include "SubcubeIndex.h"
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <cassert>
 
+int testSubcubeIndex()
+{
+    Coords3D dims(128,256,16);
+    CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
+    CoeffView3D view = array[ indices
+                        [range(0,dims.depth)]
+                        [range(0,dims.height)]
+                        [range(0,dims.width)] ];
+    Coords3D size(32,32,4);
+    Coords3D index(0,0,0);
+    
+    SubcubeIndex subcubes;
+    subcubes.Init(view, size);
+    
+    assert(subcubes.GetSubcube(index).GetIndex().depth == index.depth);
+    
+    //test with initialisation
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                /// d = x_2n+1 - x_2n
+                view[d][h][w] = CoeffType((d+h+w)%255);
+            }
+        }
+    } 
+    
+    Subcube subcube = subcubes.GetSubcube(index);
+    
+    dims = subcube.GetSize();
+    
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                /// d = x_2n+1 - x_2n
+                assert( view[d][h][w] == subcube.GetView()[d][h][w] );
+            }
+        }
+    } 
+        
+    
+    index.Set(1,1,1);
+    subcube = subcubes.GetSubcube(index);
+    dims = subcube.GetSize();
+    
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                /// d = x_2n+1 - x_2n
+                assert( view[d+dims.depth][h+dims.height][w+dims.width]
+                        == subcube.GetView()[d][h][w] );
+            }
+        }
+    } 
+    
+    return 0;
+}
+
+int testSubcube()
+{
+    Coords3D dims(128,256,16);
+    CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
+    CoeffView3D view = array[ indices
+                        [range(0,dims.depth)]
+                        [range(0,dims.height)]
+                        [range(0,dims.width)] ];
+    Coords3D size(32,32,4);
+    Coords3D index(0,0,0);
+    
+    Subcube subcube;
+    subcube.Init(view, index, size);
+    
+    assert(subcube.GetIndex().depth == index.depth);
+    
+    return 0;
+}
+
 int testView()
 {
-    int width = 32;
-    int height = 16;
-    int depth = 4;
-    CoeffArray3D array(boost::extents[depth][height][width]);
+    Coords3D dims(32,32,4);
+    CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
     CoeffView3D view = array[ indices
-                        [range(0,depth)]
-                        [range(0,height)]
-                        [range(0,width)] ];
+                        [range(0,dims.depth)]
+                        [range(0,dims.height)]
+                        [range(0,dims.width)] ];
     assert(array.size() == view.size());
     return 0;
 }
@@ -507,6 +592,8 @@ int testPictureIO() {
 }
 
 int runTests() {
+    testSubcubeIndex();
+    testSubcube();
     testView();
     testSubbandList();
     testPictureReadWrite();

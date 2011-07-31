@@ -14,15 +14,9 @@ class WaveletTransform
 {
 public:
     WaveletTransform();
-    WaveletTransform(const WaveletTransform& orig);
-    virtual ~WaveletTransform();
     
     bool Forward(CoeffView3D&);    
-    
     bool Reverse(CoeffView3D&);
-    
-    /// zero the H band in temporal axis
-    bool SmoothTemporal(CoeffView3D&);
     
 private:
     

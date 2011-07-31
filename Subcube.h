@@ -12,13 +12,15 @@
 #include "CoeffCube.h"
 
 class Subcube {
-    CubeCoords coords;
-    CoeffCube cube;
+    Coords3D index;
+    CoeffView3DPtr array;
 public:
     Subcube();
-    Subcube(const Subcube& orig);
-    virtual ~Subcube();
-private:
+    Subcube(CoeffView3D& cube, Coords3D& index, Coords3D& size);
+    void Init(CoeffView3D& cube, Coords3D& index, Coords3D& size);
+    Coords3D GetIndex();
+    CoeffView3D& GetView();
+    Coords3D GetSize();
 
 };
 
