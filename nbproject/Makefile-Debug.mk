@@ -37,6 +37,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/tests.o \
 	${OBJECTDIR}/cube_codec.o \
 	${OBJECTDIR}/WaveletTransform.o \
+	${OBJECTDIR}/SubbandList.o \
 	${OBJECTDIR}/Subcube.o \
 	${OBJECTDIR}/Encoder.o \
 	${OBJECTDIR}/cube_io.o \
@@ -82,6 +83,11 @@ ${OBJECTDIR}/WaveletTransform.o: WaveletTransform.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp
+
+${OBJECTDIR}/SubbandList.o: SubbandList.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubbandList.o SubbandList.cpp
 
 ${OBJECTDIR}/Subcube.o: Subcube.cpp 
 	${MKDIR} -p ${OBJECTDIR}

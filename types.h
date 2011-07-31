@@ -25,6 +25,18 @@ typedef unsigned char ValueType;
 typedef int PictureNumber;
 typedef int CubeNumber;
 
+enum Orientation
+{
+    LLL = 0,
+    HLL = 1,
+    LHL = 2,
+    HHL = 3,
+    LLH = 4,
+    HLH = 5,
+    LHH = 6,
+    HHH = 7,
+};
+
 class Coords3D
 {
 public:
@@ -40,6 +52,13 @@ public:
          this->width = width;
          this->height = height;
          this->depth = depth;
+    }
+    
+    Coords3D(const boost::multi_array_types::size_type* dimensionality)
+    {
+         this->width = dimensionality[2];
+         this->height = dimensionality[1];
+         this->depth = dimensionality[0];
     }
 };
 
@@ -144,6 +163,8 @@ typedef boost::multi_array_ref<ValueType, 2 > ValueArray2Dref;
 typedef boost::multi_array<CoeffType, 3 > CoeffArray3D;
 typedef boost::multi_array<CoeffType, 2 > CoeffArray2D;
 typedef boost::detail::multi_array::sub_array<CoeffType, 2> CoeffView2D;
+
+typedef CoeffArray3D::array_view<3>::type CoeffView3D;
 
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;

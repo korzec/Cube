@@ -17,28 +17,27 @@ public:
     WaveletTransform(const WaveletTransform& orig);
     virtual ~WaveletTransform();
     
+    bool Forward(CoeffView3D&);    
     
-    bool Forward(CoeffArray3D&);    
-    
-    bool Reverse(CoeffArray3D&);
+    bool Reverse(CoeffView3D&);
     
     /// zero the H band in temporal axis
-    bool SmoothTemporal(CoeffArray3D&);
+    bool SmoothTemporal(CoeffView3D&);
     
 private:
     
     //trasform a single slice;
-    bool ForwardSlice(CoeffArray3D& cube, int slice);
+    bool ForwardSlice(CoeffView3D& cube, int slice);
 
-    bool Split(CoeffArray3D&);
+    bool Split(CoeffView3D&);
     
-    bool Synth(CoeffArray3D&);
+    bool Synth(CoeffView3D&);
     
-    bool Deinterleave(CoeffArray3D&);
+    bool Deinterleave(CoeffView3D&);
     
-    bool Interleave(CoeffArray3D&);
+    bool Interleave(CoeffView3D&);
     
-    bool deinterleave1d(CoeffArray3D&);
+    bool deinterleave1d(CoeffView3D&);
 };
 
 #endif	/* WAVELETTRANSFORM_H */

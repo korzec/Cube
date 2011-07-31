@@ -12,6 +12,7 @@
 #include <vector>
 #include <boost/multi_array.hpp>
 #include "WaveletTransform.h"
+#include "SubbandList.h"
 
 /// performs a 3d transform on a GOP
 class CoeffCube {
@@ -20,6 +21,11 @@ private:
     CoeffArray3DPtr arrayU;
     CoeffArray3DPtr arrayV;
     WaveletTransform transform;
+    
+    SubbandList subbandsY;
+    SubbandList subbandsU;
+    SubbandList subbandsV;
+    
     /// available to receive next picture
     bool available;
     int cubeNumber;
@@ -27,11 +33,13 @@ private:
     int nextIndex;
 public:
     CoeffCube();
-    CoeffCube(int width, int height, int depth);
+    CoeffCube(int width, int height, int depth, int levels = 1);
     
     CoeffArray3D& Y();
     CoeffArray3D& U();
     CoeffArray3D& V();
+    
+    int GetLevel();
     
     bool LoadNextPicture(Picture&);
     bool MakeAvailable();

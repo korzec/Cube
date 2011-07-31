@@ -19,7 +19,7 @@ WaveletTransform::~WaveletTransform()
 {
 }
 
-bool WaveletTransform::SmoothTemporal(CoeffArray3D& cube)
+bool WaveletTransform::SmoothTemporal(CoeffView3D& cube)
 {
     //zero the tempotal H
     assert(cube.size() != 0);
@@ -46,12 +46,12 @@ bool WaveletTransform::SmoothTemporal(CoeffArray3D& cube)
     return true;
 }
 
-bool WaveletTransform::ForwardSlice(CoeffArray3D& cube, int slice)
+bool WaveletTransform::ForwardSlice(CoeffView3D& cube, int slice)
 {
     return false;
 }
 
-bool WaveletTransform::Forward(CoeffArray3D& cube)
+bool WaveletTransform::Forward(CoeffView3D& cube)
 {
     if(Split(cube) && Deinterleave(cube))
         return true;
@@ -59,7 +59,7 @@ bool WaveletTransform::Forward(CoeffArray3D& cube)
         return false;
 }
 
-bool WaveletTransform::Reverse(CoeffArray3D& cube)
+bool WaveletTransform::Reverse(CoeffView3D& cube)
 {
     if(Interleave(cube) && Synth(cube))
         return true;
@@ -67,7 +67,7 @@ bool WaveletTransform::Reverse(CoeffArray3D& cube)
         return false;
 }
 
-bool WaveletTransform::Split(CoeffArray3D& cube)
+bool WaveletTransform::Split(CoeffView3D& cube)
 {
     assert(cube.size() != 0);
     if(cube.size() == 0)
@@ -122,7 +122,7 @@ bool WaveletTransform::Split(CoeffArray3D& cube)
     return true;
 }
 
-bool WaveletTransform::Synth(CoeffArray3D& cube)
+bool WaveletTransform::Synth(CoeffView3D& cube)
 {
     assert(cube.size() != 0);
     if(cube.size() == 0)
@@ -176,17 +176,17 @@ bool WaveletTransform::Synth(CoeffArray3D& cube)
     return true;
 }
 
-//bool WaveletTransform::deinterleave1d(CoeffArray3D& cube , int dimension)
+//bool WaveletTransform::deinterleave1d(CoeffView3D& cube , int dimension)
 //{
 //    Coords3D dims(cube.shape()[2], cube.shape()[1], cube.shape()[0]);   
 //    
-//    CoeffArray3D temp_cube(boost::extents[dims.depth][dims.height][dims.width]);
+//    CoeffView3D temp_cube(boost::extents[dims.depth][dims.height][dims.width]);
 //    memcpy(temp_cube.data(), cube.data(), cube.size() );
 //    
 //    return 0;
 //}
 
-bool WaveletTransform::Deinterleave(CoeffArray3D& cube)
+bool WaveletTransform::Deinterleave(CoeffView3D& cube)
 {
     Coords3D dims(cube.shape()[2], cube.shape()[1], cube.shape()[0]);
     
@@ -273,7 +273,7 @@ bool WaveletTransform::Deinterleave(CoeffArray3D& cube)
     return true;
 }
 
-bool WaveletTransform::Interleave(CoeffArray3D& cube)
+bool WaveletTransform::Interleave(CoeffView3D& cube)
 {
      Coords3D dims(cube.shape()[2], cube.shape()[1], cube.shape()[0]);
     

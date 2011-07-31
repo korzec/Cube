@@ -10,6 +10,88 @@
 #include <fstream>
 #include <cassert>
 
+int testView()
+{
+    int width = 32;
+    int height = 16;
+    int depth = 4;
+    CoeffArray3D array(boost::extents[depth][height][width]);
+    CoeffView3D view = array[ indices
+                        [range(0,depth)]
+                        [range(0,height)]
+                        [range(0,width)] ];
+    assert(array.size() == view.size());
+    return 0;
+}
+
+int testSubbandList()
+{
+    int width = 32;
+    int height = 16;
+    int depth = 4;
+    CoeffArray3DPtr arrayY = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height][width]));
+//    CoeffArray3DPtr arrayU = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
+//    CoeffArray3DPtr arrayV = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
+    
+    Coords3D dims(arrayY->shape());
+    
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                /// d = x_2n+1 - x_2n
+                (*arrayY)[d][h][w] = CoeffType((d+h+w)%255);
+            }
+        }
+    }   
+    
+    SubbandList subbandsY;
+    int level = 2;
+    subbandsY.Init(*arrayY, level);
+    
+    assert(subbandsY.GetLevel() == level);
+    
+    CoeffView3D y = subbandsY.GetSubband(0, LLL);
+    size_t ysize = y.size();
+    size_t arraysize = arrayY->size();
+    assert(y.size() == arrayY->size());
+    
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                /// d = x_2n+1 - x_2n
+                assert( (*arrayY)[d][h][w] == CoeffType((d+h+w)%255) );
+                assert( (*arrayY)[d][h][w] == y[d][h][w] );
+            }
+        }
+    }   
+    
+    CoeffView3D sub1 = subbandsY.GetSubband(1,LLL);   
+    
+    dims = Coords3D(sub1.shape());
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                /// d = x_2n+1 - x_2n
+                assert( (*arrayY)[d][h][w] == CoeffType((d+h+w)%255) );
+                assert( (*arrayY)[d][h][w] == sub1[d][h][w] );
+            }
+        }
+    }   
+    
+//    subbandsU.Init(U(), levels);
+//    subbandsV.Init(V(), levels);
+    return 0;
+}
+
 int testPictureReadWrite() {
     string input = "src7.yuv";
     std::ifstream inputPicture(input.c_str(), std::ios::in | std::ios::binary);
@@ -85,7 +167,8 @@ int testEncode()
 int testDeinterleave()
 {
     Coords3D dims(10,2,2);
-    CoeffArray3D arrayW(boost::extents[dims.depth][dims.height][dims.width]);
+    CoeffArray3D arrayWdata(boost::extents[dims.depth][dims.height][dims.width]);
+    CoeffView3D arrayW = arrayWdata[ indices[range()][range()][range()]];
 
     ///set values;
     for (int d = 0; d < dims.depth; d++)
@@ -147,9 +230,13 @@ int testDeinterleave()
 int testSplit()
 {
     int len = 10;
-    CoeffArray3D arrayW(boost::extents[1][1][len]);
-    CoeffArray3D arrayH(boost::extents[1][len][1]);
-    CoeffArray3D arrayD(boost::extents[len][1][1]);
+    CoeffArray3D arrayWdata(boost::extents[1][1][len]);
+    CoeffArray3D arrayHdata(boost::extents[1][len][1]);
+    CoeffArray3D arrayDdata(boost::extents[len][1][1]);
+
+    CoeffView3D arrayW = arrayWdata[ indices[range()][range()][range()] ];
+    CoeffView3D arrayH = arrayHdata[ indices[range()][range()][range()] ];
+    CoeffView3D arrayD = arrayDdata[ indices[range()][range()][range()] ];
     
     Coords3D dims(len,1,1);
     ///set values;
@@ -420,6 +507,8 @@ int testPictureIO() {
 }
 
 int runTests() {
+    testView();
+    testSubbandList();
     testPictureReadWrite();
     testEncode();
     testDeinterleave();

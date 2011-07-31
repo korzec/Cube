@@ -7,6 +7,7 @@
       <itemPath>CoeffCube.h</itemPath>
       <itemPath>Encoder.h</itemPath>
       <itemPath>PictureBuffer.h</itemPath>
+      <itemPath>SubbandList.h</itemPath>
       <itemPath>Subcube.h</itemPath>
       <itemPath>WaveletTransform.h</itemPath>
       <itemPath>cube_io.h</itemPath>
@@ -25,6 +26,7 @@
       <itemPath>CoeffCube.cpp</itemPath>
       <itemPath>Encoder.cpp</itemPath>
       <itemPath>PictureBuffer.cpp</itemPath>
+      <itemPath>SubbandList.cpp</itemPath>
       <itemPath>Subcube.cpp</itemPath>
       <itemPath>WaveletTransform.cpp</itemPath>
       <itemPath>cube_codec.cpp</itemPath>
@@ -58,6 +60,21 @@
           <warningLevel>2</warningLevel>
         </ccTool>
       </compileType>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+        </linkerTool>
+      </folder>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -80,6 +97,24 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerLibStdlibItem>CppUnit</linkerLibStdlibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
     </conf>
   </confs>
 </configurationDescriptor>

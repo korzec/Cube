@@ -13,11 +13,16 @@ CoeffCube::CoeffCube() : available(false), cubeNumber(-1), nextIndex(-1)
 {
 }
 
-CoeffCube::CoeffCube(int width, int height, int depth) : available(false), cubeNumber(-1), nextIndex(-1)
+CoeffCube::CoeffCube(int width, int height, int depth, int levels) :
+        available(false), cubeNumber(-1), nextIndex(-1)
 {
     arrayY = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height][width]));
     arrayU = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
     arrayV = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
+    
+    subbandsY.Init(Y(), levels);
+    subbandsU.Init(U(), levels);
+    subbandsV.Init(V(), levels);
 }
 
 CoeffArray3D & CoeffCube::Y()
@@ -139,9 +144,15 @@ Coords3D CoeffCube::ChromaDimensionality()
 
 bool CoeffCube::SmoothTime()
 {
-    return transform.SmoothTemporal(Y());
-    return transform.SmoothTemporal(U());
-    return transform.SmoothTemporal(V());
+    return transform.SmoothTemporal(subbandsY.GetSubband(0, LLL));
+    return transform.SmoothTemporal(subbandsU.GetSubband(0, LLL));
+    return transform.SmoothTemporal(subbandsV.GetSubband(0, LLL));
+    //return transform.SmoothTemporal(V());
+}
+
+int CoeffCube::GetLevel()
+{
+    return subbandsY.GetLevel();
 }
 
 bool CoeffCube::ForwardTransform()
@@ -149,17 +160,20 @@ bool CoeffCube::ForwardTransform()
     ///if fully loaded and ready to transofrm
     if(!available && nextIndex == Dimensionality().depth)
     {
-        bool state = true;
-        #pragma omp parallel sections reduction(&& : state)
-        {   
-        #pragma omp section
-            state = state && transform.Forward(Y());
-        #pragma omp section
-            {
-            state = state && transform.Forward(U());     
-            state = state && transform.Forward(V());
+      //  for(int i=1; i <= GetLevel(); i++ )
+        //{
+            bool state = true;
+            #pragma omp parallel sections reduction(&& : state)
+            {   
+            #pragma omp section
+                state = state && transform.Forward(subbandsY.GetSubband(0, LLL));
+            #pragma omp section
+                {
+                state = state && transform.Forward(subbandsU.GetSubband(0, LLL));     
+                state = state && transform.Forward(subbandsV.GetSubband(0, LLL));
+                }
             }
-        }
+        //
         return state;
     }
     else
@@ -172,11 +186,11 @@ bool CoeffCube::ReverseTransform()
     #pragma omp parallel sections reduction(&& : state)
     {   
     #pragma omp section
-        state = state && transform.Reverse(Y());
+        state = state && transform.Reverse(subbandsY.GetSubband(0, LLL));
     #pragma omp section
         {
-        state = state && transform.Reverse(U());
-        state = state && transform.Reverse(V());
+        state = state && transform.Reverse(subbandsU.GetSubband(0, LLL));
+        state = state && transform.Reverse(subbandsV.GetSubband(0, LLL));
         }
     
 }
