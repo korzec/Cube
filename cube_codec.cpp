@@ -148,10 +148,11 @@ int main(int argc, char* argv[])
                  ///if decoded picture is available
                  ///write output picture and continue
                  gop = encoder.GetDecodedGOP();
-                 for(size_t i=0; i<gop->size(); i++ )
-                 {
-                     WritePicture(*outputPicture, gop->at(i));
-                 }
+                 if(!params.nolocal)
+                     for(size_t i=0; i<gop->size(); i++ )
+                     {
+                         WritePicture(*outputPicture, gop->at(i));
+                     }
                  encoder.DeleteOldOutputGOP();
                  break;
              case NEED_BUFFER:
@@ -181,7 +182,8 @@ int main(int argc, char* argv[])
 
 
     inputPicture.close();
-    outputPicture->close();
+    if(outputPicture)
+            outputPicture->close();
 
     std::cout << "finished everyting" << std::endl;
     return EXIT_SUCCESS;

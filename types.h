@@ -92,7 +92,7 @@ public:
     int fields_factor;
 
     CodingParams() : width(0), height(0), cubeDepth(4),
-    start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(false), 
+    start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
     analysis(false), fields_factor(1)
     {
     }
