@@ -327,7 +327,7 @@ int testVectorPicture()
 int testLoadGOP()
 {
     //create cube
-    CoeffCube cube(16,8,4);
+    CoeffCube cube(16,8,4,1);
     Coords3D dims = cube.Dimensionality();
     //crate gop
     PictureVector gop;

@@ -81,6 +81,13 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
             parsed[i] = true;
             params.analysis = true;
         }        
+        else if (strcmp(argv[i], "-levels") == 0)
+        {
+            parsed[i] = true;
+            i++;
+            params.levels = strtoul(argv[i], NULL, 10);
+            parsed[i] = true;
+        }        
         else if (strcmp(argv[i], "-local") == 0)
         {
             parsed[i] = true;

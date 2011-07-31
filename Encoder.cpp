@@ -32,7 +32,8 @@ void Encoder::SetParams(CodingParams params)
     this->params = params;
     pictureBuffer = PictureBuffer(params.cubeDepth);
     pictureOutputBuffer = PictureBuffer(params.cubeDepth);
-    coeffCube = CoeffCube(params.width, params.height, params.cubeDepth);
+    coeffCube = CoeffCube(params.width, params.height, 
+                          params.cubeDepth, params.levels);
 }
 
 EncoderState Encoder::Encode()

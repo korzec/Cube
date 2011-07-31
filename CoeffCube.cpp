@@ -160,20 +160,21 @@ bool CoeffCube::ForwardTransform()
     ///if fully loaded and ready to transofrm
     if(!available && nextIndex == Dimensionality().depth)
     {
-      //  for(int i=1; i <= GetLevel(); i++ )
-        //{
-            bool state = true;
+        bool state = true;
+        for(int i=1; i <= GetLevel(); i++ )
+        {
+            
             #pragma omp parallel sections reduction(&& : state)
             {   
             #pragma omp section
-                state = state && transform.Forward(subbandsY.GetSubband(0, LLL));
+                state = state && transform.Forward(subbandsY.GetSubband(i-1, LLL));
             #pragma omp section
                 {
-                state = state && transform.Forward(subbandsU.GetSubband(0, LLL));     
-                state = state && transform.Forward(subbandsV.GetSubband(0, LLL));
+                state = state && transform.Forward(subbandsU.GetSubband(i-1, LLL));     
+                state = state && transform.Forward(subbandsV.GetSubband(i-1, LLL));
                 }
             }
-        //
+        }
         return state;
     }
     else
@@ -183,17 +184,20 @@ bool CoeffCube::ForwardTransform()
 bool CoeffCube::ReverseTransform()
 {
     bool state = true;
-    #pragma omp parallel sections reduction(&& : state)
-    {   
-    #pragma omp section
-        state = state && transform.Reverse(subbandsY.GetSubband(0, LLL));
-    #pragma omp section
+    for (int i = GetLevel(); i >= 1 ; i--)
+    {
+
+        #pragma omp parallel sections reduction(&& : state)
         {
-        state = state && transform.Reverse(subbandsU.GetSubband(0, LLL));
-        state = state && transform.Reverse(subbandsV.GetSubband(0, LLL));
+        #pragma omp section
+            state = state && transform.Reverse(subbandsY.GetSubband(i - 1, LLL));
+        #pragma omp section
+            {
+            state = state && transform.Reverse(subbandsU.GetSubband(i - 1, LLL));
+            state = state && transform.Reverse(subbandsV.GetSubband(i - 1, LLL));
+            }
         }
-    
-}
+    }
     return state;
 }
 

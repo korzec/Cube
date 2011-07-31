@@ -32,7 +32,7 @@ private:
     int nextIndex;
 public:
     CoeffCube();
-    CoeffCube(int width, int height, int depth, int levels = 1);
+    CoeffCube(int width, int height, int depth, int levels);
     
     CoeffArray3D& Y();
     CoeffArray3D& U();
