@@ -26,8 +26,10 @@ typedef unsigned char ValueType;
 typedef int PictureNumber;
 typedef int CubeNumber;
 
+///orientation labels for the 3d subbands
 enum Orientation
 {
+    ///order: width, height, depth
     LLL = 0,
     HLL = 1,
     LHL = 2,
@@ -38,6 +40,7 @@ enum Orientation
     HHH = 7,
 };
 
+///coordinates in 3d (euclidean x,y,z)
 class Coords3D
 {
 public:
@@ -69,26 +72,19 @@ public:
     }
 };
 
-//class CubeCoords
-//{
-//public:
-//    Coords3D lower;
-//    Coords3D higher;
-//};
-
+///posible states of the encoder after encoding iteration
 enum EncoderState
 {
     PICTURE_AVAILABLE, NEED_BUFFER, END_OF_SEQUENCE, INVALID,
     OUTPUT_AVAILABLE
 };
 
+///parameters of encoding
 class CodingParams
 {
 public:
-    int width;
-    int height;
-
-    int cubeDepth;
+    Coords3D size;
+    Coords3D subSize;
 
     int start_pos;
     int end_pos;
@@ -97,13 +93,14 @@ public:
     bool analysis;
     int levels;
 
-    CodingParams() : width(0), height(0), cubeDepth(4),
+    CodingParams() : size(0,0,4), subSize(32,32,4),
     start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
     analysis(false), levels(1)
     {
     }
 };
 
+///holds data of a frame
 class FrameBuffer
 {
 public:
@@ -180,6 +177,8 @@ typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;
 typedef boost::shared_ptr<CoeffArray3D> CoeffArray3DPtr;
 
+
+///wrapper class for frame data with automatic memory management
 class Picture
 {
 public:

@@ -8,22 +8,35 @@
 #include "CoeffCube.h"
 #include "general.h"
 #include "CubeTransform.h"
+#include "SubcubeIndex.h"
 #include <omp.h>
 
 CoeffCube::CoeffCube() : available(false), cubeNumber(-1), nextIndex(-1)
 {
 }
 
-CoeffCube::CoeffCube(int width, int height, int depth, int levels) :
+CoeffCube::CoeffCube(Coords3D size, int levels, Coords3D subSize) :
         available(false), cubeNumber(-1), nextIndex(-1)
 {
-    arrayY = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height][width]));
-    arrayU = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
-    arrayV = CoeffArray3DPtr(new CoeffArray3D(boost::extents[depth][height>>1][width>>1]));
+    Init(size, levels, subSize);
+}
+
+void CoeffCube::Init(Coords3D size, int levels, Coords3D subSize)
+{
+    arrayY = CoeffArray3DPtr(new CoeffArray3D
+            (boost::extents[size.depth][size.height][size.width]));
+    arrayU = CoeffArray3DPtr(new CoeffArray3D
+            (boost::extents[size.depth][size.height>>1][size.width>>1]));
+    arrayV = CoeffArray3DPtr(new CoeffArray3D
+            (boost::extents[size.depth][size.height>>1][size.width>>1]));
     
     subbandsY.Init(Y(), levels);
     subbandsU.Init(U(), levels);
     subbandsV.Init(V(), levels);
+    
+    cubesY.Init(subbandsY.GetSubband(0, LLL), subSize );
+    cubesU.Init(subbandsU.GetSubband(0, LLL), subSize );
+    cubesV.Init(subbandsV.GetSubband(0, LLL), subSize );
 }
 
 CoeffArray3D & CoeffCube::Y()

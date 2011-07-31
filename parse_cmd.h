@@ -46,7 +46,7 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
         {
             parsed[i] = true;
             i++;
-            params.width =
+            params.size.width =
                     strtoul(argv[i], NULL, 10);
             parsed[i] = true;
         }
@@ -54,7 +54,7 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
         {
             parsed[i] = true;
             i++;
-            params.height =
+            params.size.height =
                     strtoul(argv[i], NULL, 10);
             parsed[i] = true;
         }
@@ -62,7 +62,7 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
         {
             parsed[i] = true;
             i++;
-            params.cubeDepth =
+            params.size.depth =
                     strtoul(argv[i], NULL, 10);
             parsed[i] = true;
         }

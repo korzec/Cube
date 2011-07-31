@@ -12,6 +12,7 @@
 #include <vector>
 #include "WaveletTransform.h"
 #include "SubbandList.h"
+#include "SubcubeIndex.h"
 
 /// performs a 3d transform on a GOP
 class CoeffCube {
@@ -25,6 +26,10 @@ private:
     SubbandList subbandsU;
     SubbandList subbandsV;
     
+    SubcubeIndex cubesY;
+    SubcubeIndex cubesU;
+    SubcubeIndex cubesV;
+    
     /// available to receive next picture
     bool available;
     int cubeNumber;
@@ -32,7 +37,8 @@ private:
     int nextIndex;
 public:
     CoeffCube();
-    CoeffCube(int width, int height, int depth, int levels);
+    CoeffCube(Coords3D size, int levels, Coords3D subSize);
+    void Init(Coords3D size, int levels, Coords3D subSize);
     
     CoeffArray3D& Y();
     CoeffArray3D& U();

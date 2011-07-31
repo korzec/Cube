@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
     else
         cout << "opened file " << input << std::endl;
 
-    std::cout << "w " << encoder.GetParams().width << "h " << encoder.GetParams().height << std::endl;
+    std::cout << "w " << encoder.GetParams().size.width << " h " << encoder.GetParams().size.height << std::endl;
 
     /// open the decoded output file
     std::ofstream *outputPicture = NULL;
@@ -102,15 +102,15 @@ int main(int argc, char* argv[])
     for (int i=0; i<params.start_pos; ++i)
     {
         ReadPicture(inputPicture,
-                           encoder.GetParams().width, 
-                           encoder.GetParams().height);
+                           encoder.GetParams().size.width, 
+                           encoder.GetParams().size.height);
     }
     
     do
     {
          picture = ReadPicture(inputPicture,
-                           encoder.GetParams().width, 
-                           encoder.GetParams().height);
+                           encoder.GetParams().size.width, 
+                           encoder.GetParams().size.height);
          //handle a new picture read
          if( frameNumber <= (params.end_pos - params.start_pos) &&
                  picture.isValid())

@@ -9,7 +9,6 @@
 #define	SUBCUBE_H
 
 #include "types.h"
-#include "CoeffCube.h"
 
 class Subcube {
     Coords3D index;

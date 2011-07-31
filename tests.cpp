@@ -229,14 +229,14 @@ int testEncode()
 {
     Encoder encoder;
     CodingParams params;
-    params.width = 16;
-    params.height = 20;
-    params.cubeDepth = 4;
+    params.size.width = 16;
+    params.size.height = 20;
+    params.size.depth = 4;
     encoder.SetParams(params);
     
-    Picture picture(params.width, params.height);
+    Picture picture(params.size.width, params.size.height);
     
-    assert(encoder.GetParams().cubeDepth == 4);
+    assert(encoder.GetParams().size.depth == 4);
     encoder.LoadNextPicture(picture);
     encoder.LoadNextPicture(picture);
     encoder.LoadNextPicture(picture);
@@ -412,7 +412,9 @@ int testVectorPicture()
 int testLoadGOP()
 {
     //create cube
-    CoeffCube cube(16,8,4,1);
+    Coords3D size(16,8,4);
+    Coords3D subSize(4,4,4);
+    CoeffCube cube(size,1,subSize);
     Coords3D dims = cube.Dimensionality();
     //crate gop
     PictureVector gop;
