@@ -10,12 +10,13 @@
 
 #define OUTDIR "out/"
 
-
+#define BOOST_DISABLE_ASSERTS 
 #include "boost/multi_array.hpp"
 #include <boost/smart_ptr.hpp>
 
 #include <exception>
 #include <iostream>
+#include <cassert>
 
 //using namespace blitz;
 using namespace boost;

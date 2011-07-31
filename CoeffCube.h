@@ -10,7 +10,6 @@
 
 #include "types.h"
 #include <vector>
-#include <boost/multi_array.hpp>
 #include "WaveletTransform.h"
 #include "SubbandList.h"
 
