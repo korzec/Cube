@@ -87,10 +87,12 @@ public:
     int end_pos;
     bool verbose;
     bool nolocal;
+    bool analysis;
     int fields_factor;
 
     CodingParams() : width(0), height(0), cubeDepth(4),
-    start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(false), fields_factor(1)
+    start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(false), 
+    analysis(false), fields_factor(1)
     {
     }
 };

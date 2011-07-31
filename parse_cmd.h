@@ -76,6 +76,11 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
             parsed[i] = true;
             params.verbose = true;
         }
+        else if (strcmp(argv[i], "-analysis") == 0)
+        {
+            parsed[i] = true;
+            params.analysis = true;
+        }        
         else if (strcmp(argv[i], "-local") == 0)
         {
             parsed[i] = true;

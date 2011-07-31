@@ -54,8 +54,8 @@ int testSubbandList()
     assert(subbandsY.GetLevel() == level);
     
     CoeffView3D y = subbandsY.GetSubband(0, LLL);
-    size_t ysize = y.size();
-    size_t arraysize = arrayY->size();
+//    size_t ysize = y.size();
+//    size_t arraysize = arrayY->size();
     assert(y.size() == arrayY->size());
     
     for (int d = 0; d < dims.depth; d++)

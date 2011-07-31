@@ -54,15 +54,23 @@ EncoderState Encoder::Encode()
             
             if( coeffCube.ForwardTransform() )
             {
-                std::stringstream ss1;
-                ss1 << OUTDIR << "tr" <<cubeNumber <<"cube.raw";
-                coeffCube.dump(ss1.str());
+                if(params.analysis)
+                {
+                    std::stringstream ss1;
+                    ss1 << OUTDIR << "tr" <<cubeNumber <<"cube.raw";
+                    coeffCube.dump(ss1.str());
+                }
+                
                 coeffCube.SmoothTime();
-                std::stringstream ss2;
-                ss2 << OUTDIR << "sm" <<cubeNumber <<"cube.raw";
-                coeffCube.dump(ss2.str());
+                 
+                if(params.analysis)
+                {
+                    std::stringstream ss2;
+                    ss2 << OUTDIR << "sm" <<cubeNumber <<"cube.raw";
+                    coeffCube.dump(ss2.str());
+                }
+                
                 coeffCube.ReverseTransform();
-               
                 
                 PictureVectorPtr outputGOP = coeffCube.GetGOP();
                 bool ret = pictureOutputBuffer.AddGOP(*outputGOP);
