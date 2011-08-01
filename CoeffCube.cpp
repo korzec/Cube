@@ -215,7 +215,13 @@ bool CoeffCube::ReverseTransform()
     return state;
 }
 
-bool CoeffCube::dump(std::string fileName)
+bool CoeffCube::dumpCoeffs(std::string fileName)
 {
-    return dumpCube(Y(), fileName);
+    return dumpCube(Y(), fileName);   
+}
+
+bool CoeffCube::dumpWeights(std::string fileName)
+{
+    cubesY.ComputeWeights();
+    return cubesY.dump(fileName);
 }

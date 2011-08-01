@@ -10,7 +10,9 @@
 
 #define OUTDIR "out/"
 
+#ifndef DEBUG
 #define BOOST_DISABLE_ASSERTS 
+#endif
 #include "boost/multi_array.hpp"
 #include <boost/smart_ptr.hpp>
 
@@ -167,7 +169,6 @@ public:
 typedef boost::multi_array_ref<ValueType, 2 > ValueArray2Dref;
 
 typedef boost::multi_array<CoeffType, 3 > CoeffArray3D;
-typedef boost::multi_array<CoeffType, 2 > CoeffArray2D;
 typedef boost::detail::multi_array::sub_array<CoeffType, 2> CoeffView2D;
 
 typedef CoeffArray3D::array_view<3>::type CoeffView3D;
@@ -176,6 +177,12 @@ typedef boost::shared_ptr<CoeffView3D> CoeffView3DPtr;
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;
 typedef boost::shared_ptr<CoeffArray3D> CoeffArray3DPtr;
+
+
+//types for SubcubeIndex
+class Subcube;
+typedef boost::multi_array<Subcube, 3> SubcubeArray3D;
+typedef boost::multi_array<float, 3 > FloatArray3D;
 
 
 ///wrapper class for frame data with automatic memory management

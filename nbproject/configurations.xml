@@ -61,6 +61,9 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <preprocessorList>
+            <Elem>DEBUG</Elem>
+          </preprocessorList>
           <warningLevel>2</warningLevel>
         </ccTool>
       </compileType>

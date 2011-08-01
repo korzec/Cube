@@ -10,17 +10,21 @@
 
 #include "types.h"
 
+///a small cube located in a CoeffCube data
 class Subcube {
+    CoeffView3D* cube;
     Coords3D index;
+    Coords3D size;
     CoeffView3DPtr array;
 public:
     Subcube();
     Subcube(CoeffView3D& cube, Coords3D& index, Coords3D& size);
     void Init(CoeffView3D& cube, Coords3D& index, Coords3D& size);
     Coords3D GetIndex();
-    CoeffView3D& GetView();
+    CoeffView3D GetView();
     Coords3D GetSize();
-
+    float GetWeight();
+    CoeffView3D* GetParentView();
 };
 
 #endif	/* SUBCUBE_H */

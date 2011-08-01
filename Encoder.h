@@ -11,8 +11,8 @@
 #include "types.h"
 #include "PictureBuffer.h"
 #include "CoeffCube.h"
-/// Main encoder class
 
+/// Main encoder class: takes pictures to a buffer and returns packets
 class Encoder {
 private:
     CodingParams params;

@@ -64,7 +64,9 @@ public:
     
     Coords3D ChromaDimensionality();
 
-    bool dump(std::string);
+    bool dumpCoeffs(std::string);
+    bool dumpWeights(std::string);
+    
 };
 
 #endif	/* COEFFCUBE_H */

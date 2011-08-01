@@ -8,6 +8,7 @@
 #ifndef TESTS_H_
 #define TESTS_H_
 
+///runs simple unit tests
 int runTests();
 
 #endif /* TESTS_H_ */

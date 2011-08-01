@@ -6,11 +6,42 @@
 #include "PictureBuffer.h"
 #include "WaveletTransform.h"
 #include "Subcube.h"
-#include "SubcubeIndex.h"
+//#include "SubcubeIndex.h"
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <cassert>
+
+int testDumpSubcubes()
+{
+    Coords3D dims(128,256,16);
+    CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
+    CoeffView3D view = array[ indices[range()][range()][range()] ];
+    Coords3D size(32,32,4);
+    
+    SubcubeIndex subcubes;
+    subcubes.Init(view, size);
+    
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                /// d = x_2n+1 - x_2n
+                view[d][h][w] = CoeffType((d+h+w)%255);
+            }
+        }
+    } 
+    
+    subcubes.ComputeWeights();
+    
+    std::stringstream ss1;
+    ss1 << OUTDIR << "test_" << "cube.raw";
+    subcubes.dump(ss1.str());
+    std::cout<<"wrote test cube"<<std::endl;
+    return 0;
+}
 
 int testSubcubeIndex()
 {
@@ -378,18 +409,24 @@ int testSplit()
 int testGetGOP()
 {
     PictureBuffer buffer(4);
-    buffer.Add(*(new Picture(4,4)));
-    buffer.Add(*(new Picture(4,4)));
+    boost::shared_ptr<Picture> p = boost::shared_ptr<Picture> (new Picture(4,4));
+    buffer.Add(*p);
+    p.reset( new Picture(4,4) );
+    buffer.Add(*p);
     
     PictureVector gop;
     bool ret = buffer.GetGOP(4,gop);
     assert(ret == false);
     assert(gop.size() == 0);
     
-    buffer.Add(*(new Picture(4,4)));
-    buffer.Add(*(new Picture(4,4)));
-    buffer.Add(*(new Picture(4,4)));
-    buffer.Add(*(new Picture(4,4)));
+    p.reset( new Picture(4,4) );
+    buffer.Add(*p);
+    p.reset( new Picture(4,4) );
+    buffer.Add(*p);
+    p.reset( new Picture(4,4) );
+    buffer.Add(*p);
+    p.reset( new Picture(4,4) );
+    buffer.Add(*p);
 
     ret = buffer.GetGOP(4, gop);
     assert(ret == true);
@@ -594,6 +631,7 @@ int testPictureIO() {
 }
 
 int runTests() {
+    testDumpSubcubes();
     testSubcubeIndex();
     testSubcube();
     testView();

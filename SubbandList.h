@@ -10,6 +10,7 @@
 
 #include "types.h"
 
+///stores a list of all subbands of a #CoeffArray3D
 class SubbandList
 {
 public:

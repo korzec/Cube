@@ -10,18 +10,22 @@
 
 #include "types.h"
 #include "Subcube.h"
+bool dumpSubcubes(SubcubeArray3D& subcubes, FloatArray3D& weights, std::string fileName);
 
-typedef boost::multi_array<Subcube, 3> SubcubeArray3D;
-
+///stores an 3D array of Subcube (#SubcubeArray3D)
 class SubcubeIndex
 {
 public:
     SubcubeIndex();
     SubcubeIndex(CoeffView3D& cube, Coords3D size );
-    void Init(CoeffView3D& cube, Coords3D size );
-    Subcube GetSubcube(Coords3D index);
+    void Init(CoeffView3D& cube, Coords3D subSize );
+    Subcube& GetSubcube(Coords3D index);
+    void ComputeWeights();
+    bool dump(std::string);
 private:
     SubcubeArray3D list;
+    FloatArray3D weights;
+    
 };
 
 #endif	/* SUBCUBEINDEX_H */

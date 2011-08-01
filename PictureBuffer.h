@@ -11,6 +11,7 @@
 #include "types.h"
 #include <vector>
 
+///holds a vector of Picture
 class PictureBuffer
 {
     size_t maxSize;

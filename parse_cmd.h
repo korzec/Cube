@@ -10,16 +10,24 @@
 
 #include "types.h"
 
+/// displays a help message
 static void display_help()
 {
     std::cout << "\nCube wavelet video coder.";
     std::cout << "\n";
     std::cout << "\nusage: program -width x -height y inputfile" ;
-    std::cout << "\nwidth             ulong   -        Width of frame";
-    std::cout << "\nheight            ulong   -        Length of frame";
+    std::cout << "\nwidth             ulong   -   Width of frame";
+    std::cout << "\nheight            ulong   -   Length of frame";
+    std::cout << "\ndepth             ulong   -   Depth of a cube";
+    std::cout << "\nlevels            short   -   max levels of wavelet transform";
+    std::cout << "\nverbose                   -   turns on diagnosting messages";
+    std::cout << "\nlocal                     -   local decoding output form encoder";
+    std::cout << "\nanalysis                  -   write transformed cubes to files";
+    std::cout << "\nstart             ulong   -   starting frame";
+    std::cout << "\nstop              ulong   -   last frame to encode";
     std::cout << std::endl;
 }
-
+///parses command line options and sets CodingParams for use with Encoder
 bool parse_command_line(CodingParams& params, int argc, char **argv)
 {
     /**********  command line parameter parsing*********/

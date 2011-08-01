@@ -10,33 +10,19 @@
 
 #include "types.h"
 
-//#include <time.h>
 #include <iostream>
-//#include <limits>
 #include <fstream>
-//#include <set>
-//#include <cmath>
-//#include <ctime>
 #include <cassert>
-//#include <string>
-//#include <sys/types.h>
-//#include <sys/stat.h>
-//#include <fcntl.h>
-//#include <cstdlib>
-//#include <cstring>
-//#include <climits>
-
 //namespace CubeIO
-//{
+
 using namespace std;
-
+/// frites data from FrameBuffer* to a file
 bool WritePictureData(std::ofstream &fdata, FrameBuffer* picture);
-
+/// writes a Picture to a file
 bool WritePicture(std::ofstream &fdata, Picture picture);
-
-/// reads a picture from input stream and outputs a pointer to @FrameBuffer
+/// reads a frame from input stream and returns a pointer to a FrameBuffer
 FrameBuffer* ReadPictureData(std::ifstream &fdata, int width, int height);
-
+/// reads a frame from file and returns Picture
 Picture ReadPicture(std::ifstream &fdata, int width, int height);
 
 #endif

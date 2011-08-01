@@ -10,6 +10,7 @@
 
 #include "types.h"
 
+///performs a wavelet transform on #CoeffView3D
 class WaveletTransform
 {
 public:

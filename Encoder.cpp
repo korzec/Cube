@@ -58,7 +58,10 @@ EncoderState Encoder::Encode()
                 {
                     std::stringstream ss1;
                     ss1 << OUTDIR << "tr" <<cubeNumber <<"cube.raw";
-                    coeffCube.dump(ss1.str());
+                    coeffCube.dumpCoeffs(ss1.str());
+                    std::stringstream ss3;
+                    ss3 << OUTDIR << "we" <<cubeNumber <<"cube.raw";
+                    coeffCube.dumpWeights(ss3.str());
                 }
                 
                 coeffCube.SmoothTime();
@@ -67,7 +70,7 @@ EncoderState Encoder::Encode()
                 {
                     std::stringstream ss2;
                     ss2 << OUTDIR << "sm" <<cubeNumber <<"cube.raw";
-                    coeffCube.dump(ss2.str());
+                    coeffCube.dumpCoeffs(ss2.str());
                 }
                 
                 coeffCube.ReverseTransform();
