@@ -18,9 +18,9 @@ typedef boost::shared_ptr<PictureVector> PictureVectorPtr;
 class Picture
 {
 public:
-    ValueArray2DrefPtr arrayY;
-    ValueArray2DrefPtr arrayU;
-    ValueArray2DrefPtr arrayV;
+    ValueArray2DrefPtr array[3];
+    //ValueArray2DrefPtr arrayU;
+    //ValueArray2DrefPtr arrayV;
     FrameBufferPtr frame;
     int pictureNumber;
 public:
@@ -29,9 +29,11 @@ public:
     int chromaWidth();
     int chromaHeight();
 
-    ValueArray2Dref& Y();
-    ValueArray2Dref& U();
-    ValueArray2Dref& V();
+    ValueArray2Dref& Array(Channel);
+    
+//    ValueArray2Dref& Y();
+//    ValueArray2Dref& U();
+//    ValueArray2Dref& V();
     
     bool isValid();
 

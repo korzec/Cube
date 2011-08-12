@@ -15,22 +15,13 @@
 #include "SubbandList.h"
 #include "SubcubeIndex.h"
 
-/// performs a 3d transform on a GOP
+/// performs a 3d transform on a data created from a GOP
 class CoeffCube {
 private:
-    CoeffArray3DPtr arrayY;
-    CoeffArray3DPtr arrayU;
-    CoeffArray3DPtr arrayV;
     WaveletTransform transform;
-    
-    SubbandList subbandsY;
-    SubbandList subbandsU;
-    SubbandList subbandsV;
-    
-    SubcubeIndex cubesY;
-    SubcubeIndex cubesU;
-    SubcubeIndex cubesV;
-    
+    CoeffArray3DPtr arrays[3];
+    SubbandList subbands[3];
+    SubcubeIndex cubes[3];
     /// available to receive next picture
     bool available;
     int cubeNumber;
@@ -41,9 +32,7 @@ public:
     CoeffCube(Coords3D size, int levels, Coords3D subSize);
     void Init(Coords3D size, int levels, Coords3D subSize);
     
-    CoeffArray3D& Y();
-    CoeffArray3D& U();
-    CoeffArray3D& V();
+    CoeffArray3D& Array(Channel);
     
     int GetLevel();
     
@@ -73,4 +62,3 @@ public:
 };
 
 #endif	/* COEFFCUBE_H */
-

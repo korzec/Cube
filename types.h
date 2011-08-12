@@ -42,6 +42,13 @@ enum Orientation
     HHH = 7,
 };
 
+enum Channel
+{
+    Ych = 0,
+    Uch = 1,
+    Vch = 2,
+};
+
 ///coordinates in 3d (euclidean x,y,z)
 class Coords3D
 {

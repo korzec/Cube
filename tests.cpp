@@ -240,14 +240,14 @@ int testPictureReadWrite() {
         for (int j = 0; j < picture.width(); j++)
             //for (int i = 0; i < fb->width*fb->height; i++)
         {
-            assert(picture.Y()[i][j] == outPicture.Y()[i][j]);
+            assert(picture.Array(Ych)[i][j] == outPicture.Array(Ych)[i][j]);
         }
     for (int i = 0; i < picture.chromaHeight(); i++)
         for (int j = 0; j < picture.chromaWidth(); j++)
             //for (int i = 0; i < fb->width*fb->height; i++)
         {
-            assert(picture.U()[i][j] == outPicture.U()[i][j]);
-            assert(picture.V()[i][j] == outPicture.V()[i][j]);
+            assert(picture.Array(Uch)[i][j] == outPicture.Array(Uch)[i][j]);
+            assert(picture.Array(Vch)[i][j] == outPicture.Array(Vch)[i][j]);
         }
 
     PictureIO::WritePicture(*outputPicture, outPicture);
@@ -478,16 +478,16 @@ int testLoadGOP()
 //                int x = gop[d].Y().shape()[0];
 //                int y = gop[d].Y().shape()[1];
 //                int z = gop.size();
-                gop[d].Y()[h][w] = (d+h+w)%255;
+                gop[d].Array(Ych)[h][w] = (d+h+w)%255;
             }
         }
     }
     //run LoadGOP();
     cube.LoadGOP(gop);
-    CoeffType coeff = cube.Y()[0][0][0];
-    ValueType value = gop[0].Y()[0][0];
+    CoeffType coeff = cube.Array(Ych)[0][0][0];
+    ValueType value = gop[0].Array(Ych)[0][0];
     assert(coeff == value);
-    assert(cube.Y()[0][0][0] == gop[0].Y()[0][0]);
+    assert(cube.Array(Ych)[0][0][0] == gop[0].Array(Ych)[0][0]);
     
     //validate values;
     for (int d = 0; d < dims.depth; d++)
@@ -496,7 +496,7 @@ int testLoadGOP()
         {
             for (int w = 0; w < dims.width; w++)
             {
-                assert(cube.Y()[d][h][w] == CoeffType ((d+h+w)%255));
+                assert(cube.Array(Ych)[d][h][w] == CoeffType ((d+h+w)%255));
             }
         }
     }
@@ -518,9 +518,9 @@ int testOutput() {
 
     for (int i = 0; i < picture.height(); i++)
         for (int j = 0; j < picture.width(); j++) {
-            picture.Y()[i][j] = 'z';
+            picture.Array(Ych)[i][j] = 'z';
             if (j == w - 1)
-                picture.Y()[i][j] = '\n';
+                picture.Array(Ych)[i][j] = '\n';
         }
 
     // open the decoded ouput file
@@ -614,7 +614,7 @@ int testPictureIO() {
         for (int j = 0; j < picture.width(); j++)
             //for (int i = 0; i < fb->width*fb->height; i++)
         {
-            assert(picture.Y()[i][j] == 0);
+            assert(picture.Array(Ych)[i][j] == 0);
             //assert(picture.U()[i>>1][j>>1] == 0);
             //assert(picture.V()[i>>1][j>>1] == 0);
         }
@@ -624,8 +624,8 @@ int testPictureIO() {
             //for (int i = 0; i < fb->width*fb->height; i++)
         {
             //assert(picture.Y()[i][j] == 0);
-            assert(picture.U()[i][j] == 0);
-            assert(picture.V()[i][j] == 0);
+            assert(picture.Array(Uch)[i][j] == 0);
+            assert(picture.Array(Vch)[i][j] == 0);
         }
 
     std::cout << "basic picture IO finished " << std::endl;

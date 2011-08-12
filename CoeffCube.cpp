@@ -23,33 +23,25 @@ CoeffCube::CoeffCube(Coords3D size, int levels, Coords3D subSize) :
 
 void CoeffCube::Init(Coords3D size, int levels, Coords3D subSize)
 {
-    arrayY = CoeffArray3DPtr(new CoeffArray3D
+    arrays[Ych] = CoeffArray3DPtr(new CoeffArray3D
             (boost::extents[size.depth][size.height][size.width]));
-    arrayU = CoeffArray3DPtr(new CoeffArray3D
+    arrays[Uch] = CoeffArray3DPtr(new CoeffArray3D
             (boost::extents[size.depth][size.height>>1][size.width>>1]));
-    arrayV = CoeffArray3DPtr(new CoeffArray3D
+    arrays[Vch] = CoeffArray3DPtr(new CoeffArray3D
             (boost::extents[size.depth][size.height>>1][size.width>>1]));
     
-    subbandsY.Init(Y(), levels);
-    subbandsU.Init(U(), levels);
-    subbandsV.Init(V(), levels);
+    subbands[Ych].Init(Array(Ych), levels);
+    subbands[Uch].Init(Array(Uch), levels);
+    subbands[Vch].Init(Array(Vch), levels);
     
-    cubesY.Init(subbandsY.GetSubband(0, LLL), subSize );
-    cubesU.Init(subbandsU.GetSubband(0, LLL), subSize );
-    cubesV.Init(subbandsV.GetSubband(0, LLL), subSize );
+    cubes[Ych].Init(subbands[Ych].GetSubband(0, LLL), subSize );
+    cubes[Uch].Init(subbands[Uch].GetSubband(0, LLL), subSize );
+    cubes[Vch].Init(subbands[Vch].GetSubband(0, LLL), subSize );
 }
 
-CoeffArray3D & CoeffCube::Y()
+CoeffArray3D & CoeffCube::Array(Channel ch)
 {
-    return *arrayY;
-}
-CoeffArray3D & CoeffCube::U()
-{
-    return *arrayU;
-}
-CoeffArray3D & CoeffCube::V()
-{
-    return *arrayV;
+    return *arrays[ch];
 }
 
 bool CoeffCube::LoadNextPicture(Picture& picture)
@@ -59,8 +51,8 @@ bool CoeffCube::LoadNextPicture(Picture& picture)
     assert(nextIndex < Dimensionality().depth);
     assert(nextIndex >= 0);
     ///destination slice
-    CoeffView2D sliceY =  this->Y()[nextIndex];
-    copyArrayFromValueToCoeff(picture.Y(), sliceY);
+    CoeffView2D sliceY =  this->Array(Ych)[nextIndex];
+    copyArrayFromValueToCoeff(picture.Array(Ych), sliceY);
     
     nextIndex++;
     if(nextIndex == Dimensionality().depth)
@@ -93,14 +85,14 @@ bool CoeffCube::LoadGOP(PictureVector& gop)
             //get pointer to the pic 
             Picture* pic = &gop[d];
            
-            CoeffView2D sliceY =  this->Y()[d];
-            copyArrayFromValueToCoeff(pic->Y(), sliceY);
+            CoeffView2D sliceY =  this->Array(Ych)[d];
+            copyArrayFromValueToCoeff(pic->Array(Ych), sliceY);
             
-            CoeffView2D sliceU =  this->U()[d];
-            copyArrayFromValueToCoeff(pic->U(), sliceU);
+            CoeffView2D sliceU =  this->Array(Uch)[d];
+            copyArrayFromValueToCoeff(pic->Array(Uch), sliceU);
             
-            CoeffView2D sliceV =  this->V()[d];
-            copyArrayFromValueToCoeff(pic->V(), sliceV);
+            CoeffView2D sliceV =  this->Array(Vch)[d];
+            copyArrayFromValueToCoeff(pic->Array(Vch), sliceV);
 
         }
         //set availability
@@ -122,14 +114,14 @@ PictureVectorPtr CoeffCube::GetGOP()
         {
             Picture picture(dims.width, dims.height);
               ///copy a slice to the Picture          
-            CoeffView2D sliceY =  this->Y()[d];
-            copyArrayFromCoeffToValue(sliceY, picture.Y());
+            CoeffView2D sliceY =  this->Array(Ych)[d];
+            copyArrayFromCoeffToValue(sliceY, picture.Array(Ych));
 
-            CoeffView2D sliceU =  this->U()[d];
-            copyArrayFromCoeffToValue(sliceU, picture.U());
+            CoeffView2D sliceU =  this->Array(Uch)[d];
+            copyArrayFromCoeffToValue(sliceU, picture.Array(Uch));
             
-            CoeffView2D sliceV =  this->V()[d];
-            copyArrayFromCoeffToValue(sliceV, picture.V());
+            CoeffView2D sliceV =  this->Array(Vch)[d];
+            copyArrayFromCoeffToValue(sliceV, picture.Array(Vch));
             
             gop->push_back(picture);
         }
@@ -140,33 +132,34 @@ PictureVectorPtr CoeffCube::GetGOP()
 
 Coords3D CoeffCube::Dimensionality()
 {
-    Coords3D dims;
-    dims.depth = Y().shape()[0];
-    dims.height = Y().shape()[1];
-    dims.width = Y().shape()[2];
+    Coords3D dims(Array(Ych).shape());
+    //dims.depth = Y().shape()[0];
+    //dims.height = Y().shape()[1];
+    //dims.width = Y().shape()[2];
     return dims;
 }
 
 Coords3D CoeffCube::ChromaDimensionality()
 {
-    Coords3D dims;
-    dims.depth = U().shape()[0];
-    dims.height = U().shape()[1];
-    dims.width = U().shape()[2];
+    Coords3D dims(Array(Uch).shape());
+    //dims.depth = U().shape()[0];
+    //dims.height = U().shape()[1];
+    //dims.width = U().shape()[2];
     return dims;
 }
 
 bool CoeffCube::SmoothTime()
 {
-    return CubeTransform::SmoothTemporal(subbandsY.GetSubband(0, LLL));
-    return CubeTransform::SmoothTemporal(subbandsU.GetSubband(0, LLL));
-    return CubeTransform::SmoothTemporal(subbandsV.GetSubband(0, LLL));
-    //return transform.SmoothTemporal(V());
+    bool ret = true;
+    ret = CubeTransform::SmoothTemporal(subbands[Ych].GetSubband(0, LLL))
+        && CubeTransform::SmoothTemporal(subbands[Uch].GetSubband(0, LLL))
+        && CubeTransform::SmoothTemporal(subbands[Vch].GetSubband(0, LLL));
+    return ret;
 }
 
 int CoeffCube::GetLevel()
 {
-    return subbandsY.GetLevel();
+    return subbands[Ych].GetLevel();
 }
 
 bool CoeffCube::ForwardTransform()
@@ -181,11 +174,11 @@ bool CoeffCube::ForwardTransform()
             #pragma omp parallel sections reduction(&& : state)
             {   
             #pragma omp section
-                state = state && transform.Forward(subbandsY.GetSubband(i-1, LLL));
+                state = state && transform.Forward(subbands[Ych].GetSubband(i-1, LLL));
             #pragma omp section
                 {
-                state = state && transform.Forward(subbandsU.GetSubband(i-1, LLL));     
-                state = state && transform.Forward(subbandsV.GetSubband(i-1, LLL));
+                state = state && transform.Forward(subbands[Uch].GetSubband(i-1, LLL));     
+                state = state && transform.Forward(subbands[Vch].GetSubband(i-1, LLL));
                 }
             }
         }
@@ -204,11 +197,11 @@ bool CoeffCube::ReverseTransform()
         #pragma omp parallel sections reduction(&& : state)
         {
         #pragma omp section
-            state = state && transform.Reverse(subbandsY.GetSubband(i - 1, LLL));
+            state = state && transform.Reverse(subbands[Ych].GetSubband(i - 1, LLL));
         #pragma omp section
             {
-            state = state && transform.Reverse(subbandsU.GetSubband(i - 1, LLL));
-            state = state && transform.Reverse(subbandsV.GetSubband(i - 1, LLL));
+            state = state && transform.Reverse(subbands[Uch].GetSubband(i - 1, LLL));
+            state = state && transform.Reverse(subbands[Vch].GetSubband(i - 1, LLL));
             }
         }
     }
@@ -217,11 +210,11 @@ bool CoeffCube::ReverseTransform()
 
 bool CoeffCube::dumpCoeffs(std::string fileName)
 {
-    return dumpCube(Y(), fileName);   
+    return dumpCube(Array(Ych), fileName);   
 }
 
 bool CoeffCube::dumpWeights(std::string fileName)
 {
-    cubesY.ComputeWeights();
-    return cubesY.dump(fileName);
+    cubes[Ych].ComputeWeights();
+    return cubes[Ych].dump(fileName);
 }

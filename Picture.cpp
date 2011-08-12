@@ -35,20 +35,25 @@ int Picture::chromaHeight()
     return frame->height >> 1;
 }
 
-ValueArray2Dref& Picture::Y()
+ValueArray2Dref& Picture::Array(Channel channel)
 {
-    return *arrayY;
+    return *array[channel];
 }
 
-ValueArray2Dref& Picture::U()
-{
-    return *arrayU;
-}
-
-ValueArray2Dref& Picture::V()
-{
-    return *arrayV;
-}
+//ValueArray2Dref& Picture::Y()
+//{
+//    return *arrayY;
+//}
+//
+//ValueArray2Dref& Picture::U()
+//{
+//    return *arrayU;
+//}
+//
+//ValueArray2Dref& Picture::V()
+//{
+//    return *arrayV;
+//}
 
 bool Picture::isValid()
 {
@@ -67,22 +72,22 @@ Picture::Picture(FrameBuffer* _frame)
     ///dereferencing external pointer maybe produce problems with bad usage
     if (!frame || !(frame->data))
         return;
-    arrayY = ValueArray2DrefPtr(new ValueArray2Dref
+    array[Ych] = ValueArray2DrefPtr(new ValueArray2Dref
             (frame->buf[0], boost::extents[frame->height][frame->width]));
-    arrayU = ValueArray2DrefPtr(new ValueArray2Dref
+    array[Uch] = ValueArray2DrefPtr(new ValueArray2Dref
             (frame->buf[1], boost::extents[frame->height >> 1][frame->width >> 1]));
-    arrayV = ValueArray2DrefPtr(new ValueArray2Dref
+    array[Vch] = ValueArray2DrefPtr(new ValueArray2Dref
             (frame->buf[2], boost::extents[frame->height >> 1][frame->width >> 1]));
 }
 
 Picture::Picture(int width, int height)
 {
     frame = FrameBufferPtr(new FrameBuffer(width, height));
-    arrayY = ValueArray2DrefPtr(new ValueArray2Dref
+    array[Ych] = ValueArray2DrefPtr(new ValueArray2Dref
             (frame->buf[0], boost::extents[frame->height][frame->width]));
-    arrayU = ValueArray2DrefPtr(new ValueArray2Dref
+    array[Uch] = ValueArray2DrefPtr(new ValueArray2Dref
             (frame->buf[1], boost::extents[frame->height >> 1][frame->width >> 1]));
-    arrayV = ValueArray2DrefPtr(new ValueArray2Dref
+    array[Vch] = ValueArray2DrefPtr(new ValueArray2Dref
             (frame->buf[2], boost::extents[frame->height >> 1][frame->width >> 1]));
 
 }
