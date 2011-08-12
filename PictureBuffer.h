@@ -9,6 +9,7 @@
 #define	PICTUREBUFFER_H
 
 #include "types.h"
+#include "Picture.h"
 #include <vector>
 
 ///holds a vector of Picture

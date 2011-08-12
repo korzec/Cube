@@ -9,6 +9,7 @@
 #define	COEFFCUBE_H
 
 #include "types.h"
+#include "Picture.h"
 #include <vector>
 #include "WaveletTransform.h"
 #include "SubbandList.h"
@@ -47,11 +48,13 @@ public:
     int GetLevel();
     
     bool LoadNextPicture(Picture&);
+    /// sets state so new pictures can be loaded into the cube
     bool MakeAvailable();
     
     /// Load images and pad the data to allow wavelet transform
     bool LoadGOP(PictureVector& gop);
     
+    //creates a gop from cube data
     PictureVectorPtr GetGOP();
     
     bool ForwardTransform();

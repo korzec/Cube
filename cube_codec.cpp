@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "cube_io.h"
+#include "PictureIO.h"
 #include <string>
 #include <cstring>
 
@@ -20,6 +20,8 @@
 //#define cimg_display 2
 //#include "cimg/CImg.h"
 #include "parse_cmd.h"
+
+using namespace std;
 
 int main(int argc, char* argv[])
 {
@@ -101,14 +103,14 @@ int main(int argc, char* argv[])
     //skip frames
     for (int i=0; i<params.start_pos; ++i)
     {
-        ReadPicture(inputPicture,
+        PictureIO::ReadPicture(inputPicture,
                            encoder.GetParams().size.width, 
                            encoder.GetParams().size.height);
     }
     
     do
     {
-         picture = ReadPicture(inputPicture,
+         picture = PictureIO::ReadPicture(inputPicture,
                            encoder.GetParams().size.width, 
                            encoder.GetParams().size.height);
          //handle a new picture read
@@ -151,7 +153,7 @@ int main(int argc, char* argv[])
                  if(!params.nolocal)
                      for(size_t i=0; i<gop->size(); i++ )
                      {
-                         WritePicture(*outputPicture, gop->at(i));
+                         PictureIO::WritePicture(*outputPicture, gop->at(i));
                      }
                  encoder.DeleteOldOutputGOP();
                  break;
@@ -159,6 +161,7 @@ int main(int argc, char* argv[])
                  ///if need more pictures to continue encoding
                  break;
              case END_OF_SEQUENCE:
+                 //TODO
                  ///if encoder finished coding a sequence
                  //write out the rest of the buffer and stop the loop
                  go = false;
@@ -171,10 +174,6 @@ int main(int argc, char* argv[])
                  std::cout << "Unknown state reported by encoder" << std::endl;
                  break;
                  
-                 /*! TODO: @todo <<<<<<<<<<<< FIXME XXX  !*/
-                 // FIXME 
-// TODO: <<<<<<<<<<<<<<<<<<<<<<< @todo kolega   
-//PENDING crazy
              }
          }while(state == PICTURE_AVAILABLE);
          

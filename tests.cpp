@@ -1,7 +1,8 @@
 
 
-#include "cube_io.h"
+#include "PictureIO.h"
 #include "types.h"
+#include "Picture.h"
 #include "Encoder.h"
 #include "PictureBuffer.h"
 #include "WaveletTransform.h"
@@ -11,6 +12,8 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+
+using namespace std;
 
 int testDumpSubcubes()
 {
@@ -219,7 +222,7 @@ int testPictureReadWrite() {
         std::cout << "opened file " << input << std::endl;
 
     //std::cout << "w " <<  << "h " << encoder.params.height << std::endl;
-    Picture picture = ReadPicture(inputPicture, 720, 576);
+    Picture picture = PictureIO::ReadPicture(inputPicture, 720, 576);
 
     assert(picture.width() == 720);
     assert(picture.height() == 576);
@@ -247,7 +250,7 @@ int testPictureReadWrite() {
             assert(picture.V()[i][j] == outPicture.V()[i][j]);
         }
 
-    WritePicture(*outputPicture, outPicture);
+    PictureIO::WritePicture(*outputPicture, outPicture);
     outputPicture->close();
     delete outputPicture;
     
@@ -527,7 +530,7 @@ int testOutput() {
     OutputFile = new std::ofstream(outputPictureName.c_str(),
             std::ios::out | std::ios::binary);
 
-    std::cout << "result: " << WritePicture(*OutputFile, picture) << std::endl;
+    std::cout << "result: " << PictureIO::WritePicture(*OutputFile, picture) << std::endl;
     OutputFile->close();
     return 0;
 }
@@ -569,7 +572,7 @@ int testFrameBufferIO() {
         std::cout << "opened file " << input << std::endl;
 
     //std::cout << "w " <<  << "h " << encoder.params.height << std::endl;
-    FrameBuffer* fb = ReadPictureData(inputPicture, 16, 16);
+    FrameBuffer* fb = PictureIO::ReadPictureData(inputPicture, 16, 16);
 
     std::cout << "Xw " << fb->width << "h " << fb->height << std::endl;
     assert(fb->data == fb->buf[0]);
@@ -602,7 +605,7 @@ int testPictureIO() {
         std::cout << "opened file " << input << std::endl;
 
     //std::cout << "w " <<  << "h " << encoder.params.height << std::endl;
-    Picture picture = ReadPicture(inputPicture, 16, 16);
+    Picture picture = PictureIO::ReadPicture(inputPicture, 16, 16);
 
     assert(picture.width() == 16);
     assert(picture.height() == 16);

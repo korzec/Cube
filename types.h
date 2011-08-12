@@ -102,7 +102,8 @@ public:
     }
 };
 
-///holds data of a frame
+///holds data of a frame, NOT safe to copy or assign, not for direct use
+//TODO:use auto pointers for memory allocations
 class FrameBuffer
 {
 public:
@@ -184,89 +185,8 @@ class Subcube;
 typedef boost::multi_array<Subcube, 3> SubcubeArray3D;
 typedef boost::multi_array<float, 3 > FloatArray3D;
 
-
-///wrapper class for frame data with automatic memory management
-class Picture
-{
-public:
-    ValueArray2DrefPtr arrayY;
-    ValueArray2DrefPtr arrayU;
-    ValueArray2DrefPtr arrayV;
-    FrameBufferPtr frame;
-    int pictureNumber;
-public:
-    int width()
-    {
-        if (!frame)
-            return 0;
-        return frame->width;
-    }
-
-    int height()
-    {
-        if (!frame)
-            return 0;
-        return frame->height;
-    }    
-    int chromaWidth()
-    {
-        if (!frame)
-            return 0;
-        return frame->width>>1;
-    }
-
-    int chromaHeight()
-    {
-        if (!frame)
-            return 0;
-        return frame->height>>1;
-    }
-
-    ValueArray2Dref& Y() { return *arrayY; }
-    ValueArray2Dref& U() { return *arrayU; }
-    ValueArray2Dref& V() { return *arrayV; }
-    
-    bool isValid()
-    {
-        if(frame == NULL)
-            return false;
-        return frame->Size() > 0;
-    }
-
-    Picture() 
-    {
-    }
-
-    Picture(FrameBuffer* _frame)
-    {
-        frame = FrameBufferPtr(_frame);
-        ///dereferencing external pointer maybe produce problems with bad usage
-        if (!frame || !(frame->data))
-            return;
-        arrayY = ValueArray2DrefPtr(new ValueArray2Dref
-                (frame->buf[0], boost::extents[frame->height][frame->width]));
-        arrayU = ValueArray2DrefPtr(new ValueArray2Dref
-                (frame->buf[1], boost::extents[frame->height>>1][frame->width>>1]));
-        arrayV = ValueArray2DrefPtr(new ValueArray2Dref
-                (frame->buf[2], boost::extents[frame->height>>1][frame->width>>1]));
-    }
-
-    Picture(int width, int height)
-    {
-        frame = FrameBufferPtr(new FrameBuffer(width, height));
-        arrayY = ValueArray2DrefPtr(new ValueArray2Dref
-                (frame->buf[0], boost::extents[frame->height][frame->width]));
-        arrayU = ValueArray2DrefPtr(new ValueArray2Dref
-                (frame->buf[1], boost::extents[frame->height>>1][frame->width>>1]));
-        arrayV = ValueArray2DrefPtr(new ValueArray2Dref
-                (frame->buf[2], boost::extents[frame->height>>1][frame->width>>1]));
- 
-    }
-};
-
-typedef std::vector<Picture> PictureVector;
-typedef boost::shared_ptr<PictureVector> PictureVectorPtr;
-
 typedef boost::multi_array_types::index_range range;
+
+typedef boost::shared_ptr<unsigned char> ucharPtr;
 
 #endif /* CUBE_CODEC_H_ */

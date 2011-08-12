@@ -1,21 +1,25 @@
-/*
- * cube_io.cpp
- *
- *  Created on: Jul 17, 2011
- *      Author: korzec
+/* 
+ * File:   PictureIO.cpp
+ * Author: korzec
+ * 
+ * Created on August 12, 2011, 7:16 PM
  */
 
-#include "cube_io.h"
+#include "PictureIO.h"
 
-bool WritePictureData(std::ofstream &fdata, FrameBuffer* frame)
+//PictureIO::PictureIO()
+//{
+//}
+//
+bool PictureIO::WritePictureData(std::ofstream &fdata, FrameBuffer* frame)
 {
     FrameBuffer* fbuf = frame;
     bool ret_stat = true;
 
     if (fbuf->data)
     {
-        ios::iostate oldExceptions = fdata.exceptions();
-        fdata.exceptions(ios::failbit | ios::badbit);
+        std::ios::iostate oldExceptions = fdata.exceptions();
+        fdata.exceptions(std::ios::failbit | std::ios::badbit);
         try {
             assert(fbuf->buf[0] != 0);
             fdata.write((char *) fbuf->buf[0], fbuf->SizeY());
@@ -32,17 +36,17 @@ bool WritePictureData(std::ofstream &fdata, FrameBuffer* frame)
     return ret_stat;
 }
 
-bool WritePicture(std::ofstream &fdata, Picture picture)
+bool PictureIO::WritePicture(std::ofstream &fdata, Picture picture)
 {
 	return WritePictureData(fdata, picture.frame.get());
 }
 
 /// reads a picture from input stream and outputs a pointer to @FrameBuffer
-FrameBuffer* ReadPictureData(std::ifstream &fdata, int width, int height)
+FrameBuffer* PictureIO::ReadPictureData(std::ifstream &fdata, int width, int height)
 {
     FrameBuffer* fb = new FrameBuffer(width, height);
-    ios::iostate oldExceptions = fdata.exceptions();
-    fdata.exceptions(ios::failbit | ios::badbit);
+    std::ios::iostate oldExceptions = fdata.exceptions();
+    fdata.exceptions(std::ios::failbit | std::ios::badbit);
     try {
         fdata.read((char *) fb->data, fb->Size());
     } catch (...) {
@@ -54,7 +58,7 @@ FrameBuffer* ReadPictureData(std::ifstream &fdata, int width, int height)
     return fb;
 }
 
-Picture ReadPicture(std::ifstream &fdata, int width, int height)
+Picture PictureIO::ReadPicture(std::ifstream &fdata, int width, int height)
 {
 	FrameBuffer * frame = ReadPictureData(fdata, width, height);
 	Picture picture(frame);

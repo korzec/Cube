@@ -5,14 +5,18 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>CoeffCube.h</itemPath>
+      <itemPath>Compressor.h</itemPath>
+      <itemPath>CubeIO.h</itemPath>
       <itemPath>CubeTransform.h</itemPath>
       <itemPath>Encoder.h</itemPath>
+      <itemPath>Packet.h</itemPath>
+      <itemPath>Picture.h</itemPath>
       <itemPath>PictureBuffer.h</itemPath>
+      <itemPath>PictureIO.h</itemPath>
       <itemPath>SubbandList.h</itemPath>
       <itemPath>Subcube.h</itemPath>
       <itemPath>SubcubeIndex.h</itemPath>
       <itemPath>WaveletTransform.h</itemPath>
-      <itemPath>cube_io.h</itemPath>
       <itemPath>general.h</itemPath>
       <itemPath>parse_cmd.h</itemPath>
       <itemPath>tests.h</itemPath>
@@ -26,15 +30,19 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>CoeffCube.cpp</itemPath>
+      <itemPath>Compressor.cpp</itemPath>
+      <itemPath>CubeIO.cpp</itemPath>
       <itemPath>CubeTransform.cpp</itemPath>
       <itemPath>Encoder.cpp</itemPath>
+      <itemPath>Packet.cpp</itemPath>
+      <itemPath>Picture.cpp</itemPath>
       <itemPath>PictureBuffer.cpp</itemPath>
+      <itemPath>PictureIO.cpp</itemPath>
       <itemPath>SubbandList.cpp</itemPath>
       <itemPath>Subcube.cpp</itemPath>
       <itemPath>SubcubeIndex.cpp</itemPath>
       <itemPath>WaveletTransform.cpp</itemPath>
       <itemPath>cube_codec.cpp</itemPath>
-      <itemPath>cube_io.cpp</itemPath>
       <itemPath>tests.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"

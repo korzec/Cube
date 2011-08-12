@@ -30,8 +30,14 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 src7.yuv codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 64 src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 4 src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 3 src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 48 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 4 -start 16 -stop 24 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 src7.yuv out/codedfile</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -width 720 -height 576 -depth 4 -start 16 -stop 24 -analysis -local -levels 2 src7.yuv out/codedfile</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
@@ -65,8 +71,6 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 src7.yuv codedfile</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 32 src7.yuv codedfile &amp;&amp; ./redec.sh codedfile.localdec.yuv</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 32 src7.yuv codedfile &amp; ./redec.sh codedfile.localdec.yuv</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 32 src7.yuv codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 2 src7.yuv codedfile</runcommandpicklistitem>
@@ -75,8 +79,10 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 32 src7.yuv codedfile </runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 src7.yuv codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 src7.yuv out/codedfile</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 src7.yuv out/codedfile</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

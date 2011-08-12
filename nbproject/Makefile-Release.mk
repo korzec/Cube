@@ -35,15 +35,19 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/tests.o \
+	${OBJECTDIR}/Compressor.o \
 	${OBJECTDIR}/cube_codec.o \
+	${OBJECTDIR}/CubeIO.o \
 	${OBJECTDIR}/SubcubeIndex.o \
 	${OBJECTDIR}/WaveletTransform.o \
-	${OBJECTDIR}/Subcube.o \
+	${OBJECTDIR}/Picture.o \
 	${OBJECTDIR}/SubbandList.o \
+	${OBJECTDIR}/Subcube.o \
 	${OBJECTDIR}/Encoder.o \
+	${OBJECTDIR}/PictureIO.o \
 	${OBJECTDIR}/CubeTransform.o \
-	${OBJECTDIR}/cube_io.o \
 	${OBJECTDIR}/CoeffCube.o \
+	${OBJECTDIR}/Packet.o \
 	${OBJECTDIR}/PictureBuffer.o
 
 
@@ -76,10 +80,20 @@ ${OBJECTDIR}/tests.o: tests.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests.o tests.cpp
 
+${OBJECTDIR}/Compressor.o: Compressor.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Compressor.o Compressor.cpp
+
 ${OBJECTDIR}/cube_codec.o: cube_codec.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec.o cube_codec.cpp
+
+${OBJECTDIR}/CubeIO.o: CubeIO.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeIO.o CubeIO.cpp
 
 ${OBJECTDIR}/SubcubeIndex.o: SubcubeIndex.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -91,35 +105,45 @@ ${OBJECTDIR}/WaveletTransform.o: WaveletTransform.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp
 
-${OBJECTDIR}/Subcube.o: Subcube.cpp 
+${OBJECTDIR}/Picture.o: Picture.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube.o Subcube.cpp
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Picture.o Picture.cpp
 
 ${OBJECTDIR}/SubbandList.o: SubbandList.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubbandList.o SubbandList.cpp
 
+${OBJECTDIR}/Subcube.o: Subcube.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube.o Subcube.cpp
+
 ${OBJECTDIR}/Encoder.o: Encoder.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Encoder.o Encoder.cpp
+
+${OBJECTDIR}/PictureIO.o: PictureIO.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureIO.o PictureIO.cpp
 
 ${OBJECTDIR}/CubeTransform.o: CubeTransform.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeTransform.o CubeTransform.cpp
 
-${OBJECTDIR}/cube_io.o: cube_io.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_io.o cube_io.cpp
-
 ${OBJECTDIR}/CoeffCube.o: CoeffCube.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/CoeffCube.o CoeffCube.cpp
+
+${OBJECTDIR}/Packet.o: Packet.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Packet.o Packet.cpp
 
 ${OBJECTDIR}/PictureBuffer.o: PictureBuffer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
