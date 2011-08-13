@@ -15,6 +15,7 @@ Compressor::Compressor()
 
 Packet Compressor::Compress(CoeffView3D& subcube, Coords3D& location)
 {
+    assert(subcube.size() > 0);
     assert(lzo_init() == LZO_E_OK);
     if (lzo_init() != LZO_E_OK)
         return Packet(); //if compressor doest work
@@ -44,6 +45,9 @@ Packet Compressor::Compress(CoeffView3D& subcube, Coords3D& location)
 
 CoeffArray3DPtr Compressor::Decompress(Packet packet, Coords3D& subcubeSize)
 {
+    assert(lzo_init() == LZO_E_OK);
+    assert(packet.CompressedData.use_count() > 0);
+    assert(packet.compressedSize > 0);
     lzo_uint fullSize;
     lzo_uint compressedSize;
     lzo_uint newSize;
