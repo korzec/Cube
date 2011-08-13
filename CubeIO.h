@@ -21,13 +21,15 @@ public:
     CubeIO();
     CubeIO(std::string fileName, bool isWrite);
     bool Init(std::string fileName, bool isWrite);
+    virtual ~CubeIO();
+    bool Finish();
     
-    bool WriteSequenceHeader(CodingParams);
-    bool WriteCubeHeader(int cubeNumber);
-    bool WritePacket(Packet);
+    bool WriteSequenceHeader(const CodingParams&, const VideoParams&);
+    bool WriteCubeHeader(const int& cubeNumber);
+    bool WritePacket(const Packet&);
     
-    CodingParams ReadSequenceHeader();
-    int ReadCubeHeader();
+    bool ReadSequenceHeader(CodingParams&, VideoParams&);
+    bool ReadCubeHeader(int& cubeNumber);
     Packet ReadPacket();
 private:
     std::ifstream* inputFile;

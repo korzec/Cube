@@ -97,8 +97,8 @@ enum EncoderState
 class CodingParams
 {
 public:
-    Coords3D size;
-    Coords3D subSize;
+    Coords3D cubeSize;
+    Coords3D subcubeSize;
 
     int start_pos;
     int end_pos;
@@ -107,9 +107,21 @@ public:
     bool analysis;
     int levels;
 
-    CodingParams() : size(0,0,4), subSize(32,32,4),
+    CodingParams() : cubeSize(0,0,4), subcubeSize(32,32,4),
     start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
     analysis(false), levels(1)
+    {
+    }
+};
+
+class VideoParams
+{
+public:
+    int fpsNumerator;
+    int fpsDenominator;
+    int frameCount;
+
+    VideoParams() : fpsNumerator(30), fpsDenominator(1), frameCount(0)
     {
     }
 };

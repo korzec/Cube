@@ -263,14 +263,14 @@ int testEncode()
 {
     Encoder encoder;
     CodingParams params;
-    params.size.width = 16;
-    params.size.height = 20;
-    params.size.depth = 4;
+    params.cubeSize.width = 16;
+    params.cubeSize.height = 20;
+    params.cubeSize.depth = 4;
     encoder.SetParams(params);
     
-    Picture picture(params.size.width, params.size.height);
+    Picture picture(params.cubeSize.width, params.cubeSize.height);
     
-    assert(encoder.GetParams().size.depth == 4);
+    assert(encoder.GetParams().cubeSize.depth == 4);
     encoder.LoadNextPicture(picture);
     encoder.LoadNextPicture(picture);
     encoder.LoadNextPicture(picture);
