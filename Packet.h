@@ -22,8 +22,8 @@ public:
 public:
     ucharPtr CompressedData;
     int compressedSize;
-    int cubeSize;
-    Coords3D index;
+    int fullSize;
+    Coords3D location;
 };
 #endif	/* PACKET_H */
 

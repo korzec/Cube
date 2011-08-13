@@ -18,6 +18,9 @@
       <itemPath>SubcubeIndex.h</itemPath>
       <itemPath>WaveletTransform.h</itemPath>
       <itemPath>general.h</itemPath>
+      <itemPath>minilzo/lzoconf.h</itemPath>
+      <itemPath>minilzo/lzodefs.h</itemPath>
+      <itemPath>minilzo/minilzo.h</itemPath>
       <itemPath>parse_cmd.h</itemPath>
       <itemPath>tests.h</itemPath>
       <itemPath>types.h</itemPath>
@@ -43,6 +46,7 @@
       <itemPath>SubcubeIndex.cpp</itemPath>
       <itemPath>WaveletTransform.cpp</itemPath>
       <itemPath>cube_codec.cpp</itemPath>
+      <itemPath>minilzo/minilzo.c</itemPath>
       <itemPath>tests.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"

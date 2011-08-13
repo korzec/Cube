@@ -189,6 +189,6 @@ typedef boost::shared_ptr<CoeffArray3D> CoeffArray3DPtr;
 
 typedef boost::multi_array_types::index_range range;
 
-typedef boost::shared_ptr<unsigned char> ucharPtr;
+typedef boost::shared_array<unsigned char> ucharPtr;
 
 #endif /* CUBE_CODEC_H_ */

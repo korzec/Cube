@@ -46,6 +46,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Encoder.o \
 	${OBJECTDIR}/PictureIO.o \
 	${OBJECTDIR}/CubeTransform.o \
+	${OBJECTDIR}/minilzo/minilzo.o \
 	${OBJECTDIR}/CoeffCube.o \
 	${OBJECTDIR}/Packet.o \
 	${OBJECTDIR}/PictureBuffer.o
@@ -134,6 +135,11 @@ ${OBJECTDIR}/CubeTransform.o: CubeTransform.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeTransform.o CubeTransform.cpp
+
+${OBJECTDIR}/minilzo/minilzo.o: minilzo/minilzo.c 
+	${MKDIR} -p ${OBJECTDIR}/minilzo
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/minilzo/minilzo.o minilzo/minilzo.c
 
 ${OBJECTDIR}/CoeffCube.o: CoeffCube.cpp 
 	${MKDIR} -p ${OBJECTDIR}
