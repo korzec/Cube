@@ -161,7 +161,7 @@ int main(int argc, char* argv[])
                  ///if need more pictures to continue encoding
                  break;
              case END_OF_SEQUENCE:
-                 //TODO
+                 //TODO: handle EOS
                  ///if encoder finished coding a sequence
                  //write out the rest of the buffer and stop the loop
                  go = false;

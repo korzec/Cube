@@ -40,21 +40,6 @@ ValueArray2Dref& Picture::Array(Channel channel)
     return *array[channel];
 }
 
-//ValueArray2Dref& Picture::Y()
-//{
-//    return *arrayY;
-//}
-//
-//ValueArray2Dref& Picture::U()
-//{
-//    return *arrayU;
-//}
-//
-//ValueArray2Dref& Picture::V()
-//{
-//    return *arrayV;
-//}
-
 bool Picture::isValid()
 {
     if (frame == NULL)

@@ -19,7 +19,7 @@ Subcube::Subcube(CoeffView3D& cube, Coords3D& index, Coords3D& size) : cube(NULL
 
 void Subcube::Init(CoeffView3D& cube, Coords3D& index, Coords3D& size)
 {
-    this->index = index;
+    this->location = index;
     this->cube = &cube;
     this->size = size;
     array.reset(new CoeffView3D(
@@ -30,12 +30,12 @@ void Subcube::Init(CoeffView3D& cube, Coords3D& index, Coords3D& size)
             ]));
 }
 
-Coords3D Subcube::GetIndex()
+Coords3D Subcube::GetLocation()
 {
-    return index;
+    return location;
 }
 
-CoeffView3D Subcube::GetView()
+CoeffView3D& Subcube::GetView()
 {
     return *array;
 }
@@ -64,7 +64,7 @@ float Subcube::GetWeight()
     return sum;
 }
 
-CoeffView3D* Subcube::GetParentView()
+CoeffView3D& Subcube::GetParentView()
 {
-    return cube;
+    return *cube;
 }

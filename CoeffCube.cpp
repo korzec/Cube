@@ -34,14 +34,14 @@ void CoeffCube::Init(Coords3D size, int levels, Coords3D subSize)
     subbands[Uch].Init(Array(Uch), levels);
     subbands[Vch].Init(Array(Vch), levels);
     
-    cubes[Ych].Init(subbands[Ych].GetSubband(0, LLL), subSize );
-    cubes[Uch].Init(subbands[Uch].GetSubband(0, LLL), subSize );
-    cubes[Vch].Init(subbands[Vch].GetSubband(0, LLL), subSize );
+    subcubeIndex[Ych].Init(subbands[Ych].GetSubband(0, LLL), subSize );
+    subcubeIndex[Uch].Init(subbands[Uch].GetSubband(0, LLL), subSize );
+    subcubeIndex[Vch].Init(subbands[Vch].GetSubband(0, LLL), subSize );
 }
 
-CoeffArray3D & CoeffCube::Array(Channel ch)
+CoeffArray3D & CoeffCube::Array(Channel channel)
 {
-    return *arrays[ch];
+    return *arrays[channel];
 }
 
 bool CoeffCube::LoadNextPicture(Picture& picture)
@@ -215,6 +215,12 @@ bool CoeffCube::dumpCoeffs(std::string fileName)
 
 bool CoeffCube::dumpWeights(std::string fileName)
 {
-    cubes[Ych].ComputeWeights();
-    return cubes[Ych].dump(fileName);
+    subcubeIndex[Ych].ComputeWeights();
+    return subcubeIndex[Ych].dump(fileName);
+}
+
+
+SubcubeIndex* CoeffCube::GetSubcubeIndex(Channel channel)
+{
+    return &subcubeIndex[channel];
 }

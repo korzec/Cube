@@ -105,7 +105,7 @@ bool dumpSubcubes(SubcubeArray3D& subcubes, FloatArray3D& weights, std::string f
         return false;
     }
     ///whole cube
-    CoeffView3D* cube = (*subcubes.data()).GetParentView();
+    CoeffView3D* cube = &(*subcubes.data()).GetParentView();
     ///size of whole cube
     Coords3D dims(cube->shape());
     //size of subcubes

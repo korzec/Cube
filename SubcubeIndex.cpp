@@ -7,6 +7,8 @@
 
 #include "SubcubeIndex.h"
 
+bool dumpSubcubes(SubcubeArray3D& subcubes, FloatArray3D& weights, std::string fileName);
+
 SubcubeIndex::SubcubeIndex()
 {
 }
@@ -40,7 +42,7 @@ void SubcubeIndex::Init(CoeffView3D& cube, Coords3D subSize)
     }
 }
 
-Subcube& SubcubeIndex::GetSubcube(Coords3D index)
+Subcube& SubcubeIndex::GetSubcube(Coords3D& index)
 {
     return list[index.depth][index.height][index.width];
 }
@@ -49,18 +51,23 @@ void SubcubeIndex::ComputeWeights()
 {
     ///loop over all subcubes and compute their Sum of Squares
     ///save results to weight array;
+    ///also save a sorted maping of weights to subcubes
     assert(list.dimensionality == weights.dimensionality);
-    
+    //remove old weights mapping
+    weightsMap.clear();
     Coords3D dims(list.shape());
-    
+    float weight;
     for (int d = 0; d < dims.depth; d++)
     {
         for (int h = 0; h < dims.height; h++)
         {
             for (int w = 0; w < dims.width; w++)
             {
-                Subcube& subcube = list[d][h][w];   
-                weights[d][h][w] = subcube.GetWeight();
+                Subcube& subcube = list[d][h][w];
+                weight = subcube.GetWeight();
+                weights[d][h][w] = weight;
+                //items are sorted on insertion
+                weightsMap.insert(WeightPair(weight, &subcube));
             }//w
         }//h
     }//d
@@ -69,4 +76,15 @@ void SubcubeIndex::ComputeWeights()
 bool SubcubeIndex::dump(std::string fileName)
 {
     return dumpSubcubes(list, weights, fileName );
+}
+
+Coords3D SubcubeIndex::GetIndexDims()
+{
+    return Coords3D(weights.shape());
+}
+
+
+WeightsMap& SubcubeIndex::GetWeightsMap()
+{
+    return weightsMap;
 }

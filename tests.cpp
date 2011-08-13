@@ -60,7 +60,7 @@ int testSubcubeIndex()
     SubcubeIndex subcubes;
     subcubes.Init(view, size);
     
-    assert(subcubes.GetSubcube(index).GetIndex().depth == index.depth);
+    assert(subcubes.GetSubcube(index).GetLocation().depth == index.depth);
     
     //test with initialisation
     for (int d = 0; d < dims.depth; d++)
@@ -126,7 +126,7 @@ int testSubcube()
     Subcube subcube;
     subcube.Init(view, index, size);
     
-    assert(subcube.GetIndex().depth == index.depth);
+    assert(subcube.GetLocation().depth == index.depth);
     
     return 0;
 }

@@ -45,43 +45,43 @@ EncoderState Encoder::Encode()
         pictureBuffer.GetGOP(params.size.depth, gop);
         assert(gop.size() == (size_t) params.size.depth);
         //if we have valid gop
-        if(gop.size() == (size_t) params.size.depth)
+        if (gop.size() == (size_t) params.size.depth)
         {
             cubeNumber++;
             bool ret = coeffCube.LoadGOP(gop);
             pictureBuffer.RemoveOldGOP(params.size.depth);
             assert(ret == true);
-            
-            if( coeffCube.ForwardTransform() )
+
+            if (coeffCube.ForwardTransform())
             {
-                if(params.analysis)
+                if (params.analysis)
                 {
                     std::stringstream ss1;
-                    ss1 << OUTDIR << "tr" <<cubeNumber <<"cube.raw";
+                    ss1 << OUTDIR << "tr" << cubeNumber << "cube.raw";
                     coeffCube.dumpCoeffs(ss1.str());
                     std::stringstream ss3;
-                    ss3 << OUTDIR << "we" <<cubeNumber <<"cube.raw";
+                    ss3 << OUTDIR << "we" << cubeNumber << "cube.raw";
                     coeffCube.dumpWeights(ss3.str());
                 }
-                
+
                 coeffCube.SmoothTime();
-                 
-                if(params.analysis)
+
+                if (params.analysis)
                 {
                     std::stringstream ss2;
-                    ss2 << OUTDIR << "sm" <<cubeNumber <<"cube.raw";
+                    ss2 << OUTDIR << "sm" << cubeNumber << "cube.raw";
                     coeffCube.dumpCoeffs(ss2.str());
                 }
-                
+
                 coeffCube.ReverseTransform();
-                
+
                 PictureVectorPtr outputGOP = coeffCube.GetGOP();
                 bool ret = pictureOutputBuffer.AddGOP(*outputGOP);
                 //delete outputGOP;
                 ///check if gop could have been added
                 ///if not return WAIT state; or just PIC AVAILABLE ?
                 ///or INVALID if there was no space for new pictures;
-                if(ret == false)
+                if (ret == false)
                 {
                     std::cerr << "buffer full, couldn't output pictures";
                     return INVALID;
@@ -102,7 +102,7 @@ EncoderState Encoder::Encode()
     {
         return NEED_BUFFER;
     }
-        
+
 }
 
 bool Encoder::EndOfSequence()
@@ -113,7 +113,7 @@ bool Encoder::EndOfSequence()
 PictureVectorPtr Encoder::GetDecodedGOP()
 {
     PictureVectorPtr gop(new PictureVector);
-    pictureOutputBuffer.GetGOP(params.size.depth, *gop );
+    pictureOutputBuffer.GetGOP(params.size.depth, *gop);
     return gop;
 }
 
@@ -125,4 +125,32 @@ PictureVectorPtr Encoder::GetDecodedGOP()
 bool Encoder::DeleteOldOutputGOP()
 {
     return pictureOutputBuffer.RemoveOldGOP(params.size.depth);
+}
+
+bool Encoder::CompressSubcubes(Channel channel)
+{
+    SubcubeIndex* index = coeffCube.GetSubcubeIndex(channel);
+    Coords3D dims = index->GetIndexDims();
+    //resize packetList to fit dimensions of the Subcube array
+    packetList[channel].resize(dims.width * dims.height * dims.height);
+
+    Coords3D location;
+    Subcube* subcube;
+
+    //set up iterators
+    std::deque<Packet>::iterator packetIT = packetList[channel].begin();
+    WeightsMap& weightsMap = index->GetWeightsMap();
+    WeightsMap::iterator weightIT = weightsMap.end();
+    assert(weightsMap.size() == packetList[channel].size());
+    //iterate over all subcubes and compress them
+    //then add a compressed Packet to #packetList
+    for (; packetIT != packetList[channel].end(); packetIT++)
+    {
+        weightIT--; //set iterator to next pair
+        //locaiton of current subcube in the index
+        location = weightIT->second->GetLocation();
+        subcube = weightIT->second; //get subcube
+        *packetIT = compressor.Compress(subcube->GetView(), location);
+    }
+    return true;
 }

@@ -21,7 +21,7 @@ private:
     WaveletTransform transform;
     CoeffArray3DPtr arrays[3];
     SubbandList subbands[3];
-    SubcubeIndex cubes[3];
+    SubcubeIndex subcubeIndex[3];
     /// available to receive next picture
     bool available;
     int cubeNumber;
@@ -58,6 +58,8 @@ public:
 
     bool dumpCoeffs(std::string);
     bool dumpWeights(std::string);
+    
+    SubcubeIndex* GetSubcubeIndex(Channel);
     
 };
 

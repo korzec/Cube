@@ -11,6 +11,9 @@
 #include "types.h"
 #include "PictureBuffer.h"
 #include "CoeffCube.h"
+#include "Packet.h"
+#include "Compressor.h"
+#include <deque>
 
 /// Main encoder class: takes pictures to a buffer and returns packets
 class Encoder {
@@ -21,6 +24,11 @@ private:
     CoeffCube coeffCube;
     int pictureNumber;
     int cubeNumber;
+    std::deque<Packet> packetList[3];
+    Compressor compressor;
+    ///compresses the subcubes and stores them in a list
+    bool CompressSubcubes(Channel);
+    
 public:
 
     Encoder();

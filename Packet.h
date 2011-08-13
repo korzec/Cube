@@ -10,20 +10,20 @@
 
 #include "types.h"
 #include "Subcube.h"
-#include "Compressor.h"
+//
+class Packet;
+typedef boost::shared_ptr<Packet> PacketPointer;
 
 ///Stores compressed Subcube data
 class Packet
 {
 public:
-    Packet(Compressor compressor);
-private:
-    Compressor compressor;
+    Packet();
+public:
     ucharPtr CompressedData;
-    CoeffArray3DPtr SubcubeData;
     int compressedSize;
-    
+    int cubeSize;
+    Coords3D index;
 };
-
 #endif	/* PACKET_H */
 

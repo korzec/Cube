@@ -7,7 +7,4 @@
 
 #include "Packet.h"
 
-Packet::Packet(Compressor compressor)
-{
-    this->compressor = compressor;
-}
+Packet::Packet() {}

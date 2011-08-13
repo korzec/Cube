@@ -9,13 +9,14 @@
 #define	COMPRESSOR_H
 
 #include "types.h"
+#include "Packet.h"
 ///compresses the Subcube data, can be subclassed to change the compression algorithm
 class Compressor
 {
 public:
     Compressor(); 
-    virtual ucharPtr Compress(CoeffArray3DPtr subcube, int& compressedSize);
-    virtual CoeffArray3DPtr Decompress(ucharPtr compressedData, int compressedSize);
+    virtual Packet Compress(CoeffView3D& subcube, Coords3D& lcoation);
+    virtual CoeffArray3DPtr Decompress(Packet packet);
     
 private:
 

@@ -56,7 +56,7 @@ public:
     int width;
     int height;
     int depth;
-    Coords3D() : width(0), height(0), depth(0)
+    Coords3D() : width(-1), height(-1), depth(-1)
     {
         
     }
@@ -73,11 +73,12 @@ public:
          this->height = dimensionality[1];
          this->depth = dimensionality[0];
     }
-    void Set(int width, int height, int depth)
+    Coords3D& Set(int width, int height, int depth)
     {
          this->width = width;
          this->height = height;
          this->depth = depth;
+         return *this;
     }
 };
 
@@ -110,7 +111,7 @@ public:
 };
 
 ///holds data of a frame, NOT safe to copy or assign, not for direct use
-//TODO:use auto pointers for memory allocations
+//TODO: use auto pointers for memory allocations
 class FrameBuffer
 {
 public:
@@ -185,12 +186,6 @@ typedef boost::shared_ptr<CoeffView3D> CoeffView3DPtr;
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;
 typedef boost::shared_ptr<CoeffArray3D> CoeffArray3DPtr;
-
-
-//types for SubcubeIndex
-class Subcube;
-typedef boost::multi_array<Subcube, 3> SubcubeArray3D;
-typedef boost::multi_array<float, 3 > FloatArray3D;
 
 typedef boost::multi_array_types::index_range range;
 

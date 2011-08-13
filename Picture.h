@@ -19,8 +19,6 @@ class Picture
 {
 public:
     ValueArray2DrefPtr array[3];
-    //ValueArray2DrefPtr arrayU;
-    //ValueArray2DrefPtr arrayV;
     FrameBufferPtr frame;
     int pictureNumber;
 public:
@@ -30,11 +28,7 @@ public:
     int chromaHeight();
 
     ValueArray2Dref& Array(Channel);
-    
-//    ValueArray2Dref& Y();
-//    ValueArray2Dref& U();
-//    ValueArray2Dref& V();
-    
+
     bool isValid();
 
     Picture();

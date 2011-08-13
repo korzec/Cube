@@ -10,12 +10,12 @@
 Compressor::Compressor()
 {
 }
-
-ucharPtr Compressor::Compress(CoeffArray3DPtr subcube, int& compressedSize)
+//TODO: implement compression 
+Packet Compressor::Compress(CoeffView3D& subcube, Coords3D& location)
 {
 }
 
-CoeffArray3DPtr Compressor::Decompress(ucharPtr compressedData, int compressedSize)
+CoeffArray3DPtr Compressor::Decompress(Packet packet)
 {
 }
     
