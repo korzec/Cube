@@ -93,25 +93,15 @@ enum EncoderState
     OUTPUT_AVAILABLE
 };
 
-///parameters of encoding
-class CodingParams
+class CodecParams
 {
 public:
     Coords3D cubeSize;
     Coords3D subcubeSize;
-
-    int start_pos;
-    int end_pos;
-    bool verbose;
-    bool nolocal;
-    bool analysis;
     int levels;
-
-    CodingParams() : cubeSize(0,0,4), subcubeSize(32,32,4),
-    start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
-    analysis(false), levels(1)
-    {
-    }
+    
+    CodecParams() : cubeSize(0,0,4), subcubeSize(32,32,4), levels(1)
+    {}
 };
 
 class VideoParams
@@ -125,6 +115,26 @@ public:
     {
     }
 };
+
+///parameters of encoding
+class Parameters
+{
+public:
+    
+    CodecParams codecParams;
+
+    int start_pos;
+    int end_pos;
+    bool verbose;
+    bool nolocal;
+    bool analysis;
+
+    Parameters() : 
+    start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
+    analysis(false)
+    {}
+};
+
 
 ///holds data of a frame, NOT safe to copy or assign, not for direct use
 //TODO: use auto pointers for memory allocations

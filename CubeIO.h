@@ -24,11 +24,11 @@ public:
     virtual ~CubeIO();
     bool Finish();
     
-    bool WriteSequenceHeader(const CodingParams&, const VideoParams&);
+    bool WriteSequenceHeader(const Parameters&, const VideoParams&);
     bool WriteCubeHeader(const int& cubeNumber);
     bool WritePacket(const Packet&);
     
-    bool ReadSequenceHeader(CodingParams&, VideoParams&);
+    bool ReadSequenceHeader(Parameters&, VideoParams&);
     bool ReadCubeHeader(int& cubeNumber);
     Packet ReadPacket();
 private:

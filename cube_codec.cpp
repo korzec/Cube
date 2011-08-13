@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     string input, output;
 
     Encoder encoder;
-    CodingParams params;
+    Parameters params;
 
     if (!parse_command_line(params, argc, argv))
         return EXIT_FAILURE;
@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     else
         cout << "opened file " << input << std::endl;
 
-    std::cout << "w " << encoder.GetParams().cubeSize.width << " h " << encoder.GetParams().cubeSize.height << std::endl;
+    std::cout << "w " << encoder.GetParams().codecParams.cubeSize.width << " h " << encoder.GetParams().codecParams.cubeSize.height << std::endl;
 
     /// open the decoded output file
     std::ofstream *outputPicture = NULL;
@@ -104,15 +104,15 @@ int main(int argc, char* argv[])
     for (int i=0; i<params.start_pos; ++i)
     {
         PictureIO::ReadPicture(inputPicture,
-                           encoder.GetParams().cubeSize.width, 
-                           encoder.GetParams().cubeSize.height);
+                           encoder.GetParams().codecParams.cubeSize.width, 
+                           encoder.GetParams().codecParams.cubeSize.height);
     }
     
     do
     {
          picture = PictureIO::ReadPicture(inputPicture,
-                           encoder.GetParams().cubeSize.width, 
-                           encoder.GetParams().cubeSize.height);
+                           encoder.GetParams().codecParams.cubeSize.width, 
+                           encoder.GetParams().codecParams.cubeSize.height);
          //handle a new picture read
          if( frameNumber <= (params.end_pos - params.start_pos) &&
                  picture.isValid())

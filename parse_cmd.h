@@ -27,8 +27,8 @@ static void display_help()
     std::cout << "\nstop              ulong   -   last frame to encode";
     std::cout << std::endl;
 }
-///parses command line options and sets CodingParams for use with Encoder
-bool parse_command_line(CodingParams& params, int argc, char **argv)
+///parses command line options and sets parameters for use with Encoder
+bool parse_command_line(Parameters& params, int argc, char **argv)
 {
     /**********  command line parameter parsing*********/
 
@@ -46,7 +46,7 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
     // (end_pos set to -1 means code to the end)
 
     //Now do the options
-    // initialise the CodingParams
+    // initialise the parameters
     //now go over again and override video format presets with other values
     for (int i = 1; i < argc;)
     {
@@ -54,7 +54,7 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
         {
             parsed[i] = true;
             i++;
-            params.cubeSize.width =
+            params.codecParams.cubeSize.width =
                     strtoul(argv[i], NULL, 10);
             parsed[i] = true;
         }
@@ -62,7 +62,7 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
         {
             parsed[i] = true;
             i++;
-            params.cubeSize.height =
+            params.codecParams.cubeSize.height =
                     strtoul(argv[i], NULL, 10);
             parsed[i] = true;
         }
@@ -70,7 +70,7 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
         {
             parsed[i] = true;
             i++;
-            params.cubeSize.depth =
+            params.codecParams.cubeSize.depth =
                     strtoul(argv[i], NULL, 10);
             parsed[i] = true;
         }
@@ -93,7 +93,7 @@ bool parse_command_line(CodingParams& params, int argc, char **argv)
         {
             parsed[i] = true;
             i++;
-            params.levels = strtoul(argv[i], NULL, 10);
+            params.codecParams.levels = strtoul(argv[i], NULL, 10);
             parsed[i] = true;
         }        
         else if (strcmp(argv[i], "-local") == 0)

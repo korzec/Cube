@@ -22,34 +22,34 @@ bool Encoder::LoadNextPicture(Picture& picture)
         return false;
 }
 
-CodingParams Encoder::GetParams() const
+Parameters Encoder::GetParams() const
 {
     return params;
 }
 
-void Encoder::SetParams(CodingParams params)
+void Encoder::SetParams(Parameters params)
 {
     this->params = params;
-    pictureBuffer = PictureBuffer(params.cubeSize.depth);
-    pictureOutputBuffer = PictureBuffer(params.cubeSize.depth);
-    coeffCube.Init(params.cubeSize, params.levels, params.subcubeSize);
+    pictureBuffer = PictureBuffer(params.codecParams.cubeSize.depth);
+    pictureOutputBuffer = PictureBuffer(params.codecParams.cubeSize.depth);
+    coeffCube.Init(params.codecParams.cubeSize, params.codecParams.levels, params.codecParams.subcubeSize);
 }
 
 EncoderState Encoder::Encode()
 {
     //check if enough pictures are available
-    if (pictureBuffer.GetCount() >= params.cubeSize.depth)
+    if (pictureBuffer.GetCount() >= params.codecParams.cubeSize.depth)
     {
         //copy the pictures to the coeffCube
         PictureVector gop;
-        pictureBuffer.GetGOP(params.cubeSize.depth, gop);
-        assert(gop.size() == (size_t) params.cubeSize.depth);
+        pictureBuffer.GetGOP(params.codecParams.cubeSize.depth, gop);
+        assert(gop.size() == (size_t) params.codecParams.cubeSize.depth);
         //if we have valid gop
-        if (gop.size() == (size_t) params.cubeSize.depth)
+        if (gop.size() == (size_t) params.codecParams.cubeSize.depth)
         {
             cubeNumber++;
             bool ret = coeffCube.LoadGOP(gop);
-            pictureBuffer.RemoveOldGOP(params.cubeSize.depth);
+            pictureBuffer.RemoveOldGOP(params.codecParams.cubeSize.depth);
             assert(ret == true);
 
             if (coeffCube.ForwardTransform())
@@ -113,7 +113,7 @@ bool Encoder::EndOfSequence()
 PictureVectorPtr Encoder::GetDecodedGOP()
 {
     PictureVectorPtr gop(new PictureVector);
-    pictureOutputBuffer.GetGOP(params.cubeSize.depth, *gop);
+    pictureOutputBuffer.GetGOP(params.codecParams.cubeSize.depth, *gop);
     return gop;
 }
 
@@ -124,7 +124,7 @@ PictureVectorPtr Encoder::GetDecodedGOP()
 
 bool Encoder::DeleteOldOutputGOP()
 {
-    return pictureOutputBuffer.RemoveOldGOP(params.cubeSize.depth);
+    return pictureOutputBuffer.RemoveOldGOP(params.codecParams.cubeSize.depth);
 }
 
 bool Encoder::CompressSubcubes(Channel channel)

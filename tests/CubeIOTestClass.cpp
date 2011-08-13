@@ -82,7 +82,7 @@ void CubeIOTestClass::testReadPacket()
 
 void CubeIOTestClass::testReadSequenceHeader()
 {
-    CodingParams p0;
+    Parameters p0;
     VideoParams p1;
     CubeIO cubeIO;
     //bool result = cubeIO.ReadSequenceHeader(p0, p1);
@@ -90,14 +90,69 @@ void CubeIOTestClass::testReadSequenceHeader()
 
 void CubeIOTestClass::testWriteCubeHeader()
 {
-    int cubeNumber;
-    CubeIO cubeIO;
+    std::cout << std::endl;
+    std::string fileName = "testWriteCubeHeader";
+    int cubeNumber = 559;
+    {
+        bool isWrite = true;
+        CubeIO cubeIO(fileName, isWrite);
+        bool result = cubeIO.WriteCubeHeader(cubeNumber);
+        CPPUNIT_ASSERT(result);
+    }
+    { //read and compare
+        bool isWrite = false;
+        CubeIO cubeIO(fileName, isWrite);
+        int readNumber;
+        bool result = cubeIO.ReadCubeHeader(readNumber);
+        CPPUNIT_ASSERT(result);
+        CPPUNIT_ASSERT_EQUAL(cubeNumber, readNumber);
+    }
     //bool result = cubeIO.WriteCubeHeader(cubeNumber);
 }
 
 void CubeIOTestClass::testWritePacket()
 {
-    Packet p0;
+    std::cout << std::endl;
+    Packet packet;
+    int size = 666;
+    Coords3D dims(44,66,8);
+    std::string fileName = "testWritePacket";
+    //init packet
+    packet.compressedData = ucharPtr(new unsigned char[size]);
+    packet.compressedSize = size;
+    packet.fullSize = 999;
+    packet.location = dims;
+    
+    //init payload
+    for(int i=0; i < packet.compressedSize; i++)
+    {   
+        packet.compressedData.get()[i] = (char)rand();
+    }
+    
+    int cubeNumber = 559;
+    {
+        bool isWrite = true;
+        CubeIO cubeIO(fileName, isWrite);
+        bool result = cubeIO.WritePacket(packet);
+        CPPUNIT_ASSERT(result);
+    }
+    { //read and compare
+        bool isWrite = false;
+        CubeIO cubeIO(fileName, isWrite);
+        int readNumber;
+        Packet newPacket = cubeIO.ReadPacket();
+        CPPUNIT_ASSERT_EQUAL(packet.compressedSize, newPacket.compressedSize);
+        CPPUNIT_ASSERT_EQUAL(packet.fullSize, newPacket.fullSize);
+        CPPUNIT_ASSERT_EQUAL(packet.location.Volume(), newPacket.location.Volume());
+        for(int i=0; i < packet.compressedSize; i++)
+        {   
+            CPPUNIT_ASSERT_EQUAL(packet.compressedData.get()[i],
+                                 newPacket.compressedData.get()[i]);
+        }
+    }
+    
+    
+    
     CubeIO cubeIO;
     //bool result = cubeIO.WritePacket(p0);
 }
@@ -106,12 +161,12 @@ void CubeIOTestClass::testWriteSequenceHeader()
 {
     
     std::cout << std::endl;
-    CodingParams codingParams;
+    Parameters parameters;
     Coords3D dims(100,20,4);
     Coords3D subDims(20,20,4);
-    codingParams.cubeSize = dims;
-    codingParams.subcubeSize = subDims;
-    codingParams.levels = 2;
+    parameters.codecParams.cubeSize = dims;
+    parameters.codecParams.subcubeSize = subDims;
+    parameters.codecParams.levels = 2;
     
     VideoParams videoParams;
     videoParams.fpsDenominator = 1;
@@ -123,32 +178,32 @@ void CubeIOTestClass::testWriteSequenceHeader()
     
     {//case without opening a file
         CubeIO cubeIO;
-        bool result = cubeIO.WriteSequenceHeader(codingParams, videoParams);
+        bool result = cubeIO.WriteSequenceHeader(parameters, videoParams);
         CPPUNIT_ASSERT(result == false);
     }
     {//case with writing a file
         CubeIO cubeIO;
         result = cubeIO.Init(fileName, true);
         CPPUNIT_ASSERT(result);
-        result = cubeIO.WriteSequenceHeader(codingParams, videoParams);
+        result = cubeIO.WriteSequenceHeader(parameters, videoParams);
         CPPUNIT_ASSERT(result);
     }
     {//case with reading a file
         CubeIO cubeIO;
         cubeIO.Init(fileName, false);
         
-        CodingParams codingP2;
+        Parameters codingP2;
         VideoParams videoP2;
         
         bool result = cubeIO.ReadSequenceHeader(codingP2, videoP2);
         CPPUNIT_ASSERT(result);
-        CPPUNIT_ASSERT_EQUAL(codingParams.levels, codingP2.levels);
-        CPPUNIT_ASSERT_EQUAL(codingParams.subcubeSize.Volume(), codingP2.subcubeSize.Volume());
-        CPPUNIT_ASSERT_EQUAL(codingParams.cubeSize.Volume(), codingP2.cubeSize.Volume());
+        CPPUNIT_ASSERT_EQUAL(parameters.codecParams.levels, codingP2.codecParams.levels);
+        CPPUNIT_ASSERT_EQUAL(parameters.codecParams.subcubeSize.Volume(), codingP2.codecParams.subcubeSize.Volume());
+        CPPUNIT_ASSERT_EQUAL(parameters.codecParams.cubeSize.Volume(), codingP2.codecParams.cubeSize.Volume());
         
-        //check if codingParamsAre the same;
+        //check if parametersAre the same;
         
-        //TODO: codingParams should be separated from runtime encoder switches etc
+        //TODO: parameters should be separated from runtime encoder switches etc
     }
 }
 

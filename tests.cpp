@@ -262,15 +262,15 @@ int testPictureReadWrite() {
 int testEncode()
 {
     Encoder encoder;
-    CodingParams params;
-    params.cubeSize.width = 16;
-    params.cubeSize.height = 20;
-    params.cubeSize.depth = 4;
+    Parameters params;
+    params.codecParams.cubeSize.width = 16;
+    params.codecParams.cubeSize.height = 20;
+    params.codecParams.cubeSize.depth = 4;
     encoder.SetParams(params);
     
-    Picture picture(params.cubeSize.width, params.cubeSize.height);
+    Picture picture(params.codecParams.cubeSize.width, params.codecParams.cubeSize.height);
     
-    assert(encoder.GetParams().cubeSize.depth == 4);
+    assert(encoder.GetParams().codecParams.cubeSize.depth == 4);
     encoder.LoadNextPicture(picture);
     encoder.LoadNextPicture(picture);
     encoder.LoadNextPicture(picture);

@@ -18,7 +18,7 @@
 /// Main encoder class: takes pictures to a buffer and returns packets
 class Encoder {
 private:
-    CodingParams params;
+    Parameters params;
     PictureBuffer pictureBuffer;
     PictureBuffer pictureOutputBuffer;
     CoeffCube coeffCube;
@@ -50,8 +50,8 @@ public:
     //finish encoding without further frames
     bool EndOfSequence();
 
-    CodingParams GetParams() const;
-    void SetParams(CodingParams params);
+    Parameters GetParams() const;
+    void SetParams(Parameters params);
     
     Picture GetNextDecodedPicture();
     

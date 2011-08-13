@@ -37,15 +37,15 @@ bool CubeIO::Init(std::string fileName, bool isWrite)
 
 }
 
-bool CubeIO::WriteSequenceHeader(const CodingParams& codingParams, const VideoParams& videoParams)
+bool CubeIO::WriteSequenceHeader(const Parameters& parameters, const VideoParams& videoParams)
 {
     if(!outputFile)
         return false;
     //write coding Params to a stream , not handling endianess
 #define FILEOPERATION outputFile->write
-    FILEOPERATION((char*) &codingParams.cubeSize, sizeof (codingParams.cubeSize));  //1
-    FILEOPERATION((char*) &codingParams.subcubeSize, sizeof (codingParams.subcubeSize)); //2
-    FILEOPERATION((char*) &codingParams.levels, sizeof (codingParams.levels)); //3
+    FILEOPERATION((char*) &parameters.codecParams.cubeSize, sizeof (parameters.codecParams.cubeSize));  //1
+    FILEOPERATION((char*) &parameters.codecParams.subcubeSize, sizeof (parameters.codecParams.subcubeSize)); //2
+    FILEOPERATION((char*) &parameters.codecParams.levels, sizeof (parameters.codecParams.levels)); //3
     FILEOPERATION((char*) &videoParams.frameCount, sizeof (videoParams.frameCount)); //4
     FILEOPERATION((char*) &videoParams.fpsNumerator, sizeof (videoParams.fpsNumerator)); //5
     FILEOPERATION((char*) &videoParams.fpsDenominator, sizeof (videoParams.fpsDenominator)); //6
@@ -53,14 +53,14 @@ bool CubeIO::WriteSequenceHeader(const CodingParams& codingParams, const VideoPa
     return ! outputFile->fail();
 }
 
-bool CubeIO::ReadSequenceHeader(CodingParams& codingParams, VideoParams& videoParams)
+bool CubeIO::ReadSequenceHeader(Parameters& parameters, VideoParams& videoParams)
 {
     if(!inputFile)
         return false;
 #define FILEOPERATION inputFile->read
-    FILEOPERATION((char*) &codingParams.cubeSize, sizeof (codingParams.cubeSize));  //1
-    FILEOPERATION((char*) &codingParams.subcubeSize, sizeof (codingParams.subcubeSize)); //2
-    FILEOPERATION((char*) &codingParams.levels, sizeof (codingParams.levels)); //3
+    FILEOPERATION((char*) &parameters.codecParams.cubeSize, sizeof (parameters.codecParams.cubeSize));  //1
+    FILEOPERATION((char*) &parameters.codecParams.subcubeSize, sizeof (parameters.codecParams.subcubeSize)); //2
+    FILEOPERATION((char*) &parameters.codecParams.levels, sizeof (parameters.codecParams.levels)); //3
     FILEOPERATION((char*) &videoParams.frameCount, sizeof (videoParams.frameCount)); //4
     FILEOPERATION((char*) &videoParams.fpsNumerator, sizeof (videoParams.fpsNumerator)); //5
     FILEOPERATION((char*) &videoParams.fpsDenominator, sizeof (videoParams.fpsDenominator)); //6
