@@ -20,7 +20,7 @@ class Packet
 public:
     Packet();
 public:
-    ucharPtr CompressedData;
+    ucharPtr compressedData;
     int compressedSize;
     int fullSize;
     Coords3D location;

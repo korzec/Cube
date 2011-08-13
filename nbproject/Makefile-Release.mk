@@ -37,12 +37,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/tests.o \
 	${OBJECTDIR}/Compressor.o \
 	${OBJECTDIR}/cube_codec.o \
-	${OBJECTDIR}/CubeIO.o \
 	${OBJECTDIR}/SubcubeIndex.o \
+	${OBJECTDIR}/CubeIO.o \
 	${OBJECTDIR}/WaveletTransform.o \
 	${OBJECTDIR}/Picture.o \
-	${OBJECTDIR}/SubbandList.o \
 	${OBJECTDIR}/Subcube.o \
+	${OBJECTDIR}/SubbandList.o \
 	${OBJECTDIR}/Encoder.o \
 	${OBJECTDIR}/PictureIO.o \
 	${OBJECTDIR}/CubeTransform.o \
@@ -51,6 +51,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/Packet.o \
 	${OBJECTDIR}/PictureBuffer.o
 
+# Test Directory
+TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
+
+# Test Files
+TESTFILES= \
+	${TESTDIR}/TestFiles/f1
 
 # C Compiler Flags
 CFLAGS=
@@ -91,15 +97,15 @@ ${OBJECTDIR}/cube_codec.o: cube_codec.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec.o cube_codec.cpp
 
-${OBJECTDIR}/CubeIO.o: CubeIO.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeIO.o CubeIO.cpp
-
 ${OBJECTDIR}/SubcubeIndex.o: SubcubeIndex.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubcubeIndex.o SubcubeIndex.cpp
+
+${OBJECTDIR}/CubeIO.o: CubeIO.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeIO.o CubeIO.cpp
 
 ${OBJECTDIR}/WaveletTransform.o: WaveletTransform.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -111,15 +117,15 @@ ${OBJECTDIR}/Picture.o: Picture.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Picture.o Picture.cpp
 
-${OBJECTDIR}/SubbandList.o: SubbandList.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubbandList.o SubbandList.cpp
-
 ${OBJECTDIR}/Subcube.o: Subcube.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube.o Subcube.cpp
+
+${OBJECTDIR}/SubbandList.o: SubbandList.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubbandList.o SubbandList.cpp
 
 ${OBJECTDIR}/Encoder.o: Encoder.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -158,6 +164,242 @@ ${OBJECTDIR}/PictureBuffer.o: PictureBuffer.cpp
 
 # Subprojects
 .build-subprojects:
+
+# Build Test Targets
+.build-tests-conf: .build-conf ${TESTFILES}
+${TESTDIR}/TestFiles/f1: ${TESTDIR}/_ext/803628374/CompressorTestClass.o ${TESTDIR}/_ext/803628374/CompressorTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} -lcppunit -lcppunit 
+
+
+${TESTDIR}/_ext/803628374/CompressorTestClass.o: /Users/korzec/Cube/tests/CompressorTestClass.cpp 
+	${MKDIR} -p ${TESTDIR}/_ext/803628374
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -I. -MMD -MP -MF $@.d -o ${TESTDIR}/_ext/803628374/CompressorTestClass.o /Users/korzec/Cube/tests/CompressorTestClass.cpp
+
+
+${TESTDIR}/_ext/803628374/CompressorTestRunner.o: /Users/korzec/Cube/tests/CompressorTestRunner.cpp 
+	${MKDIR} -p ${TESTDIR}/_ext/803628374
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -I. -MMD -MP -MF $@.d -o ${TESTDIR}/_ext/803628374/CompressorTestRunner.o /Users/korzec/Cube/tests/CompressorTestRunner.cpp
+
+
+${OBJECTDIR}/tests_nomain.o: ${OBJECTDIR}/tests.o tests.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/tests.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests_nomain.o tests.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/tests.o ${OBJECTDIR}/tests_nomain.o;\
+	fi
+
+${OBJECTDIR}/Compressor_nomain.o: ${OBJECTDIR}/Compressor.o Compressor.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Compressor.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Compressor_nomain.o Compressor.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Compressor.o ${OBJECTDIR}/Compressor_nomain.o;\
+	fi
+
+${OBJECTDIR}/cube_codec_nomain.o: ${OBJECTDIR}/cube_codec.o cube_codec.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/cube_codec.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec_nomain.o cube_codec.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/cube_codec.o ${OBJECTDIR}/cube_codec_nomain.o;\
+	fi
+
+${OBJECTDIR}/SubcubeIndex_nomain.o: ${OBJECTDIR}/SubcubeIndex.o SubcubeIndex.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/SubcubeIndex.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubcubeIndex_nomain.o SubcubeIndex.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/SubcubeIndex.o ${OBJECTDIR}/SubcubeIndex_nomain.o;\
+	fi
+
+${OBJECTDIR}/CubeIO_nomain.o: ${OBJECTDIR}/CubeIO.o CubeIO.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/CubeIO.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeIO_nomain.o CubeIO.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/CubeIO.o ${OBJECTDIR}/CubeIO_nomain.o;\
+	fi
+
+${OBJECTDIR}/WaveletTransform_nomain.o: ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/WaveletTransform.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform_nomain.o WaveletTransform.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/WaveletTransform.o ${OBJECTDIR}/WaveletTransform_nomain.o;\
+	fi
+
+${OBJECTDIR}/Picture_nomain.o: ${OBJECTDIR}/Picture.o Picture.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Picture.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Picture_nomain.o Picture.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Picture.o ${OBJECTDIR}/Picture_nomain.o;\
+	fi
+
+${OBJECTDIR}/Subcube_nomain.o: ${OBJECTDIR}/Subcube.o Subcube.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Subcube.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Subcube_nomain.o Subcube.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Subcube.o ${OBJECTDIR}/Subcube_nomain.o;\
+	fi
+
+${OBJECTDIR}/SubbandList_nomain.o: ${OBJECTDIR}/SubbandList.o SubbandList.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/SubbandList.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubbandList_nomain.o SubbandList.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/SubbandList.o ${OBJECTDIR}/SubbandList_nomain.o;\
+	fi
+
+${OBJECTDIR}/Encoder_nomain.o: ${OBJECTDIR}/Encoder.o Encoder.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Encoder.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Encoder_nomain.o Encoder.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Encoder.o ${OBJECTDIR}/Encoder_nomain.o;\
+	fi
+
+${OBJECTDIR}/PictureIO_nomain.o: ${OBJECTDIR}/PictureIO.o PictureIO.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/PictureIO.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureIO_nomain.o PictureIO.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/PictureIO.o ${OBJECTDIR}/PictureIO_nomain.o;\
+	fi
+
+${OBJECTDIR}/CubeTransform_nomain.o: ${OBJECTDIR}/CubeTransform.o CubeTransform.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/CubeTransform.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeTransform_nomain.o CubeTransform.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/CubeTransform.o ${OBJECTDIR}/CubeTransform_nomain.o;\
+	fi
+
+${OBJECTDIR}/minilzo/minilzo_nomain.o: ${OBJECTDIR}/minilzo/minilzo.o minilzo/minilzo.c 
+	${MKDIR} -p ${OBJECTDIR}/minilzo
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/minilzo/minilzo.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.c) -O2 -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/minilzo/minilzo_nomain.o minilzo/minilzo.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/minilzo/minilzo.o ${OBJECTDIR}/minilzo/minilzo_nomain.o;\
+	fi
+
+${OBJECTDIR}/CoeffCube_nomain.o: ${OBJECTDIR}/CoeffCube.o CoeffCube.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/CoeffCube.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/CoeffCube_nomain.o CoeffCube.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/CoeffCube.o ${OBJECTDIR}/CoeffCube_nomain.o;\
+	fi
+
+${OBJECTDIR}/Packet_nomain.o: ${OBJECTDIR}/Packet.o Packet.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Packet.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Packet_nomain.o Packet.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Packet.o ${OBJECTDIR}/Packet_nomain.o;\
+	fi
+
+${OBJECTDIR}/PictureBuffer_nomain.o: ${OBJECTDIR}/PictureBuffer.o PictureBuffer.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/PictureBuffer.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureBuffer_nomain.o PictureBuffer.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/PictureBuffer.o ${OBJECTDIR}/PictureBuffer_nomain.o;\
+	fi
+
+# Run Test Targets
+.test-conf:
+	@if [ "${TEST}" = "" ]; \
+	then  \
+	    ${TESTDIR}/TestFiles/f1 || true; \
+	else  \
+	    ./${TEST} || true; \
+	fi
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}

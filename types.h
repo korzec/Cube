@@ -80,6 +80,10 @@ public:
          this->depth = depth;
          return *this;
     }
+    int Volume()
+    {
+        return width*height*depth;
+    }
 };
 
 ///posible states of the encoder after encoding iteration

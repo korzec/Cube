@@ -16,7 +16,7 @@ class Compressor
 public:
     Compressor(); 
     virtual Packet Compress(CoeffView3D& subcube, Coords3D& location);
-    virtual CoeffArray3DPtr Decompress(Packet packet, Coords3D& subcubeSize);
+    virtual CoeffArray3DPtr Decompress(Packet& packet, Coords3D& subcubeSize);
     
 private:
 
