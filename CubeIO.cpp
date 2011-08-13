@@ -39,6 +39,8 @@ bool CubeIO::Init(std::string fileName, bool isWrite)
 
 bool CubeIO::WriteSequenceHeader(const CodingParams& codingParams, const VideoParams& videoParams)
 {
+    if(!outputFile)
+        return false;
     //write coding Params to a stream , not handling endianess
 #define FILEOPERATION outputFile->write
     FILEOPERATION((char*) &codingParams.cubeSize, sizeof (codingParams.cubeSize));  //1
@@ -53,6 +55,8 @@ bool CubeIO::WriteSequenceHeader(const CodingParams& codingParams, const VideoPa
 
 bool CubeIO::ReadSequenceHeader(CodingParams& codingParams, VideoParams& videoParams)
 {
+    if(!inputFile)
+        return false;
 #define FILEOPERATION inputFile->read
     FILEOPERATION((char*) &codingParams.cubeSize, sizeof (codingParams.cubeSize));  //1
     FILEOPERATION((char*) &codingParams.subcubeSize, sizeof (codingParams.subcubeSize)); //2
@@ -66,6 +70,8 @@ bool CubeIO::ReadSequenceHeader(CodingParams& codingParams, VideoParams& videoPa
 
 bool CubeIO::WriteCubeHeader(const int& cubeNumber)
 {
+    if(!outputFile)
+        return false;
     outputFile->write
             ((char*) &cubeNumber, sizeof (cubeNumber));
     return ! outputFile->fail();
@@ -73,6 +79,8 @@ bool CubeIO::WriteCubeHeader(const int& cubeNumber)
 
 bool CubeIO::WritePacket(const Packet& packet)
 {
+    if(!outputFile)
+        return false;
 #define FILEOPERATION outputFile->write
     FILEOPERATION((char*) &packet.location.depth, sizeof (packet.location.depth));
     FILEOPERATION((char*) &packet.location.height, sizeof (packet.location.height));
@@ -85,14 +93,18 @@ bool CubeIO::WritePacket(const Packet& packet)
 }
 
 bool CubeIO::ReadCubeHeader(int& cubeNumber)
-{
+{   
+    if(!inputFile)
+        return false;
     inputFile->read
             ((char*) &cubeNumber, sizeof (cubeNumber));
     return ! inputFile->fail();
 }
 
 Packet CubeIO::ReadPacket()
-{
+{    
+    if(!inputFile)
+        return Packet();
     Packet packet;
 #define FILEOPERATION inputFile->read
     FILEOPERATION((char*) &packet.location.depth, sizeof (packet.location.depth));
@@ -108,17 +120,19 @@ Packet CubeIO::ReadPacket()
 
 bool CubeIO::Finish()
 {
-    bool state = false;
+    bool state;
     if (outputFile)
     {
         outputFile->close();
         state = ! outputFile->fail();
     }
-    if (inputFile)
+    else if (inputFile)
     {
         inputFile->close();
         state = ! inputFile->fail();
     }
+    else
+        state = true;
     inputFile = NULL;
     outputFile = NULL;
     return state;

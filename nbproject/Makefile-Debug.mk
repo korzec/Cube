@@ -56,7 +56,8 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
-	${TESTDIR}/TestFiles/f1
+	${TESTDIR}/TestFiles/f1 \
+	${TESTDIR}/TestFiles/f2
 
 # C Compiler Flags
 CFLAGS=
@@ -167,21 +168,37 @@ ${OBJECTDIR}/PictureBuffer.o: PictureBuffer.cpp
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
-${TESTDIR}/TestFiles/f1: ${TESTDIR}/_ext/803628374/CompressorTestClass.o ${TESTDIR}/_ext/803628374/CompressorTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/CompressorTestClass.o ${TESTDIR}/tests/CompressorTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} 
 
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/CubeIOTestClass.o ${TESTDIR}/tests/CubeIOTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} 
 
-${TESTDIR}/_ext/803628374/CompressorTestClass.o: /Users/korzec/Cube/tests/CompressorTestClass.cpp 
-	${MKDIR} -p ${TESTDIR}/_ext/803628374
+
+${TESTDIR}/tests/CompressorTestClass.o: tests/CompressorTestClass.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -MMD -MP -MF $@.d -o ${TESTDIR}/_ext/803628374/CompressorTestClass.o /Users/korzec/Cube/tests/CompressorTestClass.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestClass.o tests/CompressorTestClass.cpp
 
 
-${TESTDIR}/_ext/803628374/CompressorTestRunner.o: /Users/korzec/Cube/tests/CompressorTestRunner.cpp 
-	${MKDIR} -p ${TESTDIR}/_ext/803628374
+${TESTDIR}/tests/CompressorTestRunner.o: tests/CompressorTestRunner.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -MMD -MP -MF $@.d -o ${TESTDIR}/_ext/803628374/CompressorTestRunner.o /Users/korzec/Cube/tests/CompressorTestRunner.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestRunner.o tests/CompressorTestRunner.cpp
+
+
+${TESTDIR}/tests/CubeIOTestClass.o: tests/CubeIOTestClass.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestClass.o tests/CubeIOTestClass.cpp
+
+
+${TESTDIR}/tests/CubeIOTestRunner.o: tests/CubeIOTestRunner.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestRunner.o tests/CubeIOTestRunner.cpp
 
 
 ${OBJECTDIR}/tests_nomain.o: ${OBJECTDIR}/tests.o tests.cpp 
@@ -397,6 +414,7 @@ ${OBJECTDIR}/PictureBuffer_nomain.o: ${OBJECTDIR}/PictureBuffer.o PictureBuffer.
 	@if [ "${TEST}" = "" ]; \
 	then  \
 	    ${TESTDIR}/TestFiles/f1 || true; \
+	    ${TESTDIR}/TestFiles/f2 || true; \
 	else  \
 	    ./${TEST} || true; \
 	fi
