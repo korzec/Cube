@@ -120,6 +120,9 @@
         </ccTool>
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerLibLibItem>cppunit</linkerLibLibItem>
+          </linkerLibItems>
         </linkerTool>
       </folder>
       <folder path="TestFiles/f2">
@@ -137,6 +140,9 @@
         </ccTool>
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f2</output>
+          <linkerLibItems>
+            <linkerLibLibItem>cppunit</linkerLibLibItem>
+          </linkerLibItems>
         </linkerTool>
       </folder>
       <folder path="TestFiles/f3">
@@ -152,6 +158,9 @@
         </ccTool>
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerLibLibItem>cppunit</linkerLibLibItem>
+          </linkerLibItems>
         </linkerTool>
       </folder>
     </conf>

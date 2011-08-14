@@ -54,7 +54,8 @@ int testCompressWriteReadDecompress()
     videoParams.fpsNumerator = 30;
     videoParams.frameCount = 100;
     //now save to file
-    std::string fileName = "TestFilesSpecial2";
+    std::stringstream ss1; ss1 << OUTDIR << "testCompressWriteReadDecompress";
+    std::string fileName = ss1.str();
     
     CubeIO cubeIO;
     bool result = cubeIO.Init(fileName, true);

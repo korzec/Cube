@@ -177,15 +177,15 @@ ${OBJECTDIR}/PictureBuffer.o: PictureBuffer.cpp
 .build-tests-conf: .build-conf ${TESTFILES}
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/CompressorTestClass.o ${TESTDIR}/tests/CompressorTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} 
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} -lcppunit 
 
 ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/CubeIOTestClass.o ${TESTDIR}/tests/CubeIOTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} 
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} -lcppunit 
 
 ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/PictureTestClass.o ${TESTDIR}/tests/PictureTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS} 
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS} -lcppunit 
 
 
 ${TESTDIR}/tests/CompressorTestClass.o: tests/CompressorTestClass.cpp 

@@ -35,7 +35,8 @@ void CubeIOTestClass::testCubeIO()
 void CubeIOTestClass::testCubeIO2()
 {
     std::cout << std::endl;
-    std::string fileName = "supertest1";
+    std::stringstream ss1; ss1 << OUTDIR << "TestCubeIO";
+    std::string fileName = ss1.str();
     bool isWrite = true;
     CubeIO cubeIO(fileName, isWrite);
 }
@@ -52,14 +53,16 @@ void CubeIOTestClass::testInit()
 {
     std::cout << std::endl;
     {
-        std::string fileName = "TestFile333";
+        std::stringstream ss1; ss1 << OUTDIR << "TestCubeIO";
+        std::string fileName = ss1.str();
         bool isWrite = true;
         CubeIO cubeIO;
         bool result = cubeIO.Init(fileName, isWrite);
         CPPUNIT_ASSERT(result);
     }
     {
-        std::string fileName = "TestFile333";
+        std::stringstream ss1; ss1 << OUTDIR << "TestCubeIO";
+        std::string fileName = ss1.str();
         bool isWrite = false;
         CubeIO cubeIO;
         bool result = cubeIO.Init(fileName, isWrite);
@@ -90,7 +93,8 @@ void CubeIOTestClass::testReadSequenceHeader()
 void CubeIOTestClass::testWriteCubeHeader()
 {
     std::cout << std::endl;
-    std::string fileName = "testWriteCubeHeader";
+    std::stringstream ss1; ss1 << OUTDIR << "TestCubeIO";
+    std::string fileName = ss1.str();
     int cubeNumber = 559;
     {
         bool isWrite = true;
@@ -115,7 +119,8 @@ void CubeIOTestClass::testWritePacket()
     Packet packet;
     int size = 666;
     Coords3D dims(44,66,8);
-    std::string fileName = "testWritePacket";
+    std::stringstream ss1; ss1 << OUTDIR << "TestCubeIO";
+    std::string fileName = ss1.str();
     //init packet
     packet.compressedData = ucharPtr(new unsigned char[size]);
     packet.compressedSize = size;
@@ -169,7 +174,8 @@ void CubeIOTestClass::testWriteSequenceHeader()
     videoParams.fpsNumerator = 30;
     videoParams.frameCount = 100;
     
-    std::string fileName = "TestFile444";
+    std::stringstream ss1; ss1 << OUTDIR << "TestCubeIO";
+    std::string fileName = ss1.str();
     bool result;
     
     {//case without opening a file

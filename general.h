@@ -119,9 +119,9 @@ bool dumpSubcubes(SubcubeArray3D& subcubes, FloatArray3D& weights, std::string f
             for (int w = 0; w < dims.width; w++)
             {
                 ///compute current subcube index
-                index.Set(w / subSize.width,
-                          h / subSize.height,
-                          d / subSize.depth);
+                index.Set(w / subSize.width -0.5,
+                          h / subSize.height -0.5,
+                          d / subSize.depth -0.5);
 
                 //CoeffType* coeff = &(*cube)[d][h][w];
                 float* weight = &weights[index.depth][index.height][index.width];
