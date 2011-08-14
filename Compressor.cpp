@@ -56,7 +56,7 @@ CoeffArray3DPtr Compressor::Decompress(Packet& packet, Coords3D& subcubeSize)
     lzo_uint newSize;
     
     fullSize = subcubeSize.Volume()*sizeof(CoeffType);
-    assert(packet.fullSize == fullSize); //redundant
+    assert((size_t)packet.fullSize == fullSize); //redundant
     compressedSize = packet.compressedSize;
     
     CoeffArray3DPtr array = CoeffArray3DPtr(new CoeffArray3D(

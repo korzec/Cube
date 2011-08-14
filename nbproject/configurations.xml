@@ -7,6 +7,7 @@
       <itemPath>CoeffCube.h</itemPath>
       <itemPath>Compressor.h</itemPath>
       <itemPath>CubeIO.h</itemPath>
+      <itemPath>CubeStream.h</itemPath>
       <itemPath>CubeTransform.h</itemPath>
       <itemPath>Encoder.h</itemPath>
       <itemPath>Packet.h</itemPath>
@@ -35,6 +36,7 @@
       <itemPath>CoeffCube.cpp</itemPath>
       <itemPath>Compressor.cpp</itemPath>
       <itemPath>CubeIO.cpp</itemPath>
+      <itemPath>CubeStream.cpp</itemPath>
       <itemPath>CubeTransform.cpp</itemPath>
       <itemPath>Encoder.cpp</itemPath>
       <itemPath>Packet.cpp</itemPath>
@@ -99,12 +101,10 @@
         <cTool>
           <incDir>
             <pElem>.</pElem>
-            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
-            <pElem>.</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -153,12 +153,10 @@
         <cTool>
           <incDir>
             <pElem>.</pElem>
-            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
-            <pElem>.</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>

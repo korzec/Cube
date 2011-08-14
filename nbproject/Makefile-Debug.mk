@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Compressor.o \
 	${OBJECTDIR}/cube_codec.o \
 	${OBJECTDIR}/SubcubeIndex.o \
+	${OBJECTDIR}/CubeStream.o \
 	${OBJECTDIR}/CubeIO.o \
 	${OBJECTDIR}/WaveletTransform.o \
 	${OBJECTDIR}/Picture.o \
@@ -102,6 +103,11 @@ ${OBJECTDIR}/SubcubeIndex.o: SubcubeIndex.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubcubeIndex.o SubcubeIndex.cpp
+
+${OBJECTDIR}/CubeStream.o: CubeStream.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeStream.o CubeStream.cpp
 
 ${OBJECTDIR}/CubeIO.o: CubeIO.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -180,13 +186,13 @@ ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/CubeIOTestClass.o ${TESTDIR}/tests/Cub
 ${TESTDIR}/tests/CompressorTestClass.o: tests/CompressorTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestClass.o tests/CompressorTestClass.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestClass.o tests/CompressorTestClass.cpp
 
 
 ${TESTDIR}/tests/CompressorTestRunner.o: tests/CompressorTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestRunner.o tests/CompressorTestRunner.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestRunner.o tests/CompressorTestRunner.cpp
 
 
 ${TESTDIR}/tests/CubeIOTestClass.o: tests/CubeIOTestClass.cpp 
@@ -251,6 +257,19 @@ ${OBJECTDIR}/SubcubeIndex_nomain.o: ${OBJECTDIR}/SubcubeIndex.o SubcubeIndex.cpp
 	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/SubcubeIndex_nomain.o SubcubeIndex.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/SubcubeIndex.o ${OBJECTDIR}/SubcubeIndex_nomain.o;\
+	fi
+
+${OBJECTDIR}/CubeStream_nomain.o: ${OBJECTDIR}/CubeStream.o CubeStream.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/CubeStream.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/CubeStream_nomain.o CubeStream.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/CubeStream.o ${OBJECTDIR}/CubeStream_nomain.o;\
 	fi
 
 ${OBJECTDIR}/CubeIO_nomain.o: ${OBJECTDIR}/CubeIO.o CubeIO.cpp 

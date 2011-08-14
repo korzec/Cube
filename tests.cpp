@@ -7,6 +7,8 @@
 #include "PictureBuffer.h"
 #include "WaveletTransform.h"
 #include "Subcube.h"
+#include "Compressor.h"
+#include "CubeIO.h"
 //#include "SubcubeIndex.h"
 #include <string>
 #include <iostream>
@@ -14,6 +16,144 @@
 #include <cassert>
 
 using namespace std;
+
+int testCompressWriteReadDecompress()
+{       
+    //generate arrays
+    Coords3D subDims(16,32,4);
+    CoeffArray3D array1(extents[subDims.depth][subDims.height][subDims.width]);
+    CoeffArray3D array2(extents[subDims.depth][subDims.height][subDims.width]);
+    CoeffView3D subcubeView1 =  array1[ indices[range()][range()][range()] ];
+    CoeffView3D subcubeView2 =  array2[ indices[range()][range()][range()] ];
+    for (int d = 0; d < subDims.depth; d++)
+    {
+        for (int h = 0; h < subDims.height; h++)
+        {
+            for (int w = 0; w < subDims.width; w++)
+            {
+                array1[d][h][w] = (CoeffType)rand();
+                array2[d][h][w] = (CoeffType)rand();
+            }//w
+        }//h
+    }//d
+    
+    //Compress the subcubes
+    Coords3D location(4,4,4);
+    Compressor compressor;
+    Packet packet1 = compressor.Compress(subcubeView1, location);
+    Packet packet2 = compressor.Compress(subcubeView2, location);
+    
+    Parameters parameters;
+    Coords3D fullDims(100,20,4);
+    parameters.codecParams.cubeSize = fullDims;
+    parameters.codecParams.subcubeSize = subDims;
+    parameters.codecParams.levels = 2;
+    
+    VideoParams videoParams;
+    videoParams.fpsDenominator = 1;
+    videoParams.fpsNumerator = 30;
+    videoParams.frameCount = 100;
+    //now save to file
+    std::string fileName = "TestFilesSpecial2";
+    
+    CubeIO cubeIO;
+    bool result = cubeIO.Init(fileName, true);
+    assert(result);
+    {//write  seq heder   
+        result = cubeIO.WriteSequenceHeader(parameters, videoParams);
+        assert(result);
+    }
+    
+    //save cube number
+    int cubeNumber = 559;
+    {
+        bool result = cubeIO.WriteCubeHeader(cubeNumber);
+        assert(result);
+    }
+    
+    //save packets
+    {
+        bool result = cubeIO.WritePacket(packet1);
+        assert(result);
+        result = cubeIO.WritePacket(packet2);
+        assert(result);
+    }
+    
+    cubeIO.Finish();
+    assert(cubeIO.Init(fileName, false));
+    
+    //check Seq header
+    {//case with reading a file
+        Parameters codingP2;
+        VideoParams videoP2;
+        
+        bool result = cubeIO.ReadSequenceHeader(codingP2, videoP2);
+        assert(result);
+        std::cout << "old " << parameters.codecParams.levels << " new " << codingP2.codecParams.levels << std::endl;
+        assert(parameters.codecParams.levels == codingP2.codecParams.levels);
+        assert(parameters.codecParams.subcubeSize.Volume() == codingP2.codecParams.subcubeSize.Volume());
+        assert(parameters.codecParams.cubeSize.Volume() == codingP2.codecParams.cubeSize.Volume());
+        
+        //check if parametersAre the same;
+        
+        //TODO: parameters should be separated from runtime encoder switches etc
+    }
+    
+    
+    
+    //check cube header
+    { //read and compare
+        int readNumber;
+        bool result = cubeIO.ReadCubeHeader(readNumber);
+        assert(result);
+        std::cout << "old " << cubeNumber << " new " << readNumber << std::endl;
+        assert(cubeNumber == readNumber);
+    }
+    
+    
+    Packet newPacket1;
+    Packet newPacket2;
+    
+    { //read  packets
+        newPacket1 = cubeIO.ReadPacket();
+        newPacket2 = cubeIO.ReadPacket();
+        assert(packet1.compressedSize == newPacket1.compressedSize);
+        assert(packet1.fullSize == newPacket1.fullSize);
+        assert(packet1.location.Volume() == newPacket1.location.Volume());
+        for (int i = 0; i < packet1.compressedSize; i++)
+        {
+            assert(packet1.compressedData.get()[i] ==
+                                 newPacket1.compressedData.get()[i]);
+            assert(packet2.compressedData.get()[i] ==
+                                 newPacket2.compressedData.get()[i]);
+        }
+    }
+    
+    
+
+    
+    //decompress now
+    CoeffArray3DPtr newArray1 = compressor.Decompress(newPacket1, subDims);
+    CoeffArray3DPtr newArray2 = compressor.Decompress(newPacket2, subDims);
+    
+    if (true /*check result*/)
+    {
+        assert(subDims.Volume() == Coords3D(newArray1->shape()).Volume());
+        for (int d = 0; d < subDims.depth; d++)
+        {
+            for (int h = 0; h < subDims.height; h++)
+            {
+                for (int w = 0; w < subDims.width; w++)
+                {
+                    assert(array1[d][h][w] == (*newArray1)[d][h][w]);
+                    assert(array2[d][h][w] == (*newArray2)[d][h][w]);
+                }//w
+            }//h
+        }//d
+    }
+    
+    return 0;
+}
 
 int testDumpSubcubes()
 {
@@ -634,6 +774,8 @@ int testPictureIO() {
 }
 
 int runTests() {
+    
+    testCompressWriteReadDecompress();
     testDumpSubcubes();
     testSubcubeIndex();
     testSubcube();

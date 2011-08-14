@@ -6,7 +6,7 @@
  */
 
 #include "CubeIOTestClass.h"
-#include <CubeIO.h>
+#include "../CubeIO.h"
 
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CubeIOTestClass);
@@ -69,7 +69,6 @@ void CubeIOTestClass::testInit()
 
 void CubeIOTestClass::testReadCubeHeader()
 {
-    int cubeNumber;
     CubeIO cubeIO;
     //bool result = cubeIO.ReadCubeHeader(cubeNumber);
 }
@@ -128,8 +127,6 @@ void CubeIOTestClass::testWritePacket()
     {   
         packet.compressedData.get()[i] = (char)rand();
     }
-    
-    int cubeNumber = 559;
     {
         bool isWrite = true;
         CubeIO cubeIO(fileName, isWrite);
@@ -139,7 +136,6 @@ void CubeIOTestClass::testWritePacket()
     { //read and compare
         bool isWrite = false;
         CubeIO cubeIO(fileName, isWrite);
-        int readNumber;
         Packet newPacket = cubeIO.ReadPacket();
         CPPUNIT_ASSERT_EQUAL(packet.compressedSize, newPacket.compressedSize);
         CPPUNIT_ASSERT_EQUAL(packet.fullSize, newPacket.fullSize);
