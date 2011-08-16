@@ -23,7 +23,7 @@
 //using namespace blitz;
 using namespace boost;
 
-typedef float CoeffType;
+typedef int CoeffType;
 typedef unsigned char ValueType;
 typedef int PictureNumber;
 typedef int CubeNumber;

@@ -64,7 +64,7 @@ EncoderState Encoder::Encode()
                     coeffCube.dumpWeights(ss3.str());
                 }
 
-                coeffCube.SmoothTime();
+                //coeffCube.SmoothTime();
 
                 if (params.analysis)
                 {

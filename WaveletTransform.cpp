@@ -32,6 +32,9 @@ bool WaveletTransform::Reverse(CoeffView3D& cube)
         return false;
 }
 
+#define INTEGERTRANSFORM
+#define TRANSFORMSHIFT 2
+
 bool WaveletTransform::Split(CoeffView3D& cube)
 {
     assert(cube.size() != 0);
@@ -40,6 +43,20 @@ bool WaveletTransform::Split(CoeffView3D& cube)
    
     
     Coords3D dims(cube.shape()[2], cube.shape()[1], cube.shape()[0]);
+    
+#ifdef INTEGERTRANSFORM
+    //shift numbers to gain accuracy
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                cube[d][h][w] <<= TRANSFORMSHIFT;
+            }
+        }
+    }   
+#endif
     
     ///do filtering in width
     for (int d = 0; d < dims.depth; d++)
@@ -51,7 +68,11 @@ bool WaveletTransform::Split(CoeffView3D& cube)
                 /// d = x_2n+1 - x_2n
                 cube[d][h][w] -= cube[d][h][w-1];
                 /// s = x_2n + d/2
+#ifdef INTEGERTRANSFORM
+                cube[d][h][w-1] += ((cube[d][h][w]+1)>>1);
+#else
                 cube[d][h][w-1] += cube[d][h][w]/2;
+#endif
             }
         }
     }   
@@ -65,7 +86,11 @@ bool WaveletTransform::Split(CoeffView3D& cube)
                 /// d = x_2n+1 - x_2n
                 cube[d][h][w] -= cube[d][h-1][w];
                 /// s = x_2n + d/2
+#ifdef INTEGERTRANSFORM
+                cube[d][h-1][w] += ((cube[d][h][w]+1)>>1);
+#else
                 cube[d][h-1][w] += cube[d][h][w]/2;
+#endif
             }
         }
     }
@@ -79,7 +104,11 @@ bool WaveletTransform::Split(CoeffView3D& cube)
                 /// d = x_2n+1 - x_2n
                 cube[d][h][w] -= cube[d-1][h][w];
                 /// s = x_2n + d/2
+#ifdef INTEGERTRANSFORM
+                cube[d-1][h][w] += ((cube[d][h][w]+1)>>1);
+#else
                 cube[d-1][h][w] += cube[d][h][w]/2;
+#endif
             }
         }
     }
@@ -103,7 +132,11 @@ bool WaveletTransform::Synth(CoeffView3D& cube)
             for (int w = 1; w < dims.width; w+=2)
             {
                 /// xe = s - d/2
+#ifdef INTEGERTRANSFORM
+                cube[d][h][w-1] -= ((cube[d][h][w]+1)>>1);
+#else
                 cube[d][h][w-1] -= cube[d][h][w]/2;
+#endif
                 /// xo = d + xe
                 cube[d][h][w] += cube[d][h][w-1];
             }
@@ -117,9 +150,14 @@ bool WaveletTransform::Synth(CoeffView3D& cube)
             for (int w = 0; w < dims.width; w++)
             {
                 /// xe = s - d/2
+#ifdef INTEGERTRANSFORM
+                cube[d][h-1][w] -= ((cube[d][h][w]+1)>>1);
+#else
                 cube[d][h-1][w] -= cube[d][h][w]/2;
+#endif
                 /// xo = d + xe
                 cube[d][h][w] += cube[d][h-1][w];
+
             }
         }
     }
@@ -131,13 +169,33 @@ bool WaveletTransform::Synth(CoeffView3D& cube)
             for (int w = 0; w < dims.width; w++)
             {
                 /// xe = s - d/2
+#ifdef INTEGERTRANSFORM
+                cube[d-1][h][w] -= ((cube[d][h][w]+1)>>1);
+#else
                 cube[d-1][h][w] -= cube[d][h][w]/2;
+#endif
                 /// xo = d + xe
                 cube[d][h][w] += cube[d-1][h][w];
             }
         }
     }
-
+    
+#ifdef INTEGERTRANSFORM
+    //reverse the shift
+    //const CoeffType halfway( 1<<(/*shift*/1-1) );
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                //cube[d][h][w] = (cube[d][h][w]+halfway) >>= 1;
+                cube[d][h][w] >>= TRANSFORMSHIFT;
+            }
+        }
+    }   
+#endif
+    
     return true;
 }
 
