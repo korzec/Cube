@@ -39,7 +39,17 @@ int main(int argc, char* argv[])
     if (!parse_command_line(params, argc, argv))
         return EXIT_FAILURE;
     
-    encoder.SetParams(params);
+    
+    params.codecParams.subcubeSize.width = 60;
+    params.codecParams.subcubeSize.height = 32;
+    params.codecParams.subcubeSize.depth = 4;
+    
+    //load params and check if they were correct
+    if( ! encoder.SetParams(params))
+    {
+        std::cout << "some parameters were wrong" << std::endl;
+        return EXIT_FAILURE;
+    }
 
     if (argc < 2)
     {
@@ -83,6 +93,9 @@ int main(int argc, char* argv[])
 
     std::cout << "w " << encoder.GetParams().codecParams.cubeSize.width << " h " << encoder.GetParams().codecParams.cubeSize.height << std::endl;
 
+    //open file for writing
+    std::ofstream* codedFile = new std::ofstream(output.c_str(), std::ios::out | std::ios::binary);
+    
     /// open the decoded output file
     std::ofstream *outputPicture = NULL;
 
@@ -99,6 +112,9 @@ int main(int argc, char* argv[])
     int frameNumber = 0;
     bool go = true;
     EncoderState state;
+    
+    //write a file header
+    encoder.OutputSequenceHeader(codedFile);
     
     //skip frames
     for (int i=0; i<params.start_pos; ++i)
@@ -149,6 +165,10 @@ int main(int argc, char* argv[])
              case PICTURE_AVAILABLE:
                  ///if decoded picture is available
                  ///write output picture and continue
+                 
+                 //lets output the coded data
+                 encoder.OutputCube(codedFile);            
+                 
                  gop = encoder.GetDecodedGOP();
                  if(!params.nolocal)
                      for(size_t i=0; i<gop->size(); i++ )
@@ -168,7 +188,8 @@ int main(int argc, char* argv[])
                  break;
              case INVALID:
                  ///if encoder stopped with an exception
-                 return EXIT_FAILURE;
+                 //return EXIT_FAILURE;
+                 go = false;
                  break;
              default:
                  std::cout << "Unknown state reported by encoder" << std::endl;
@@ -179,8 +200,17 @@ int main(int argc, char* argv[])
          
     } while(go);
 
+    
+    //AFTER ALL JUST READ THE FILE BACK
+    
+    
+    
+    
+    
 
     inputPicture.close();
+    if(codedFile)
+        codedFile->close();
     if(outputPicture)
             outputPicture->close();
 

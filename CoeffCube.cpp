@@ -10,6 +10,7 @@
 #include "CubeTransform.h"
 #include "SubcubeIndex.h"
 #include <omp.h>
+#include <cstring>
 
 CoeffCube::CoeffCube() : available(false), cubeNumber(-1), nextIndex(-1)
 {
@@ -21,7 +22,7 @@ CoeffCube::CoeffCube(Coords3D size, int levels, Coords3D subSize) :
     Init(size, levels, subSize);
 }
 
-void CoeffCube::Init(Coords3D size, int levels, Coords3D subSize)
+bool CoeffCube::Init(Coords3D size, int levels, Coords3D subSize)
 {
     arrays[Ych] = CoeffArray3DPtr(new CoeffArray3D
             (boost::extents[size.depth][size.height][size.width]));
@@ -34,9 +35,9 @@ void CoeffCube::Init(Coords3D size, int levels, Coords3D subSize)
     subbands[Uch].Init(Array(Uch), levels);
     subbands[Vch].Init(Array(Vch), levels);
     
-    subcubeIndex[Ych].Init(subbands[Ych].GetSubband(0, LLL), subSize );
-    subcubeIndex[Uch].Init(subbands[Uch].GetSubband(0, LLL), subSize );
-    subcubeIndex[Vch].Init(subbands[Vch].GetSubband(0, LLL), subSize );
+    subcubeIndex[Ych].Init(subbands[Ych].GetSubband(0, LLL), subSize, Ych );
+    subcubeIndex[Uch].Init(subbands[Uch].GetSubband(0, LLL), subSize, Uch );
+    subcubeIndex[Vch].Init(subbands[Vch].GetSubband(0, LLL), subSize, Vch );
 }
 
 CoeffArray3D & CoeffCube::Array(Channel channel)
@@ -223,4 +224,22 @@ bool CoeffCube::dumpWeights(std::string fileName)
 SubcubeIndex* CoeffCube::GetSubcubeIndex(Channel channel)
 {
     return &subcubeIndex[channel];
+}
+
+int& CoeffCube::GetCubeNumber()
+{
+    return cubeNumber;
+}
+
+bool CoeffCube::ZeroAll()
+{
+    //clear all arrays
+    for(int i=0; i < NOFCHANNELS ; i++)
+    {
+        char* data = (char*) ( arrays[0]->data() );
+        //size of data in the array
+        int length = Coords3D(arrays[0]->shape()).Volume()*sizeof(CoeffType);
+        memset(data, 0, length);
+    }
+    return true;
 }

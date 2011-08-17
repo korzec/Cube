@@ -15,6 +15,8 @@
 #include <fstream>
 #include <cassert>
 
+#include "tests.h"
+
 using namespace std;
 
 int testCompressWriteReadDecompress()
@@ -40,8 +42,8 @@ int testCompressWriteReadDecompress()
     //Compress the subcubes
     Coords3D location(4,4,4);
     Compressor compressor;
-    Packet packet1 = compressor.Compress(subcubeView1, location);
-    Packet packet2 = compressor.Compress(subcubeView2, location);
+    Packet packet1 = compressor.Compress(subcubeView1, location, Ych, 1);
+    Packet packet2 = compressor.Compress(subcubeView2, location, Ych ,1);
     
     Parameters parameters;
     Coords3D fullDims(100,20,4);
@@ -61,7 +63,7 @@ int testCompressWriteReadDecompress()
     bool result = cubeIO.Init(fileName, true);
     assert(result);
     {//write  seq heder   
-        result = cubeIO.WriteSequenceHeader(parameters, videoParams);
+        result = cubeIO.WriteSequenceHeader(parameters.codecParams, videoParams);
         assert(result);
     }
     
@@ -88,7 +90,7 @@ int testCompressWriteReadDecompress()
         Parameters codingP2;
         VideoParams videoP2;
         
-        bool result = cubeIO.ReadSequenceHeader(codingP2, videoP2);
+        bool result = cubeIO.ReadSequenceHeader(codingP2.codecParams, videoP2);
         assert(result);
         std::cout << "old " << parameters.codecParams.levels << " new " << codingP2.codecParams.levels << std::endl;
         assert(parameters.codecParams.levels == codingP2.codecParams.levels);
@@ -164,7 +166,7 @@ int testDumpSubcubes()
     Coords3D size(32,32,4);
     
     SubcubeIndex subcubes;
-    subcubes.Init(view, size);
+    subcubes.Init(view, size, Ych);
     
     for (int d = 0; d < dims.depth; d++)
     {
@@ -199,7 +201,7 @@ int testSubcubeIndex()
     Coords3D index(0,0,0);
     
     SubcubeIndex subcubes;
-    subcubes.Init(view, size);
+    subcubes.Init(view, size, Ych);
     
     assert(subcubes.GetSubcube(index).GetLocation().depth == index.depth);
     
@@ -265,7 +267,7 @@ int testSubcube()
     Coords3D index(0,0,0);
     
     Subcube subcube;
-    subcube.Init(view, index, size);
+    subcube.Init(view, index, size, Ych);
     
     assert(subcube.GetLocation().depth == index.depth);
     
@@ -407,7 +409,13 @@ int testEncode()
     params.codecParams.cubeSize.width = 16;
     params.codecParams.cubeSize.height = 20;
     params.codecParams.cubeSize.depth = 4;
-    encoder.SetParams(params);
+    
+    params.codecParams.subcubeSize.width = 8;
+    params.codecParams.subcubeSize.height = 10;
+    params.codecParams.subcubeSize.depth = 2;
+    
+    if( ! encoder.SetParams(params) )
+        std::cout << "some parameters were read wrong!" << std::endl;
     
     Picture picture(params.codecParams.cubeSize.width, params.codecParams.cubeSize.height);
     
@@ -775,7 +783,7 @@ int testPictureIO() {
 }
 
 int runTests() {
-    
+    runTests2();
     testCompressWriteReadDecompress();
     testDumpSubcubes();
     testSubcubeIndex();

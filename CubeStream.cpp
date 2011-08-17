@@ -41,15 +41,15 @@ bool CubeStream::Init(std::ostream* stream)
     return !outputFile->fail();
 }
 
-bool CubeStream::WriteSequenceHeader(const Parameters& parameters, const VideoParams& videoParams)
+bool CubeStream::WriteSequenceHeader(const CodecParams& codecParams, const VideoParams& videoParams)
 {
     if(!outputFile)
         return false;
     //write coding Params to a stream , not handling endianess
 #define FILEOPERATION outputFile->write
-    FILEOPERATION((char*) &parameters.codecParams.cubeSize, sizeof (parameters.codecParams.cubeSize));  //1
-    FILEOPERATION((char*) &parameters.codecParams.subcubeSize, sizeof (parameters.codecParams.subcubeSize)); //2
-    FILEOPERATION((char*) &parameters.codecParams.levels, sizeof (parameters.codecParams.levels)); //3
+    FILEOPERATION((char*) &codecParams.cubeSize, sizeof (codecParams.cubeSize));  //1
+    FILEOPERATION((char*) &codecParams.subcubeSize, sizeof (codecParams.subcubeSize)); //2
+    FILEOPERATION((char*) &codecParams.levels, sizeof (codecParams.levels)); //3
     FILEOPERATION((char*) &videoParams.frameCount, sizeof (videoParams.frameCount)); //4
     FILEOPERATION((char*) &videoParams.fpsNumerator, sizeof (videoParams.fpsNumerator)); //5
     FILEOPERATION((char*) &videoParams.fpsDenominator, sizeof (videoParams.fpsDenominator)); //6
@@ -57,14 +57,14 @@ bool CubeStream::WriteSequenceHeader(const Parameters& parameters, const VideoPa
     return ! outputFile->fail();
 }
 
-bool CubeStream::ReadSequenceHeader(Parameters& parameters, VideoParams& videoParams)
+bool CubeStream::ReadSequenceHeader(CodecParams& codecParams, VideoParams& videoParams)
 {
     if(!inputFile)
         return false;
 #define FILEOPERATION inputFile->read
-    FILEOPERATION((char*) &parameters.codecParams.cubeSize, sizeof (parameters.codecParams.cubeSize));  //1
-    FILEOPERATION((char*) &parameters.codecParams.subcubeSize, sizeof (parameters.codecParams.subcubeSize)); //2
-    FILEOPERATION((char*) &parameters.codecParams.levels, sizeof (parameters.codecParams.levels)); //3
+    FILEOPERATION((char*) &codecParams.cubeSize, sizeof (codecParams.cubeSize));  //1
+    FILEOPERATION((char*) &codecParams.subcubeSize, sizeof (codecParams.subcubeSize)); //2
+    FILEOPERATION((char*) &codecParams.levels, sizeof (codecParams.levels)); //3
     FILEOPERATION((char*) &videoParams.frameCount, sizeof (videoParams.frameCount)); //4
     FILEOPERATION((char*) &videoParams.fpsNumerator, sizeof (videoParams.fpsNumerator)); //5
     FILEOPERATION((char*) &videoParams.fpsDenominator, sizeof (videoParams.fpsDenominator)); //6
@@ -76,6 +76,9 @@ bool CubeStream::WriteCubeHeader(const int& cubeNumber)
 {
     if(!outputFile)
         return false;
+    char header = CUBEHEADERCODE;
+    outputFile->write
+            ((char*) &header, sizeof (header));
     outputFile->write
             ((char*) &cubeNumber, sizeof (cubeNumber));
     return ! outputFile->fail();
@@ -85,7 +88,10 @@ bool CubeStream::WritePacket(const Packet& packet)
 {
     if(!outputFile)
         return false;
+    char header = PACKETHEADERCODE;
 #define FILEOPERATION outputFile->write
+    FILEOPERATION((char*) &header, sizeof (header));
+    FILEOPERATION((char*) &packet.channel, sizeof (packet.channel));
     FILEOPERATION((char*) &packet.location.depth, sizeof (packet.location.depth));
     FILEOPERATION((char*) &packet.location.height, sizeof (packet.location.height));
     FILEOPERATION((char*) &packet.location.width, sizeof (packet.location.width));
@@ -100,6 +106,9 @@ bool CubeStream::ReadCubeHeader(int& cubeNumber)
 {   
     if(!inputFile)
         return false;
+    char header = 0;
+    inputFile->read
+            ((char*) &header, sizeof (header));
     inputFile->read
             ((char*) &cubeNumber, sizeof (cubeNumber));
     return ! inputFile->fail();
@@ -110,7 +119,10 @@ Packet CubeStream::ReadPacket()
     if(!inputFile)
         return Packet();
     Packet packet;
+    char header = 0;
 #define FILEOPERATION inputFile->read
+    FILEOPERATION((char*) &header, sizeof (header));
+    FILEOPERATION((char*) &packet.channel, sizeof (packet.channel));
     FILEOPERATION((char*) &packet.location.depth, sizeof (packet.location.depth));
     FILEOPERATION((char*) &packet.location.height, sizeof (packet.location.height));
     FILEOPERATION((char*) &packet.location.width, sizeof (packet.location.width));
@@ -145,4 +157,18 @@ bool CubeStream::Finish()
 CubeStream::~CubeStream()
 {
     Finish();
+}
+
+
+bool CubeStream::CheckNextCube()
+{
+    if(!inputFile)
+        return true;
+    int peek = inputFile->peek();
+    if( peek == CUBEHEADERCODE )
+        return true;
+    if(peek == PACKETHEADERCODE)
+        return false;
+    //asume its a next cube when its not a packet
+    return true;
 }

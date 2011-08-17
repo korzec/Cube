@@ -13,9 +13,9 @@ Compressor::Compressor()
 {
 }
 
-Packet Compressor::Compress(CoeffView3D& subcube, Coords3D& location)
+Packet Compressor::Compress(CoeffView3D& subcube, Coords3D& location, Channel channel, int cubeNumber)
 {
-    assert(subcube.size() > 0);
+//    assert(subcube.size() > 0);
     assert(lzo_init() == LZO_E_OK);
     if (lzo_init() != LZO_E_OK)
         return Packet(); //if compressor doest work
@@ -39,6 +39,8 @@ Packet Compressor::Compress(CoeffView3D& subcube, Coords3D& location)
     assert(result == LZO_E_OK);
 
     Packet packet;
+    packet.cubeNumer = cubeNumber;
+    packet.channel = channel;
     packet.compressedData = ucharPtr(compressedData);
     packet.compressedSize = compressedSize;
     packet.fullSize = fullSize; //redundant

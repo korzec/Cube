@@ -6,22 +6,24 @@
  */
 
 #include "Subcube.h"
+#include "SubcubeIndex.h"
 
 Subcube::Subcube() : cube(NULL)
 {
 }
 
-Subcube::Subcube(CoeffView3D& cube, Coords3D& index, Coords3D& size) : cube(NULL)
+Subcube::Subcube(CoeffView3D& cube, Coords3D& index, Coords3D& size, Channel channel) : cube(NULL)
 {
-    Init(cube, index, size);
+    Init(cube, index, size, channel);
 }
 
 
-void Subcube::Init(CoeffView3D& cube, Coords3D& index, Coords3D& size)
+void Subcube::Init(CoeffView3D& cube, Coords3D& index, Coords3D& size, Channel ch)
 {
     this->location = index;
     this->cube = &cube;
     this->size = size;
+    this->channel = ch;
     array.reset(new CoeffView3D(
             cube [ indices
             [range(index.depth*size.depth, (index.depth+1)*size.depth)]
@@ -67,4 +69,30 @@ float Subcube::GetWeight()
 CoeffView3D& Subcube::GetParentView()
 {
     return *cube;
+}
+
+Channel Subcube::GetChannel()
+{
+    return channel;
+}
+bool Subcube::CopyNewValues(CoeffArray3DPtr newArrayPtr)
+{   
+    //TODO: use memcpy
+    
+    assert(newArrayPtr->shape()[0] == array->shape()[0]);
+    assert(newArrayPtr->shape()[1] == array->shape()[1]);
+    assert(newArrayPtr->shape()[2] == array->shape()[2]);
+    
+    Coords3D dims(array->shape());
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                (*array)[d][h][w] = (*newArrayPtr)[d][h][w];
+            }//w
+        }//h
+    }//d
+    return true;
 }

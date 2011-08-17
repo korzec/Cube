@@ -23,10 +23,15 @@
 //using namespace blitz;
 using namespace boost;
 
-typedef int CoeffType;
+typedef short CoeffType;
 typedef unsigned char ValueType;
 typedef int PictureNumber;
 typedef int CubeNumber;
+
+
+#define CUBEHEADERCODE 0x0C
+#define PACKETHEADERCODE 0x0B
+#define SEQUENCEHEADERCODE 0x0A
 
 ///orientation labels for the 3d subbands
 enum Orientation
@@ -42,6 +47,7 @@ enum Orientation
     HHH = 7,
 };
 
+#define NOFCHANNELS 3
 enum Channel
 {
     Ych = 0,

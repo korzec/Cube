@@ -37,6 +37,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/tests.o \
 	${OBJECTDIR}/Compressor.o \
 	${OBJECTDIR}/cube_codec.o \
+	${OBJECTDIR}/tests2.o \
 	${OBJECTDIR}/SubcubeIndex.o \
 	${OBJECTDIR}/CubeStream.o \
 	${OBJECTDIR}/CubeIO.o \
@@ -99,6 +100,11 @@ ${OBJECTDIR}/cube_codec.o: cube_codec.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec.o cube_codec.cpp
+
+${OBJECTDIR}/tests2.o: tests2.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests2.o tests2.cpp
 
 ${OBJECTDIR}/SubcubeIndex.o: SubcubeIndex.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -191,37 +197,37 @@ ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/PictureTestClass.o ${TESTDIR}/tests/Pi
 ${TESTDIR}/tests/CompressorTestClass.o: tests/CompressorTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestClass.o tests/CompressorTestClass.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestClass.o tests/CompressorTestClass.cpp
 
 
 ${TESTDIR}/tests/CompressorTestRunner.o: tests/CompressorTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestRunner.o tests/CompressorTestRunner.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestRunner.o tests/CompressorTestRunner.cpp
 
 
 ${TESTDIR}/tests/CubeIOTestClass.o: tests/CubeIOTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestClass.o tests/CubeIOTestClass.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestClass.o tests/CubeIOTestClass.cpp
 
 
 ${TESTDIR}/tests/CubeIOTestRunner.o: tests/CubeIOTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestRunner.o tests/CubeIOTestRunner.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestRunner.o tests/CubeIOTestRunner.cpp
 
 
 ${TESTDIR}/tests/PictureTestClass.o: tests/PictureTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestClass.o tests/PictureTestClass.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestClass.o tests/PictureTestClass.cpp
 
 
 ${TESTDIR}/tests/PictureTestRunner.o: tests/PictureTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
 
 
 ${OBJECTDIR}/tests_nomain.o: ${OBJECTDIR}/tests.o tests.cpp 
@@ -261,6 +267,19 @@ ${OBJECTDIR}/cube_codec_nomain.o: ${OBJECTDIR}/cube_codec.o cube_codec.cpp
 	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_codec_nomain.o cube_codec.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/cube_codec.o ${OBJECTDIR}/cube_codec_nomain.o;\
+	fi
+
+${OBJECTDIR}/tests2_nomain.o: ${OBJECTDIR}/tests2.o tests2.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/tests2.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests2_nomain.o tests2.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/tests2.o ${OBJECTDIR}/tests2_nomain.o;\
 	fi
 
 ${OBJECTDIR}/SubcubeIndex_nomain.o: ${OBJECTDIR}/SubcubeIndex.o SubcubeIndex.cpp 

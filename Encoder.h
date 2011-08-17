@@ -14,6 +14,11 @@
 #include "Packet.h"
 #include "Compressor.h"
 #include <deque>
+#include <map>
+#include "CubeStream.h"
+
+typedef std::multimap<float, Packet> PacketMap;
+typedef std::pair<float, Packet> PacketPair;
 
 /// Main encoder class: takes pictures to a buffer and returns packets
 class Encoder {
@@ -25,9 +30,15 @@ private:
     int pictureNumber;
     int cubeNumber;
     std::deque<Packet> packetList[3];
+    PacketMap allPackets;
     Compressor compressor;
-    ///compresses the subcubes and stores them in a list
+    ///compresses the subcubes and stores them in a #packetList
     bool CompressSubcubes(Channel);
+    ///compress all subcubes and put in #allPackets
+    bool CompressAll();
+    
+    //decompres the packets and place into the cube array
+    bool DecompressAll();
     
 public:
 
@@ -51,7 +62,7 @@ public:
     bool EndOfSequence();
 
     Parameters GetParams() const;
-    void SetParams(Parameters params);
+    bool SetParams(Parameters params);
     
     Picture GetNextDecodedPicture();
     
@@ -59,6 +70,16 @@ public:
     
     bool DeleteOldOutputGOP();
 
+    //output currently coded cube to the stream
+    bool OutputCube(std::ostream*);
+    
+    bool OutputSequenceHeader(std::ostream* stream);
+    
+    //read packets from stream
+    bool ReadCube(std::istream* stream);
+    
+    //read file header
+    bool ReadSequenceHeader(std::istream* stream);
 };
 
 #endif /* CUBE_ENCODER_H_ */

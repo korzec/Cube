@@ -13,13 +13,16 @@ SubcubeIndex::SubcubeIndex()
 {
 }
 
-SubcubeIndex::SubcubeIndex(CoeffView3D& cube, Coords3D size)
+SubcubeIndex::SubcubeIndex(CoeffView3D& cube, Coords3D size, Channel channel)
 {
-    Init(cube,size);
+    Init(cube,size, channel);
 }
 
-void SubcubeIndex::Init(CoeffView3D& cube, Coords3D subSize)
+void SubcubeIndex::Init(CoeffView3D& cube, Coords3D subSize, Channel channel)
 {
+    assert(cube.shape()[2] % subSize.width == 0);
+    assert(cube.shape()[1] % subSize.height == 0);
+    assert(cube.shape()[0] % subSize.depth == 0);
     //Coords3D size(32,32,4);
     Coords3D dims(cube.shape()[2]/subSize.width, 
                   cube.shape()[1]/subSize.height, 
@@ -36,7 +39,7 @@ void SubcubeIndex::Init(CoeffView3D& cube, Coords3D subSize)
             for (int w = 0; w < dims.width; w++)
             {
                 Coords3D index(w,h,d);
-                ((Subcube*)(&list[d][h][w]))->Init(cube, index, subSize);
+                ((Subcube*)(&list[d][h][w]))->Init(cube, index, subSize, channel);
             }
         }
     }

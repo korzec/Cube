@@ -24,6 +24,9 @@ public:
     int compressedSize;
     int fullSize;
     Coords3D location;
+    Channel channel;
+    int cubeNumer;
+   // char headerCode = PACKETHEADERCODE;
 };
 #endif	/* PACKET_H */
 

@@ -30,7 +30,7 @@ private:
 public:
     CoeffCube();
     CoeffCube(Coords3D size, int levels, Coords3D subSize);
-    void Init(Coords3D size, int levels, Coords3D subSize);
+    bool Init(Coords3D size, int levels, Coords3D subSize);
     
     CoeffArray3D& Array(Channel);
     
@@ -60,6 +60,18 @@ public:
     bool dumpWeights(std::string);
     
     SubcubeIndex* GetSubcubeIndex(Channel);
+    
+    int& GetCubeNumber(); 
+    
+    bool ZeroAll();
+//    
+//    WeightsMap subcubeWeightsList;
+//    
+//    //create map of all subcubes
+//    bool CreateMap()
+//    {
+//        
+//    }
     
 };
 

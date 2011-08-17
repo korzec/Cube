@@ -23,13 +23,15 @@ class SubcubeIndex
 {
 public:
     SubcubeIndex();
-    SubcubeIndex(CoeffView3D& cube, Coords3D size );
-    void Init(CoeffView3D& cube, Coords3D subSize );
+    SubcubeIndex(CoeffView3D& cube, Coords3D size, Channel );
+    void Init(CoeffView3D& cube, Coords3D subSize, Channel );
     Subcube& GetSubcube(Coords3D& index);
     void ComputeWeights();
     Coords3D GetIndexDims();
     bool dump(std::string);
     WeightsMap& GetWeightsMap();
+    //replaces the subcubes data with new data
+    bool ReadWeightsMap(WeightsMap);
 private:
     SubcubeArray3D list;
     FloatArray3D weights;

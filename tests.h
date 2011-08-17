@@ -10,5 +10,6 @@
 
 ///runs simple unit tests
 int runTests();
+int runTests2();
 
 #endif /* TESTS_H_ */

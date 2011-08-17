@@ -25,13 +25,16 @@ public:
     virtual ~CubeStream();
     virtual bool Finish();
            
-    bool WriteSequenceHeader(const Parameters&, const VideoParams&);
+    bool WriteSequenceHeader(const CodecParams&, const VideoParams&);
     bool WriteCubeHeader(const int& cubeNumber);
     bool WritePacket(const Packet&);
     
-    bool ReadSequenceHeader(Parameters&, VideoParams&);
+    bool ReadSequenceHeader(CodecParams&, VideoParams&);
     bool ReadCubeHeader(int& cubeNumber);
     Packet ReadPacket();
+    
+    //checks if the next data belongs to next cube
+    bool CheckNextCube();
     
 protected:
     CubeStream(const CubeStream& orig);

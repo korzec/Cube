@@ -46,7 +46,7 @@ void CompressorTestClass::testCompress()
     
     Coords3D location(4,4,4);
     Compressor compressor;
-    Packet packet = compressor.Compress(subcubeView, location);
+    Packet packet = compressor.Compress(subcubeView, location, Ych, 1);
     if (true /*check result*/)
     {
         CPPUNIT_ASSERT(packet.compressedData.use_count() > 0);
@@ -90,7 +90,7 @@ void CompressorTestClass::testDecompress()
     
     Coords3D location(4,4,4);
     Compressor compressor;
-    Packet packet = compressor.Compress(subcubeView, location);
+    Packet packet = compressor.Compress(subcubeView, location, Ych, 1);
     
     CoeffArray3DPtr newArray = compressor.Decompress(packet, dims);
     

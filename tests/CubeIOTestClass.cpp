@@ -180,14 +180,14 @@ void CubeIOTestClass::testWriteSequenceHeader()
     
     {//case without opening a file
         CubeIO cubeIO;
-        bool result = cubeIO.WriteSequenceHeader(parameters, videoParams);
+        bool result = cubeIO.WriteSequenceHeader(parameters.codecParams, videoParams);
         CPPUNIT_ASSERT(result == false);
     }
     {//case with writing a file
         CubeIO cubeIO;
         result = cubeIO.Init(fileName, true);
         CPPUNIT_ASSERT(result);
-        result = cubeIO.WriteSequenceHeader(parameters, videoParams);
+        result = cubeIO.WriteSequenceHeader(parameters.codecParams, videoParams);
         CPPUNIT_ASSERT(result);
     }
     {//case with reading a file
@@ -197,7 +197,7 @@ void CubeIOTestClass::testWriteSequenceHeader()
         Parameters codingP2;
         VideoParams videoP2;
         
-        bool result = cubeIO.ReadSequenceHeader(codingP2, videoP2);
+        bool result = cubeIO.ReadSequenceHeader(codingP2.codecParams, videoP2);
         CPPUNIT_ASSERT(result);
         CPPUNIT_ASSERT_EQUAL(parameters.codecParams.levels, codingP2.codecParams.levels);
         CPPUNIT_ASSERT_EQUAL(parameters.codecParams.subcubeSize.Volume(), codingP2.codecParams.subcubeSize.Volume());
