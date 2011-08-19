@@ -6,6 +6,7 @@
  */
 
 #include "Encoder.h"
+#include "general.h"
 
 Encoder::Encoder() : pictureBuffer(0), pictureOutputBuffer(0), pictureNumber(0), cubeNumber(0)
 {
@@ -72,11 +73,28 @@ EncoderState Encoder::Encode()
 
                 //coeffCube.SmoothTime();
                 
-                //testing: compress and decompress cube to validate
-                //compress data
                 CompressAll();
-                DecompressAll();
-
+                
+                // get statistics for the cube
+                if(params.analysis)
+                {
+                    SubbandList* list = coeffCube.GetSubbandList();
+                    CoeffView3D* view;
+                    //for each channel
+                    for(int ch=0; ch < NOFCHANNELS; ch++)
+                    //for each level, 
+                        for(int level=0; level <= list[ch].GetLevel(); level++)
+                    //for each subband
+                            for(int orient = 0; orient < list[ch].SubbandCountForLevel(level); orient++)
+                            {
+                                //find and output statistics of subbands
+                                view = &list[ch].GetSubband(level, (Orientation)orient );
+                                std::stringstream name;
+                                name << OUTDIR << "stats_ch" << ch << "_level"
+                                        << level << "_orient" << orient <<".csv";
+                                writeMap(getSymbolStatistics(*view), name.str() );
+                            }
+                }
                 if (params.analysis)
                 {
                     std::stringstream ss2;

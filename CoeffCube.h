@@ -63,15 +63,11 @@ public:
     
     int& GetCubeNumber(); 
     
+    ///set all coefficients in the cube array to zero
     bool ZeroAll();
-//    
-//    WeightsMap subcubeWeightsList;
-//    
-//    //create map of all subcubes
-//    bool CreateMap()
-//    {
-//        
-//    }
+    
+    //get
+    SubbandList* GetSubbandList();
     
 };
 

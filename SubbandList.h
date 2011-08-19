@@ -20,6 +20,9 @@ public:
     void Init(CoeffArray3D& cube, int levels);
     int GetLevel();
     
+    ///returns number of subbands per given level
+    int SubbandCountForLevel(size_t level);
+    
     SubbandList(CoeffArray3D& cube, int levels);
     SubbandList();
     

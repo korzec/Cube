@@ -24,20 +24,20 @@ CoeffView3D& SubbandList::GetSubband(int level, Orientation orient)
 
 void SubbandList::Init(CoeffArray3D& cube, int levels)
 {
-    //create the data structure wtih 2d vector
+    //use a dummy vector to initialise the list 
+    //because #CoeffView3D does not have default constructor 
     std::vector<CoeffView3D> vec;
     list.resize(levels+1, vec);
 
     Coords3D dims(cube.shape());
     
-    //set level 0 subband LL
+    //set level 0 subband LLL
     //size/2^levels
     CoeffView3D view =  cube[ indices
                         [range(0,dims.depth)]
                         [range(0,dims.height)]
                         [range(0,dims.width)] ];
-    
-    vec.push_back(view);
+
     list[0].push_back(view);
 
     for (int i = 1; i <= levels; i++)
@@ -68,4 +68,12 @@ void SubbandList::Init(CoeffArray3D& cube, int levels)
 int SubbandList::GetLevel()
 {
     return list.size()-1;
+}
+
+int SubbandList::SubbandCountForLevel(size_t level)
+{
+    //level out of range
+    if( list.size() <= level)
+        return -1;
+    return list[level].size();
 }

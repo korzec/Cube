@@ -32,13 +32,21 @@ bool CoeffCube::Init(Coords3D size, int levels, Coords3D subSize)
             (boost::extents[size.depth][size.height>>1][size.width>>1]));
     
     subbands[Ych].Init(Array(Ych), levels);
-    subbands[Uch].Init(Array(Uch), levels);
-    subbands[Vch].Init(Array(Vch), levels);
+    subbands[Uch].Init(Array(Uch), levels-1);
+    subbands[Vch].Init(Array(Vch), levels-1);
     
     subcubeIndex[Ych].Init(subbands[Ych].GetSubband(0, LLL), subSize, Ych );
     subcubeIndex[Uch].Init(subbands[Uch].GetSubband(0, LLL), subSize, Uch );
     subcubeIndex[Vch].Init(subbands[Vch].GetSubband(0, LLL), subSize, Vch );
+    return true;
 }
+
+
+int CoeffCube::GetLevel()
+{
+    return subbands[Ych].GetLevel();
+}
+
 
 CoeffArray3D & CoeffCube::Array(Channel channel)
 {
@@ -158,28 +166,28 @@ bool CoeffCube::SmoothTime()
     return ret;
 }
 
-int CoeffCube::GetLevel()
-{
-    return subbands[Ych].GetLevel();
-}
-
 bool CoeffCube::ForwardTransform()
 {
     ///if fully loaded and ready to transofrm
     if(!available && nextIndex == Dimensionality().depth)
     {
         bool state = true;
-        for(int i=1; i <= GetLevel(); i++ )
+        for(int i=0; i < GetLevel(); i++ )
         {
             
             #pragma omp parallel sections reduction(&& : state)
             {   
             #pragma omp section
-                state = state && transform.Forward(subbands[Ych].GetSubband(i-1, LLL));
+                state = state && transform.Forward(subbands[Ych].GetSubband(i, LLL));
             #pragma omp section
                 {
-                state = state && transform.Forward(subbands[Uch].GetSubband(i-1, LLL));     
-                state = state && transform.Forward(subbands[Vch].GetSubband(i-1, LLL));
+                    if(i != GetLevel()-1)
+                    {
+                        //the color channels have one level less
+                        //skip the last level for colors 
+                    state = state && transform.Forward(subbands[Uch].GetSubband(i, LLL));     
+                    state = state && transform.Forward(subbands[Vch].GetSubband(i, LLL));
+                    }
                 }
             }
         }
@@ -192,17 +200,22 @@ bool CoeffCube::ForwardTransform()
 bool CoeffCube::ReverseTransform()
 {
     bool state = true;
-    for (int i = GetLevel(); i >= 1 ; i--)
+    for (int i = GetLevel()-1; i >= 0 ; i--)
     {
 
         #pragma omp parallel sections reduction(&& : state)
         {
         #pragma omp section
-            state = state && transform.Reverse(subbands[Ych].GetSubband(i - 1, LLL));
+            state = state && transform.Reverse(subbands[Ych].GetSubband(i, LLL));
         #pragma omp section
             {
-            state = state && transform.Reverse(subbands[Uch].GetSubband(i - 1, LLL));
-            state = state && transform.Reverse(subbands[Vch].GetSubband(i - 1, LLL));
+                if(i != GetLevel()-1)
+                {
+                    //the color channels have one level less
+                    //skip the last level for colors
+                state = state && transform.Reverse(subbands[Uch].GetSubband(i, LLL));
+                state = state && transform.Reverse(subbands[Vch].GetSubband(i, LLL));
+                }
             }
         }
     }
@@ -242,4 +255,9 @@ bool CoeffCube::ZeroAll()
         memset(data, 0, length);
     }
     return true;
+}
+
+SubbandList* CoeffCube::GetSubbandList()
+{
+    return subbands;
 }
