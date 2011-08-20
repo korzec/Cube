@@ -22,7 +22,7 @@ public:
     PictureBuffer(size_t);
     ///adds picture to the buffer
     bool Add(Picture&);
-    ///adds group of pictures
+    ///adds group of pictures if there is enough space
     bool AddGOP(PictureVector&);
     ///removes oldest picture
     bool RemoveOldest();

@@ -5,8 +5,8 @@
  *      Author: korzec
  */
 
-#ifndef CUBE_CODEC_H_
-#define CUBE_CODEC_H_
+#ifndef TYPES_H_
+#define TYPES_H_
 
 #define OUTDIR "out/"
 
@@ -31,7 +31,7 @@ typedef int CubeNumber;
 
 #define CUBEHEADERCODE 0x0C
 #define PACKETHEADERCODE 0x0B
-#define SEQUENCEHEADERCODE 0x0A
+#define SEQUENCEHEADERCODE 0x31304243//"CB01" in LE
 
 ///orientation labels for the 3d subbands
 enum Orientation
@@ -93,7 +93,7 @@ public:
 };
 
 ///posible states of the encoder after encoding iteration
-enum EncoderState
+enum BufferState
 {
     PICTURE_AVAILABLE, NEED_BUFFER, END_OF_SEQUENCE, INVALID,
     OUTPUT_AVAILABLE
@@ -134,10 +134,12 @@ public:
     bool verbose;
     bool nolocal;
     bool analysis;
+    bool decode;
+    bool notest;
 
     Parameters() : 
     start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
-    analysis(false)
+    analysis(false), decode(false), notest(false)
     {}
 };
 
@@ -223,4 +225,4 @@ typedef boost::multi_array_types::index_range range;
 
 typedef boost::shared_array<unsigned char> ucharPtr;
 
-#endif /* CUBE_CODEC_H_ */
+#endif /* TYPES_H_ */

@@ -424,10 +424,10 @@ int testEncode()
     encoder.LoadNextPicture(picture);
     encoder.LoadNextPicture(picture);
     encoder.LoadNextPicture(picture);
-    EncoderState state = encoder.Encode();
-    assert(state == PICTURE_AVAILABLE);
-    if (state == PICTURE_AVAILABLE)
-        std::cout << "Picture available " << state << std::endl;
+    BufferState state = encoder.Encode();
+    assert(state == OUTPUT_AVAILABLE);
+    if (state == OUTPUT_AVAILABLE)
+        std::cout << "Output available " << state << std::endl;
     
     return 0;    
 }

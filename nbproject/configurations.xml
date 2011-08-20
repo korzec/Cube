@@ -9,6 +9,7 @@
       <itemPath>CubeIO.h</itemPath>
       <itemPath>CubeStream.h</itemPath>
       <itemPath>CubeTransform.h</itemPath>
+      <itemPath>Decoder.h</itemPath>
       <itemPath>Encoder.h</itemPath>
       <itemPath>Packet.h</itemPath>
       <itemPath>Picture.h</itemPath>
@@ -18,6 +19,7 @@
       <itemPath>Subcube.h</itemPath>
       <itemPath>SubcubeIndex.h</itemPath>
       <itemPath>WaveletTransform.h</itemPath>
+      <itemPath>cube_codec.h</itemPath>
       <itemPath>general.h</itemPath>
       <itemPath>minilzo/lzoconf.h</itemPath>
       <itemPath>minilzo/lzodefs.h</itemPath>
@@ -38,6 +40,7 @@
       <itemPath>CubeIO.cpp</itemPath>
       <itemPath>CubeStream.cpp</itemPath>
       <itemPath>CubeTransform.cpp</itemPath>
+      <itemPath>Decoder.cpp</itemPath>
       <itemPath>Encoder.cpp</itemPath>
       <itemPath>Packet.cpp</itemPath>
       <itemPath>Picture.cpp</itemPath>
@@ -48,6 +51,8 @@
       <itemPath>SubcubeIndex.cpp</itemPath>
       <itemPath>WaveletTransform.cpp</itemPath>
       <itemPath>cube_codec.cpp</itemPath>
+      <itemPath>cube_decode.cpp</itemPath>
+      <itemPath>cube_encode.cpp</itemPath>
       <itemPath>general.cpp</itemPath>
       <itemPath>minilzo/minilzo.c</itemPath>
       <itemPath>tests.cpp</itemPath>

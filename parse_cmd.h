@@ -79,6 +79,11 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
 
     for (int i = 0; i < argc;)
     {
+        if (strcmp(argv[i], "-decode") == 0)
+        {
+            parsed[i] = true;
+            params.decode = true;
+        }
         if (strcmp(argv[i], "-verbose") == 0)
         {
             parsed[i] = true;
@@ -100,6 +105,11 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
         {
             parsed[i] = true;
             params.nolocal = false;
+        }        
+        else if (strcmp(argv[i], "-notest") == 0)
+        {
+            parsed[i] = true;
+            params.notest = true;
         }
         else if (strcmp(argv[i], "-start") == 0)
         {

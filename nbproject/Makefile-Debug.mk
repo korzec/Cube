@@ -38,11 +38,13 @@ OBJECTFILES= \
 	${OBJECTDIR}/Compressor.o \
 	${OBJECTDIR}/cube_codec.o \
 	${OBJECTDIR}/tests2.o \
+	${OBJECTDIR}/cube_encode.o \
 	${OBJECTDIR}/general.o \
 	${OBJECTDIR}/SubcubeIndex.o \
 	${OBJECTDIR}/CubeStream.o \
 	${OBJECTDIR}/CubeIO.o \
 	${OBJECTDIR}/WaveletTransform.o \
+	${OBJECTDIR}/Decoder.o \
 	${OBJECTDIR}/Picture.o \
 	${OBJECTDIR}/Subcube.o \
 	${OBJECTDIR}/SubbandList.o \
@@ -52,7 +54,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/minilzo/minilzo.o \
 	${OBJECTDIR}/CoeffCube.o \
 	${OBJECTDIR}/Packet.o \
-	${OBJECTDIR}/PictureBuffer.o
+	${OBJECTDIR}/PictureBuffer.o \
+	${OBJECTDIR}/cube_decode.o
 
 # Test Directory
 TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
@@ -107,6 +110,11 @@ ${OBJECTDIR}/tests2.o: tests2.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/tests2.o tests2.cpp
 
+${OBJECTDIR}/cube_encode.o: cube_encode.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_encode.o cube_encode.cpp
+
 ${OBJECTDIR}/general.o: general.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -131,6 +139,11 @@ ${OBJECTDIR}/WaveletTransform.o: WaveletTransform.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform.o WaveletTransform.cpp
+
+${OBJECTDIR}/Decoder.o: Decoder.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/Decoder.o Decoder.cpp
 
 ${OBJECTDIR}/Picture.o: Picture.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -181,6 +194,11 @@ ${OBJECTDIR}/PictureBuffer.o: PictureBuffer.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureBuffer.o PictureBuffer.cpp
+
+${OBJECTDIR}/cube_decode.o: cube_decode.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_decode.o cube_decode.cpp
 
 # Subprojects
 .build-subprojects:
@@ -288,6 +306,19 @@ ${OBJECTDIR}/tests2_nomain.o: ${OBJECTDIR}/tests2.o tests2.cpp
 	    ${CP} ${OBJECTDIR}/tests2.o ${OBJECTDIR}/tests2_nomain.o;\
 	fi
 
+${OBJECTDIR}/cube_encode_nomain.o: ${OBJECTDIR}/cube_encode.o cube_encode.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/cube_encode.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_encode_nomain.o cube_encode.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/cube_encode.o ${OBJECTDIR}/cube_encode_nomain.o;\
+	fi
+
 ${OBJECTDIR}/general_nomain.o: ${OBJECTDIR}/general.o general.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/general.o`; \
@@ -351,6 +382,19 @@ ${OBJECTDIR}/WaveletTransform_nomain.o: ${OBJECTDIR}/WaveletTransform.o WaveletT
 	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/WaveletTransform_nomain.o WaveletTransform.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/WaveletTransform.o ${OBJECTDIR}/WaveletTransform_nomain.o;\
+	fi
+
+${OBJECTDIR}/Decoder_nomain.o: ${OBJECTDIR}/Decoder.o Decoder.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Decoder.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/Decoder_nomain.o Decoder.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Decoder.o ${OBJECTDIR}/Decoder_nomain.o;\
 	fi
 
 ${OBJECTDIR}/Picture_nomain.o: ${OBJECTDIR}/Picture.o Picture.cpp 
@@ -481,6 +525,19 @@ ${OBJECTDIR}/PictureBuffer_nomain.o: ${OBJECTDIR}/PictureBuffer.o PictureBuffer.
 	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/PictureBuffer_nomain.o PictureBuffer.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/PictureBuffer.o ${OBJECTDIR}/PictureBuffer_nomain.o;\
+	fi
+
+${OBJECTDIR}/cube_decode_nomain.o: ${OBJECTDIR}/cube_decode.o cube_decode.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/cube_decode.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cube_decode_nomain.o cube_decode.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/cube_decode.o ${OBJECTDIR}/cube_decode_nomain.o;\
 	fi
 
 # Run Test Targets

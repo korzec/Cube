@@ -45,8 +45,10 @@ bool CubeStream::WriteSequenceHeader(const CodecParams& codecParams, const Video
 {
     if(!outputFile)
         return false;
+    int header = SEQUENCEHEADERCODE;
     //write coding Params to a stream , not handling endianess
 #define FILEOPERATION outputFile->write
+    FILEOPERATION((char*) &header, sizeof(header));
     FILEOPERATION((char*) &codecParams.cubeSize, sizeof (codecParams.cubeSize));  //1
     FILEOPERATION((char*) &codecParams.subcubeSize, sizeof (codecParams.subcubeSize)); //2
     FILEOPERATION((char*) &codecParams.levels, sizeof (codecParams.levels)); //3
@@ -61,7 +63,11 @@ bool CubeStream::ReadSequenceHeader(CodecParams& codecParams, VideoParams& video
 {
     if(!inputFile)
         return false;
+    int header = 0;
 #define FILEOPERATION inputFile->read
+    FILEOPERATION((char*) &header, sizeof(header));
+    if(header != SEQUENCEHEADERCODE) //incorrent header
+        return false;
     FILEOPERATION((char*) &codecParams.cubeSize, sizeof (codecParams.cubeSize));  //1
     FILEOPERATION((char*) &codecParams.subcubeSize, sizeof (codecParams.subcubeSize)); //2
     FILEOPERATION((char*) &codecParams.levels, sizeof (codecParams.levels)); //3
@@ -107,10 +113,10 @@ bool CubeStream::ReadCubeHeader(int& cubeNumber)
     if(!inputFile)
         return false;
     char header = 0;
-    inputFile->read
-            ((char*) &header, sizeof (header));
-    inputFile->read
-            ((char*) &cubeNumber, sizeof (cubeNumber));
+    inputFile->read ((char*) &header, sizeof (header));
+    if(header != CUBEHEADERCODE)
+        return false;
+    inputFile->read ((char*) &cubeNumber, sizeof (cubeNumber));
     return ! inputFile->fail();
 }
 
