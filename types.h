@@ -13,7 +13,7 @@
 #ifndef DEBUG
 #define BOOST_DISABLE_ASSERTS 
 #endif
-#include "boost/multi_array.hpp"
+#include <boost/multi_array.hpp>
 #include <boost/smart_ptr.hpp>
 
 #include <exception>
@@ -146,68 +146,6 @@ public:
 
 ///holds data of a frame, NOT safe to copy or assign, not for direct use
 //TODO: use auto pointers for memory allocations
-class FrameBuffer
-{
-public:
-    /*! buffers to hold the luma and chroma data */
-    unsigned char *data;
-    unsigned char *buf[3];
-    int width;
-    int height;
-
-    FrameBuffer() : data(NULL), width(0), height(0)
-    {
-        buf[0] = NULL;
-        buf[1] = NULL;
-        buf[2] = NULL;
-    }
-
-    FrameBuffer(int _width, int _height) : data(NULL), width(0), height(0)
-    {
-        buf[0] = NULL;
-        buf[1] = NULL;
-        buf[2] = NULL;
-        if (_width < 0 || _height < 0)
-            return;
-        width = _width;
-        height = _height;
-        int sizeY = width*height;
-        int sizeU = sizeY / 4;
-        int size = width * height * 3 / 2;
-        data = new unsigned char [size];
-        /// Set poiners to Y U V planes
-        buf[0] = data;
-        buf[1] = data + sizeY;
-        buf[2] = data + sizeY + sizeU;
-    }
-    ///reset pointers and free memory
-
-    virtual ~FrameBuffer()
-    {
-        buf[0] = NULL;
-        buf[1] = NULL;
-        buf[2] = NULL;
-        if(data)        
-            delete [] data;
-        data = NULL;
-    }
-
-    int SizeY()
-    {
-        return width*height;
-    }
-
-    int SizeU()
-    {
-        return width * height / 4;
-    }
-
-    int Size()
-    {
-        return width * height * 3 / 2;
-    }
-
-};
 
 typedef boost::multi_array_ref<ValueType, 2 > ValueArray2Dref;
 
@@ -217,7 +155,6 @@ typedef boost::detail::multi_array::sub_array<CoeffType, 2> CoeffView2D;
 typedef CoeffArray3D::array_view<3>::type CoeffView3D;
 typedef boost::shared_ptr<CoeffView3D> CoeffView3DPtr;
 
-typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 typedef boost::shared_ptr<ValueArray2Dref> ValueArray2DrefPtr;
 typedef boost::shared_ptr<CoeffArray3D> CoeffArray3DPtr;
 

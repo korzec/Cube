@@ -11,6 +11,7 @@
       <itemPath>CubeTransform.h</itemPath>
       <itemPath>Decoder.h</itemPath>
       <itemPath>Encoder.h</itemPath>
+      <itemPath>FrameBuffer.h</itemPath>
       <itemPath>Packet.h</itemPath>
       <itemPath>Picture.h</itemPath>
       <itemPath>PictureBuffer.h</itemPath>
@@ -42,6 +43,7 @@
       <itemPath>CubeTransform.cpp</itemPath>
       <itemPath>Decoder.cpp</itemPath>
       <itemPath>Encoder.cpp</itemPath>
+      <itemPath>FrameBuffer.cpp</itemPath>
       <itemPath>Packet.cpp</itemPath>
       <itemPath>Picture.cpp</itemPath>
       <itemPath>PictureBuffer.cpp</itemPath>

@@ -52,6 +52,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/PictureIO.o \
 	${OBJECTDIR}/CubeTransform.o \
 	${OBJECTDIR}/minilzo/minilzo.o \
+	${OBJECTDIR}/FrameBuffer.o \
 	${OBJECTDIR}/CoeffCube.o \
 	${OBJECTDIR}/Packet.o \
 	${OBJECTDIR}/PictureBuffer.o \
@@ -179,6 +180,11 @@ ${OBJECTDIR}/minilzo/minilzo.o: minilzo/minilzo.c
 	${MKDIR} -p ${OBJECTDIR}/minilzo
 	${RM} $@.d
 	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/minilzo/minilzo.o minilzo/minilzo.c
+
+${OBJECTDIR}/FrameBuffer.o: FrameBuffer.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/FrameBuffer.o FrameBuffer.cpp
 
 ${OBJECTDIR}/CoeffCube.o: CoeffCube.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -486,6 +492,19 @@ ${OBJECTDIR}/minilzo/minilzo_nomain.o: ${OBJECTDIR}/minilzo/minilzo.o minilzo/mi
 	    $(COMPILE.c) -O2 -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/minilzo/minilzo_nomain.o minilzo/minilzo.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/minilzo/minilzo.o ${OBJECTDIR}/minilzo/minilzo_nomain.o;\
+	fi
+
+${OBJECTDIR}/FrameBuffer_nomain.o: ${OBJECTDIR}/FrameBuffer.o FrameBuffer.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/FrameBuffer.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/FrameBuffer_nomain.o FrameBuffer.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/FrameBuffer.o ${OBJECTDIR}/FrameBuffer_nomain.o;\
 	fi
 
 ${OBJECTDIR}/CoeffCube_nomain.o: ${OBJECTDIR}/CoeffCube.o CoeffCube.cpp 
