@@ -86,14 +86,17 @@ BufferState Encoder::Encode()
                                 writeMap(getSymbolStatistics(*view), name.str() );
                             }
                 }
-                if (params.analysis)
-                {
-                    std::stringstream ss2;
-                    ss2 << OUTDIR << "sm" << cubeNumber << "cube.raw";
-                    coeffCube.dumpCoeffs(ss2.str());
-                }
+
                 if (!params.nolocal)
                 {
+                    DecompressAll();
+                    if (params.analysis)
+                    {
+                        std::stringstream ss2;
+                        ss2 << OUTDIR << "sm" << cubeNumber << "cube.raw";
+                        coeffCube.dumpCoeffs(ss2.str());
+                    }
+                    
                     coeffCube.ReverseTransform();
 
                     PictureVectorPtr outputGOP = coeffCube.GetGOP();

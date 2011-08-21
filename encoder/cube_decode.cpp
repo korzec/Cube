@@ -27,10 +27,13 @@ int cube_decode(Parameters params, std::string input, std::string output)
     outputPicture = new std::ofstream(outputPictureName.c_str(), std::ios::out | std::ios::binary);
 
     Decoder decoder;
-    params.codecParams.subcubeSize.width = 60;
-    params.codecParams.subcubeSize.height = 32;
-    params.codecParams.subcubeSize.depth = 4;
+//    params.codecParams.subcubeSize.width = 60;
+//    params.codecParams.subcubeSize.height = 32;
+//    params.codecParams.subcubeSize.depth = 4;
 
+    //set some parameters, CodecParams and VideoParams will be overridden
+    decoder.SetParams(params);
+    
     //read header to get params and check if they were correct
     if (!decoder.ReadSequenceHeader(&inputData))
     {

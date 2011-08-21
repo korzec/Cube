@@ -19,9 +19,9 @@
 class CoeffCube {
 private:
     WaveletTransform transform;
-    CoeffArray3DPtr arrays[3];
-    SubbandList subbands[3];
-    SubcubeIndex subcubeIndex[3];
+    std::vector<CoeffArray3DPtr> arrays;
+    std::vector<SubbandList> subbands;
+    std::vector<SubcubeIndex> subcubeIndex;
     /// available to receive next picture
     bool available;
     int cubeNumber;
@@ -69,6 +69,8 @@ public:
     //get
     SubbandList* GetSubbandList();
     
+    ///total number of subcubes in all channels
+    int SubcubeCount();    
 };
 
 #endif	/* COEFFCUBE_H */

@@ -47,10 +47,11 @@ public:
     bool analysis;
     bool decode;
     bool notest;
+    float skipRatio;
 
     Parameters() : 
     start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
-    analysis(false), decode(false), notest(false)
+    analysis(false), decode(false), notest(false), skipRatio(0)
     {}
 };
 

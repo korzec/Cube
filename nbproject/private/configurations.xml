@@ -20,23 +20,25 @@
         <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
       </dbx_gdbdebugger>
       <gizmo_options version="3">
+        <configurationname>GizmoSimple</configurationname>
       </gizmo_options>
       <nativedebugger version="1">
         <engine>gdb</engine>
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 src7.yuv codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 src7.yuv out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 64 src7.yuv out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 4 src7.yuv out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 3 src7.yuv out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 48 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -decode out/codedfile out/decodedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -decode -skip 0.9 out/codedfile.wcb out/decodedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 4 -start 16 -stop 24 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 4 -start 16 -stop 24 -analysis -local -levels 2 -skip 0.8 src7.yuv out/codedfile</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -width 720 -height 576 -depth 4 -start 16 -stop 24 -analysis -local -levels 2 src7.yuv out/codedfile</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -width 720 -height 576 -depth 4 -start 16 -stop 24 -analysis -local -levels 2 -skip 0.8 src7.yuv out/codedfile</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
@@ -63,6 +65,7 @@
         <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
       </dbx_gdbdebugger>
       <gizmo_options version="3">
+        <configurationname>GizmoSimple</configurationname>
       </gizmo_options>
       <nativedebugger version="1">
         <engine>gdb</engine>

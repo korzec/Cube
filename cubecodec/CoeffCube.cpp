@@ -25,6 +25,7 @@ CoeffCube::CoeffCube(Coords3D size, int levels, Coords3D subSize) :
 
 bool CoeffCube::Init(Coords3D size, int levels, Coords3D subSize)
 {
+    arrays.resize(NOFCHANNELS);
     arrays[Ych] = CoeffArray3DPtr(new CoeffArray3D
             (boost::extents[size.depth][size.height][size.width]));
     arrays[Uch] = CoeffArray3DPtr(new CoeffArray3D
@@ -32,10 +33,12 @@ bool CoeffCube::Init(Coords3D size, int levels, Coords3D subSize)
     arrays[Vch] = CoeffArray3DPtr(new CoeffArray3D
             (boost::extents[size.depth][size.height>>1][size.width>>1]));
     
+    subbands.resize(NOFCHANNELS);
     subbands[Ych].Init(Array(Ych), levels);
     subbands[Uch].Init(Array(Uch), levels-1);
     subbands[Vch].Init(Array(Vch), levels-1);
     
+    subcubeIndex.resize(NOFCHANNELS);
     subcubeIndex[Ych].Init(subbands[Ych].GetSubband(0, LLL), subSize, Ych );
     subcubeIndex[Uch].Init(subbands[Uch].GetSubband(0, LLL), subSize, Uch );
     subcubeIndex[Vch].Init(subbands[Vch].GetSubband(0, LLL), subSize, Vch );
@@ -250,9 +253,9 @@ bool CoeffCube::ZeroAll()
     //clear all arrays
     for(int i=0; i < NOFCHANNELS ; i++)
     {
-        char* data = (char*) ( arrays[0]->data() );
+        char* data = (char*) ( arrays[i]->data() );
         //size of data in the array
-        int length = Coords3D(arrays[0]->shape()).Volume()*sizeof(CoeffType);
+        int length = Coords3D(arrays[i]->shape()).Volume()*sizeof(CoeffType);
         memset(data, 0, length);
     }
     return true;
@@ -260,5 +263,17 @@ bool CoeffCube::ZeroAll()
 
 SubbandList* CoeffCube::GetSubbandList()
 {
-    return subbands;
+    return subbands.data();
+}
+
+int CoeffCube::SubcubeCount()
+{
+    //for all channels
+    //get number of subcubes and sum;
+    int total =0;
+    for(size_t i=0; i < subcubeIndex.size(); i++)
+    {
+        total += subcubeIndex[i].GetIndexDims().Volume();
+    }
+    return total;
 }

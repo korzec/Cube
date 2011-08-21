@@ -84,8 +84,15 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
         {
             parsed[i] = true;
             params.decode = true;
+        }       
+        else if (strcmp(argv[i], "-skip") == 0)
+        {
+            parsed[i] = true;
+            i++;
+            params.skipRatio = strtof(argv[i], NULL);
+            parsed[i] = true;
         }
-        if (strcmp(argv[i], "-verbose") == 0)
+        else if (strcmp(argv[i], "-verbose") == 0)
         {
             parsed[i] = true;
             params.verbose = true;
@@ -106,7 +113,7 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
         {
             parsed[i] = true;
             params.nolocal = false;
-        }        
+        }
         else if (strcmp(argv[i], "-notest") == 0)
         {
             parsed[i] = true;

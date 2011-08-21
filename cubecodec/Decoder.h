@@ -61,6 +61,9 @@ public:
     bool ReadCube(std::istream* stream);
     ///read file header
     bool ReadSequenceHeader(std::istream* stream);
+    ///set the parameters for decoder - codec parameters will be owerridden with
+    ///values read from input file header
+    virtual bool SetParams(Parameters params);
 private:
 
 };

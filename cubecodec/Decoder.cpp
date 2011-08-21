@@ -68,11 +68,14 @@ bool Decoder::DecompressAll()
     //zero all values in all cube arrays
     coeffCube.ZeroAll();
     
+    //number of packets to use for reconstruction
+    int usePackets = (1 - params.skipRatio) * coeffCube.SubcubeCount() + 0.5;
+    
     //for all packets in list decompress and copy to location
     PacketMap::reverse_iterator iterator = allPackets.rbegin();
     Subcube *subcube = NULL;
     CoeffArray3DPtr newArrayPtr;
-    for (; iterator != allPackets.rend(); iterator++)
+    for (int count=0; iterator != allPackets.rend() && count < usePackets ; iterator++, count++)
     {
         // get subcube to copy the data
         subcube = &coeffCube.GetSubcubeIndex(iterator->second.header.channel)
@@ -128,5 +131,11 @@ bool Decoder::Init()
         params.codecParams.cubeSize.height % params.codecParams.subcubeSize.height != 0 ||
         params.codecParams.cubeSize.depth % params.codecParams.subcubeSize.depth != 0)
         return false;
+    return true;
+}
+
+bool Decoder::SetParams(Parameters params)
+{
+    this->params = params;
     return true;
 }

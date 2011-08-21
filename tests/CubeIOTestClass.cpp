@@ -124,12 +124,12 @@ void CubeIOTestClass::testWritePacket()
     std::string fileName = ss1.str();
     //init packet
     packet.compressedData = ucharPtr(new unsigned char[size]);
-    packet.compressedSize = size;
-    packet.fullSize = 999;
-    packet.location = dims;
+    packet.header.compressedSize = size;
+    packet.header.fullSize = 999;
+    packet.header.location = dims;
     
     //init payload
-    for(int i=0; i < packet.compressedSize; i++)
+    for(int i=0; i < packet.header.compressedSize; i++)
     {   
         packet.compressedData.get()[i] = (char)rand();
     }
@@ -143,10 +143,10 @@ void CubeIOTestClass::testWritePacket()
         bool isWrite = false;
         CubeIO cubeIO(fileName, isWrite);
         Packet newPacket = cubeIO.ReadPacket();
-        CPPUNIT_ASSERT_EQUAL(packet.compressedSize, newPacket.compressedSize);
-        CPPUNIT_ASSERT_EQUAL(packet.fullSize, newPacket.fullSize);
-        CPPUNIT_ASSERT_EQUAL(packet.location.Volume(), newPacket.location.Volume());
-        for(int i=0; i < packet.compressedSize; i++)
+        CPPUNIT_ASSERT_EQUAL(packet.header.compressedSize, newPacket.header.compressedSize);
+        CPPUNIT_ASSERT_EQUAL(packet.header.fullSize, newPacket.header.fullSize);
+        CPPUNIT_ASSERT_EQUAL(packet.header.location.Volume(), newPacket.header.location.Volume());
+        for(int i=0; i < packet.header.compressedSize; i++)
         {   
             CPPUNIT_ASSERT_EQUAL(packet.compressedData.get()[i],
                                  newPacket.compressedData.get()[i]);
