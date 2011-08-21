@@ -10,16 +10,17 @@
 
 #include "types.h"
 #include "Packet.h"
+
+class Compressor;
+
+typedef boost::shared_ptr<Compressor> CompressorPtr;
+
 ///compresses the Subcube data, can be subclassed to change the compression algorithm
 class Compressor
 {
 public:
-    Compressor(); 
-    virtual Packet Compress(CoeffView3D& subcube, Coords3D& location, Channel channel, int cubeNumer);
-    virtual CoeffArray3DPtr Decompress(Packet& packet, Coords3D& subcubeSize);
-    
-private:
-
+    virtual Packet Compress(CoeffView3D& subcube, Coords3D& location, Channel channel, int cubeNumer) =0;
+    virtual CoeffArray3DPtr Decompress(Packet& packet, Coords3D& subcubeSize) =0;
 };
 
 #endif	/* COMPRESSOR_H */

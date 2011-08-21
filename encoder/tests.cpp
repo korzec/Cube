@@ -7,7 +7,7 @@
 #include "../cubecodec/PictureBuffer.h"
 #include "../cubecodec/WaveletTransform.h"
 #include "../cubecodec/Subcube.h"
-#include "../cubecodec/Compressor.h"
+#include "../cubecodec/CompressorLZO.h"
 #include "../cubecodec/CubeIO.h"
 //#include "SubcubeIndex.h"
 #include <string>
@@ -41,9 +41,9 @@ int testCompressWriteReadDecompress()
     
     //Compress the subcubes
     Coords3D location(4,4,4);
-    Compressor compressor;
-    Packet packet1 = compressor.Compress(subcubeView1, location, Ych, 1);
-    Packet packet2 = compressor.Compress(subcubeView2, location, Ych ,1);
+    CompressorPtr compressor(new CompressorLZO());
+    Packet packet1 = compressor->Compress(subcubeView1, location, Ych, 1);
+    Packet packet2 = compressor->Compress(subcubeView2, location, Ych ,1);
     
     Parameters parameters;
     Coords3D fullDims(100,20,4);
@@ -136,8 +136,8 @@ int testCompressWriteReadDecompress()
 
     
     //decompress now
-    CoeffArray3DPtr newArray1 = compressor.Decompress(newPacket1, subDims);
-    CoeffArray3DPtr newArray2 = compressor.Decompress(newPacket2, subDims);
+    CoeffArray3DPtr newArray1 = compressor->Decompress(newPacket1, subDims);
+    CoeffArray3DPtr newArray2 = compressor->Decompress(newPacket2, subDims);
     
     if (true /*check result*/)
     {

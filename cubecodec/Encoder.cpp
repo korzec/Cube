@@ -153,7 +153,7 @@ bool Encoder::CompressAll()
         subcube = iterator->second;
         location =  subcube->GetLocation();
         allPackets.insert(PacketPair(iterator->first, 
-                compressor.Compress(subcube->GetView(), location,
+                compressor->Compress(subcube->GetView(), location,
                                     subcube->GetChannel() , coeffCube.GetCubeNumber() )));
     }
     //here we have list of all packts sorted with weights

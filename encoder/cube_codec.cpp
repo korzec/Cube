@@ -1,9 +1,9 @@
 //============================================================================
-// Name        : cube-codec.cpp
+// Name        : cube_codec.cpp
 // Author      : Konrad Korzec
 // Version     :
 // Copyright   : 
-// Description : Hello World in C, Ansi-style
+// Description : Encoder executable
 //============================================================================
 
 //#define VERSION 0.1

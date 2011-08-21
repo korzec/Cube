@@ -1,19 +1,19 @@
 /* 
- * File:   Compressor.cpp
+ * File:   CompressorLZO.cpp
  * Author: korzec
  * 
- * Created on August 12, 2011, 8:14 PM
+ * Created on August 21, 2011, 7:50 AM
  */
 
-#include "Compressor.h"
+#include "CompressorLZO.h"
 #include "../minilzo/minilzo.h"
 #include <cassert>
 
-Compressor::Compressor()
+CompressorLZO::CompressorLZO()
 {
 }
 
-Packet Compressor::Compress(CoeffView3D& subcube, Coords3D& location, Channel channel, int cubeNumber)
+Packet CompressorLZO::Compress(CoeffView3D& subcube, Coords3D& location, Channel channel, int cubeNumber)
 {
 //    assert(subcube.size() > 0);
     assert(lzo_init() == LZO_E_OK);
@@ -48,7 +48,7 @@ Packet Compressor::Compress(CoeffView3D& subcube, Coords3D& location, Channel ch
     return packet;
 }
 
-CoeffArray3DPtr Compressor::Decompress(Packet& packet, Coords3D& subcubeSize)
+CoeffArray3DPtr CompressorLZO::Decompress(Packet& packet, Coords3D& subcubeSize)
 {
     assert(lzo_init() == LZO_E_OK);
     assert(packet.compressedData.use_count() > 0);

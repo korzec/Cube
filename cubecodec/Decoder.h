@@ -30,7 +30,7 @@ protected:
     int cubeNumber;
     //std::deque<Packet> packetList[3];
     PacketMap allPackets;
-    Compressor compressor;
+    CompressorPtr compressor;
     ///decompres the packets and place into the cube array
     bool DecompressAll();
     ///initialize the cube buffer with #params

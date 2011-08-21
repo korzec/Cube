@@ -6,7 +6,7 @@
  */
 
 #include "CompressorTestClass.h"
-#include "../cubecodec/Compressor.h" 
+#include "../cubecodec/CompressorLZO.h"
 
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CompressorTestClass);
@@ -45,8 +45,8 @@ void CompressorTestClass::testCompress()
     }//d
     
     Coords3D location(4,4,4);
-    Compressor compressor;
-    Packet packet = compressor.Compress(subcubeView, location, Ych, 1);
+    CompressorPtr compressor(new CompressorLZO());
+    Packet packet = compressor->Compress(subcubeView, location, Ych, 1);
     if (true /*check result*/)
     {
         CPPUNIT_ASSERT(packet.compressedData.use_count() > 0);
@@ -65,7 +65,7 @@ void CompressorTestClass::testCompress()
 
 void CompressorTestClass::testCompressor()
 {
-    Compressor compressor();
+    CompressorPtr compressor(new CompressorLZO());
     if (true /*check result*/)
     {
         //CPPUNIT_ASSERT(false);
@@ -89,10 +89,10 @@ void CompressorTestClass::testDecompress()
     }//d
     
     Coords3D location(4,4,4);
-    Compressor compressor;
-    Packet packet = compressor.Compress(subcubeView, location, Ych, 1);
+    CompressorPtr compressor(new CompressorLZO);
+    Packet packet = compressor->Compress(subcubeView, location, Ych, 1);
     
-    CoeffArray3DPtr newArray = compressor.Decompress(packet, dims);
+    CoeffArray3DPtr newArray = compressor->Decompress(packet, dims);
     
     if (true /*check result*/)
     {

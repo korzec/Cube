@@ -5,8 +5,9 @@
       <logicalFolder name="cubecodec" displayName="cubecodec" projectFiles="true">
         <itemPath>cubecodec/CoeffCube.cpp</itemPath>
         <itemPath>cubecodec/CoeffCube.h</itemPath>
-        <itemPath>cubecodec/Compressor.cpp</itemPath>
         <itemPath>cubecodec/Compressor.h</itemPath>
+        <itemPath>cubecodec/CompressorLZO.cpp</itemPath>
+        <itemPath>cubecodec/CompressorLZO.h</itemPath>
         <itemPath>cubecodec/CubeIO.cpp</itemPath>
         <itemPath>cubecodec/CubeIO.h</itemPath>
         <itemPath>cubecodec/CubeStream.cpp</itemPath>

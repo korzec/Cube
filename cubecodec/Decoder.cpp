@@ -6,9 +6,11 @@
  */
 
 #include "Decoder.h"
+#include "CompressorLZO.h"
 
 Decoder::Decoder() : pictureOutputBuffer(0), pictureNumber(0), cubeNumber(0)
 {
+    compressor.reset(new CompressorLZO());
 }
 
 BufferState Decoder::Decode()
@@ -76,7 +78,7 @@ bool Decoder::DecompressAll()
         subcube = &coeffCube.GetSubcubeIndex(iterator->second.channel)
                 ->GetSubcube(iterator->second.location);
         
-        newArrayPtr = compressor.Decompress(iterator->second, params.codecParams.subcubeSize);
+        newArrayPtr = compressor->Decompress(iterator->second, params.codecParams.subcubeSize);
         subcube->CopyNewValues(newArrayPtr);
     }
     return true;

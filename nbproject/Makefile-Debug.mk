@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/cubecodec/WaveletTransform.o \
 	${OBJECTDIR}/cubecodec/Encoder.o \
 	${OBJECTDIR}/cubecodec/general.o \
+	${OBJECTDIR}/cubecodec/CompressorLZO.o \
 	${OBJECTDIR}/cubecodec/CubeTransform.o \
 	${OBJECTDIR}/cubecodec/PictureBuffer.o \
 	${OBJECTDIR}/cubecodec/Decoder.o \
@@ -48,7 +49,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/cubecodec/SubcubeIndex.o \
 	${OBJECTDIR}/cubecodec/CubeStream.o \
 	${OBJECTDIR}/cubecodec/CoeffCube.o \
-	${OBJECTDIR}/cubecodec/Compressor.o \
 	${OBJECTDIR}/minilzo/minilzo.o \
 	${OBJECTDIR}/cubecodec/Subcube.o \
 	${OBJECTDIR}/encoder/tests2.o \
@@ -121,6 +121,11 @@ ${OBJECTDIR}/cubecodec/general.o: cubecodec/general.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/general.o cubecodec/general.cpp
 
+${OBJECTDIR}/cubecodec/CompressorLZO.o: cubecodec/CompressorLZO.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/CompressorLZO.o cubecodec/CompressorLZO.cpp
+
 ${OBJECTDIR}/cubecodec/CubeTransform.o: cubecodec/CubeTransform.cpp 
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
 	${RM} $@.d
@@ -160,11 +165,6 @@ ${OBJECTDIR}/cubecodec/CoeffCube.o: cubecodec/CoeffCube.cpp
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/CoeffCube.o cubecodec/CoeffCube.cpp
-
-${OBJECTDIR}/cubecodec/Compressor.o: cubecodec/Compressor.cpp 
-	${MKDIR} -p ${OBJECTDIR}/cubecodec
-	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Compressor.o cubecodec/Compressor.cpp
 
 ${OBJECTDIR}/minilzo/minilzo.o: minilzo/minilzo.c 
 	${MKDIR} -p ${OBJECTDIR}/minilzo
@@ -338,6 +338,19 @@ ${OBJECTDIR}/cubecodec/general_nomain.o: ${OBJECTDIR}/cubecodec/general.o cubeco
 	    ${CP} ${OBJECTDIR}/cubecodec/general.o ${OBJECTDIR}/cubecodec/general_nomain.o;\
 	fi
 
+${OBJECTDIR}/cubecodec/CompressorLZO_nomain.o: ${OBJECTDIR}/cubecodec/CompressorLZO.o cubecodec/CompressorLZO.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/cubecodec/CompressorLZO.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/CompressorLZO_nomain.o cubecodec/CompressorLZO.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/cubecodec/CompressorLZO.o ${OBJECTDIR}/cubecodec/CompressorLZO_nomain.o;\
+	fi
+
 ${OBJECTDIR}/cubecodec/CubeTransform_nomain.o: ${OBJECTDIR}/cubecodec/CubeTransform.o cubecodec/CubeTransform.cpp 
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/cubecodec/CubeTransform.o`; \
@@ -440,19 +453,6 @@ ${OBJECTDIR}/cubecodec/CoeffCube_nomain.o: ${OBJECTDIR}/cubecodec/CoeffCube.o cu
 	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/CoeffCube_nomain.o cubecodec/CoeffCube.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/cubecodec/CoeffCube.o ${OBJECTDIR}/cubecodec/CoeffCube_nomain.o;\
-	fi
-
-${OBJECTDIR}/cubecodec/Compressor_nomain.o: ${OBJECTDIR}/cubecodec/Compressor.o cubecodec/Compressor.cpp 
-	${MKDIR} -p ${OBJECTDIR}/cubecodec
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/cubecodec/Compressor.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Compressor_nomain.o cubecodec/Compressor.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/cubecodec/Compressor.o ${OBJECTDIR}/cubecodec/Compressor_nomain.o;\
 	fi
 
 ${OBJECTDIR}/minilzo/minilzo_nomain.o: ${OBJECTDIR}/minilzo/minilzo.o minilzo/minilzo.c 
