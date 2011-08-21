@@ -1,64 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="79">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <logicalFolder name="HeaderFiles"
-                   displayName="Header Files"
-                   projectFiles="true">
-      <itemPath>CoeffCube.h</itemPath>
-      <itemPath>Compressor.h</itemPath>
-      <itemPath>CubeIO.h</itemPath>
-      <itemPath>CubeStream.h</itemPath>
-      <itemPath>CubeTransform.h</itemPath>
-      <itemPath>Decoder.h</itemPath>
-      <itemPath>Encoder.h</itemPath>
-      <itemPath>FrameBuffer.h</itemPath>
-      <itemPath>Packet.h</itemPath>
-      <itemPath>Picture.h</itemPath>
-      <itemPath>PictureBuffer.h</itemPath>
-      <itemPath>PictureIO.h</itemPath>
-      <itemPath>SubbandList.h</itemPath>
-      <itemPath>Subcube.h</itemPath>
-      <itemPath>SubcubeIndex.h</itemPath>
-      <itemPath>WaveletTransform.h</itemPath>
-      <itemPath>cube_codec.h</itemPath>
-      <itemPath>general.h</itemPath>
-      <itemPath>minilzo/lzoconf.h</itemPath>
-      <itemPath>minilzo/lzodefs.h</itemPath>
-      <itemPath>minilzo/minilzo.h</itemPath>
-      <itemPath>parse_cmd.h</itemPath>
-      <itemPath>tests.h</itemPath>
-      <itemPath>types.h</itemPath>
-    </logicalFolder>
-    <logicalFolder name="ResourceFiles"
-                   displayName="Resource Files"
-                   projectFiles="true">
-    </logicalFolder>
-    <logicalFolder name="SourceFiles"
-                   displayName="Source Files"
-                   projectFiles="true">
-      <itemPath>CoeffCube.cpp</itemPath>
-      <itemPath>Compressor.cpp</itemPath>
-      <itemPath>CubeIO.cpp</itemPath>
-      <itemPath>CubeStream.cpp</itemPath>
-      <itemPath>CubeTransform.cpp</itemPath>
-      <itemPath>Decoder.cpp</itemPath>
-      <itemPath>Encoder.cpp</itemPath>
-      <itemPath>FrameBuffer.cpp</itemPath>
-      <itemPath>Packet.cpp</itemPath>
-      <itemPath>Picture.cpp</itemPath>
-      <itemPath>PictureBuffer.cpp</itemPath>
-      <itemPath>PictureIO.cpp</itemPath>
-      <itemPath>SubbandList.cpp</itemPath>
-      <itemPath>Subcube.cpp</itemPath>
-      <itemPath>SubcubeIndex.cpp</itemPath>
-      <itemPath>WaveletTransform.cpp</itemPath>
-      <itemPath>cube_codec.cpp</itemPath>
-      <itemPath>cube_decode.cpp</itemPath>
-      <itemPath>cube_encode.cpp</itemPath>
-      <itemPath>general.cpp</itemPath>
-      <itemPath>minilzo/minilzo.c</itemPath>
-      <itemPath>tests.cpp</itemPath>
-      <itemPath>tests2.cpp</itemPath>
+    <logicalFolder name="f1" displayName="Code" projectFiles="true" kind="ROOT">
+      <logicalFolder name="cubecodec" displayName="cubecodec" projectFiles="true">
+        <itemPath>cubecodec/CoeffCube.cpp</itemPath>
+        <itemPath>cubecodec/CoeffCube.h</itemPath>
+        <itemPath>cubecodec/Compressor.cpp</itemPath>
+        <itemPath>cubecodec/Compressor.h</itemPath>
+        <itemPath>cubecodec/CubeIO.cpp</itemPath>
+        <itemPath>cubecodec/CubeIO.h</itemPath>
+        <itemPath>cubecodec/CubeStream.cpp</itemPath>
+        <itemPath>cubecodec/CubeStream.h</itemPath>
+        <itemPath>cubecodec/CubeTransform.cpp</itemPath>
+        <itemPath>cubecodec/CubeTransform.h</itemPath>
+        <itemPath>cubecodec/Decoder.cpp</itemPath>
+        <itemPath>cubecodec/Decoder.h</itemPath>
+        <itemPath>cubecodec/Encoder.cpp</itemPath>
+        <itemPath>cubecodec/Encoder.h</itemPath>
+        <itemPath>cubecodec/FrameBuffer.cpp</itemPath>
+        <itemPath>cubecodec/FrameBuffer.h</itemPath>
+        <itemPath>cubecodec/Packet.cpp</itemPath>
+        <itemPath>cubecodec/Packet.h</itemPath>
+        <itemPath>cubecodec/Picture.cpp</itemPath>
+        <itemPath>cubecodec/Picture.h</itemPath>
+        <itemPath>cubecodec/PictureBuffer.cpp</itemPath>
+        <itemPath>cubecodec/PictureBuffer.h</itemPath>
+        <itemPath>cubecodec/PictureIO.cpp</itemPath>
+        <itemPath>cubecodec/PictureIO.h</itemPath>
+        <itemPath>cubecodec/SubbandList.cpp</itemPath>
+        <itemPath>cubecodec/SubbandList.h</itemPath>
+        <itemPath>cubecodec/Subcube.cpp</itemPath>
+        <itemPath>cubecodec/Subcube.h</itemPath>
+        <itemPath>cubecodec/SubcubeIndex.cpp</itemPath>
+        <itemPath>cubecodec/SubcubeIndex.h</itemPath>
+        <itemPath>cubecodec/WaveletTransform.cpp</itemPath>
+        <itemPath>cubecodec/WaveletTransform.h</itemPath>
+        <itemPath>cubecodec/general.cpp</itemPath>
+        <itemPath>cubecodec/general.h</itemPath>
+        <itemPath>cubecodec/types.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="encoder" displayName="encoder" projectFiles="true">
+        <itemPath>encoder/cube_codec.cpp</itemPath>
+        <itemPath>encoder/cube_codec.h</itemPath>
+        <itemPath>encoder/cube_decode.cpp</itemPath>
+        <itemPath>encoder/cube_encode.cpp</itemPath>
+        <itemPath>encoder/parse_cmd.h</itemPath>
+        <itemPath>encoder/tests.cpp</itemPath>
+        <itemPath>encoder/tests.h</itemPath>
+        <itemPath>encoder/tests2.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="minilzo" displayName="minilzo" projectFiles="true">
+        <itemPath>minilzo/lzoconf.h</itemPath>
+        <itemPath>minilzo/lzodefs.h</itemPath>
+        <itemPath>minilzo/minilzo.c</itemPath>
+        <itemPath>minilzo/minilzo.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"

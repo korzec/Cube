@@ -6,7 +6,7 @@
  */
 
 #include "Compressor.h"
-#include "minilzo/minilzo.h"
+#include "../minilzo/minilzo.h"
 #include <cassert>
 
 Compressor::Compressor()

@@ -6,7 +6,7 @@
  */
 
 #include "CompressorTestClass.h"
-#include "../Compressor.h"
+#include "../cubecodec/Compressor.h" 
 
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CompressorTestClass);

@@ -1,5 +1,5 @@
-#include "general.h"
-#include "types.h"
+#include "../cubecodec/general.h"
+#include "../cubecodec/types.h"
 
 int testStatistics()
 {

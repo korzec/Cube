@@ -5,9 +5,9 @@
  * Created on August 19, 2011, 10:37 PM
  */
 
-#include "types.h"
-#include "Decoder.h"
-#include "PictureIO.h"
+#include "../cubecodec/types.h"
+#include "../cubecodec/Decoder.h"
+#include "../cubecodec/PictureIO.h"
 
 int cube_decode(Parameters params, std::string input, std::string output)
 {

@@ -1,14 +1,14 @@
 
 
-#include "PictureIO.h"
-#include "types.h"
-#include "Picture.h"
-#include "Encoder.h"
-#include "PictureBuffer.h"
-#include "WaveletTransform.h"
-#include "Subcube.h"
-#include "Compressor.h"
-#include "CubeIO.h"
+#include "../cubecodec/PictureIO.h"
+#include "../cubecodec/types.h"
+#include "../cubecodec/Picture.h"
+#include "../cubecodec/Encoder.h"
+#include "../cubecodec/PictureBuffer.h"
+#include "../cubecodec/WaveletTransform.h"
+#include "../cubecodec/Subcube.h"
+#include "../cubecodec/Compressor.h"
+#include "../cubecodec/CubeIO.h"
 //#include "SubcubeIndex.h"
 #include <string>
 #include <iostream>

@@ -7,7 +7,7 @@
 //============================================================================
 
 //#define VERSION 0.1
-#include "types.h"
+#include "../cubecodec/types.h"
 
 #include <stdio.h>
 #include <stdlib.h>

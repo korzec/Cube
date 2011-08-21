@@ -8,7 +8,7 @@
 #ifndef PARSE_CMD_H
 #define	PARSE_CMD_H
 
-#include "types.h"
+#include "../cubecodec/types.h"
 
 /// displays a help message
 static void display_help()

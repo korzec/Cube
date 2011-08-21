@@ -6,7 +6,7 @@
  */
 
 #include "CubeIOTestClass.h"
-#include "../CubeIO.h"
+#include "../cubecodec/CubeIO.h"
 
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CubeIOTestClass);
