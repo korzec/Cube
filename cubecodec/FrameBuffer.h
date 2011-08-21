@@ -11,11 +11,13 @@
 #include <iostream>
 #include <boost/smart_ptr.hpp>
 
+///holds data of a frame, NOT safe to copy or assign, not for direct use
 class FrameBuffer;
 typedef boost::shared_ptr<FrameBuffer> FrameBufferPtr;
 
 class FrameBuffer
 {
+    //TODO: use auto pointers for memory allocations
 public:
     /*! buffers to hold the luma and chroma data */
     unsigned char *data;

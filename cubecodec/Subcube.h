@@ -8,14 +8,22 @@
 #ifndef SUBCUBE_H
 #define	SUBCUBE_H
 
+#include "arrays.h"
 #include "types.h"
 
-///a small cube located in a CoeffCube data
-class Subcube {
-    CoeffView3D* cube;
+
+class SubcubeInfo
+{
+public:
     Channel channel;
     Coords3D location;
     Coords3D size;
+};
+
+///a small cube located in a CoeffCube data
+class Subcube {
+    SubcubeInfo info;
+    CoeffView3D* cube;
     CoeffView3DPtr array;
 public:
     Subcube();

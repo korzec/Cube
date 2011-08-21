@@ -20,6 +20,14 @@
 typedef std::multimap<float, Packet> PacketMap;
 typedef std::pair<float, Packet> PacketPair;
 
+///posible states of the decoder and encoder after encoding iteration
+enum BufferState
+{
+    PICTURE_AVAILABLE, NEED_BUFFER, END_OF_SEQUENCE, INVALID,
+    OUTPUT_AVAILABLE
+};
+
+
 class Decoder
 {
 protected:

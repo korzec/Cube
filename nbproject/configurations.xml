@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="79">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <logicalFolder name="f1" displayName="Code" projectFiles="true" kind="ROOT">
+    <logicalFolder name="f1" displayName="Code" projectFiles="true">
       <logicalFolder name="cubecodec" displayName="cubecodec" projectFiles="true">
         <itemPath>cubecodec/CoeffCube.cpp</itemPath>
         <itemPath>cubecodec/CoeffCube.h</itemPath>
         <itemPath>cubecodec/Compressor.h</itemPath>
+        <itemPath>cubecodec/CompressorAC.cpp</itemPath>
+        <itemPath>cubecodec/CompressorAC.h</itemPath>
         <itemPath>cubecodec/CompressorLZO.cpp</itemPath>
         <itemPath>cubecodec/CompressorLZO.h</itemPath>
         <itemPath>cubecodec/CubeIO.cpp</itemPath>
@@ -22,6 +24,7 @@
         <itemPath>cubecodec/FrameBuffer.h</itemPath>
         <itemPath>cubecodec/Packet.cpp</itemPath>
         <itemPath>cubecodec/Packet.h</itemPath>
+        <itemPath>cubecodec/Parameters.h</itemPath>
         <itemPath>cubecodec/Picture.cpp</itemPath>
         <itemPath>cubecodec/Picture.h</itemPath>
         <itemPath>cubecodec/PictureBuffer.cpp</itemPath>
@@ -36,6 +39,8 @@
         <itemPath>cubecodec/SubcubeIndex.h</itemPath>
         <itemPath>cubecodec/WaveletTransform.cpp</itemPath>
         <itemPath>cubecodec/WaveletTransform.h</itemPath>
+        <itemPath>cubecodec/arrays.h</itemPath>
+        <itemPath>cubecodec/cubeHeaders.h</itemPath>
         <itemPath>cubecodec/general.cpp</itemPath>
         <itemPath>cubecodec/general.h</itemPath>
         <itemPath>cubecodec/types.h</itemPath>
@@ -119,10 +124,12 @@
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
+            <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
@@ -145,10 +152,12 @@
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
+            <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
@@ -170,10 +179,12 @@
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
+            <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
@@ -217,10 +228,12 @@
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
+            <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
@@ -244,10 +257,12 @@
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
+            <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
@@ -270,10 +285,12 @@
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
+            <pElem>.</pElem>
           </incDir>
         </cTool>
         <ccTool>
           <incDir>
+            <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>
             <pElem>.</pElem>

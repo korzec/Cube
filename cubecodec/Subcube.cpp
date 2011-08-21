@@ -6,7 +6,6 @@
  */
 
 #include "Subcube.h"
-#include "SubcubeIndex.h"
 
 Subcube::Subcube() : cube(NULL)
 {
@@ -20,12 +19,12 @@ Subcube::Subcube(CoeffView3D& cube, Coords3D& index, Coords3D& size, Channel cha
 
 void Subcube::Init(CoeffView3D& cube, Coords3D& index, Coords3D& size, Channel ch)
 {
-    this->location = index;
     this->cube = &cube;
-    this->size = size;
-    this->channel = ch;
+    info.location = index;
+    info.size = size;
+    info.channel = ch;
     array.reset(new CoeffView3D(
-            cube [ indices
+            cube [ boost::indices
             [range(index.depth*size.depth, (index.depth+1)*size.depth)]
             [range(index.height*size.height, (index.height+1)*size.height)]
             [range(index.width*size.width, (index.width+1)*size.width)]
@@ -34,7 +33,7 @@ void Subcube::Init(CoeffView3D& cube, Coords3D& index, Coords3D& size, Channel c
 
 Coords3D Subcube::GetLocation()
 {
-    return location;
+    return info.location;
 }
 
 CoeffView3D& Subcube::GetView()
@@ -45,7 +44,7 @@ CoeffView3D& Subcube::GetView()
 Coords3D Subcube::GetSize()
 {
     //Coords3D dims(array->shape());
-    return size;
+    return info.size;
 }
 
 float Subcube::GetWeight()
@@ -73,7 +72,7 @@ CoeffView3D& Subcube::GetParentView()
 
 Channel Subcube::GetChannel()
 {
-    return channel;
+    return info.channel;
 }
 bool Subcube::CopyNewValues(CoeffArray3DPtr newArrayPtr)
 {   

@@ -9,6 +9,7 @@
 #define	PARSE_CMD_H
 
 #include "../cubecodec/types.h"
+#include "../cubecodec/Parameters.h"
 
 /// displays a help message
 static void display_help()

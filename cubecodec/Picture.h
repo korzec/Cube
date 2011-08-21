@@ -7,8 +7,9 @@
 
 #ifndef PICTURE_H
 #define	PICTURE_H
-#include "types.h"
+#include "arrays.h"
 #include "FrameBuffer.h"
+#include "types.h"
 
 class Picture;
 //STL and BOOST containers for Picture

@@ -28,8 +28,8 @@ void SubcubeIndex::Init(CoeffView3D& cube, Coords3D subSize, Channel channel)
                   cube.shape()[1]/subSize.height, 
                   cube.shape()[0]/subSize.depth);
     
-    list.resize(extents[dims.depth][dims.height][dims.width]);
-    weights.resize(extents[dims.depth][dims.height][dims.width]);
+    list.resize(boost::extents[dims.depth][dims.height][dims.width]);
+    weights.resize(boost::extents[dims.depth][dims.height][dims.width]);
     
     //loop over all subcubes and initialize them
     for (int d = 0; d < dims.depth; d++)

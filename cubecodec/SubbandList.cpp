@@ -33,7 +33,7 @@ void SubbandList::Init(CoeffArray3D& cube, int levels)
     
     //set level 0 subband LLL
     //size/2^levels
-    CoeffView3D view =  cube[ indices
+    CoeffView3D view =  cube[ boost::indices
                         [range(0,dims.depth)]
                         [range(0,dims.height)]
                         [range(0,dims.width)] ];
@@ -51,7 +51,7 @@ void SubbandList::Init(CoeffArray3D& cube, int levels)
             {
                 for (int w = 0; w < 2 ; w++)
                 {
-                    CoeffView3D view = cube[ indices
+                    CoeffView3D view = cube[ boost::indices
                         [range(d*dL,(d+1)*dL)]
                         [range(h*hL,(h+1)*hL)]
                         [range(w*wL,(w+1)*wL)] ];

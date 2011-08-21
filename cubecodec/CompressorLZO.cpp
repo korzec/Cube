@@ -62,7 +62,7 @@ CoeffArray3DPtr CompressorLZO::Decompress(Packet& packet, Coords3D& subcubeSize)
     compressedSize = packet.compressedSize;
     
     CoeffArray3DPtr array = CoeffArray3DPtr(new CoeffArray3D(
-            extents[subcubeSize.depth][subcubeSize.height][subcubeSize.width]));
+            boost::extents[subcubeSize.depth][subcubeSize.height][subcubeSize.width]));
     
     unsigned char* cubeData = (unsigned char*)array->data();
     unsigned char* compressedData = packet.compressedData.get();

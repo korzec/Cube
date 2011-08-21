@@ -10,7 +10,6 @@
 #ifndef GENERAL_H
 #define	GENERAL_H
 
-#include "types.h"
 #include "Subcube.h"
 #include "SubcubeIndex.h"
 #include <string>

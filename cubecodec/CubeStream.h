@@ -8,7 +8,9 @@
 #ifndef CUBESTREAM_H
 #define	CUBESTREAM_H
 
-#include "types.h"
+#include "arrays.h"
+#include "cubeHeaders.h"
+#include "Parameters.h"
 #include "Packet.h"
 #include <string>
 #include <iostream>

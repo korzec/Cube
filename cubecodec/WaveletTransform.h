@@ -8,7 +8,7 @@
 #ifndef WAVELETTRANSFORM_H
 #define	WAVELETTRANSFORM_H
 
-#include "types.h"
+#include "arrays.h"
 
 ///performs a wavelet transform on #CoeffView3D
 class WaveletTransform

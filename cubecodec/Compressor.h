@@ -8,7 +8,7 @@
 #ifndef COMPRESSOR_H
 #define	COMPRESSOR_H
 
-#include "types.h"
+#include "arrays.h"
 #include "Packet.h"
 
 class Compressor;

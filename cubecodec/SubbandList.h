@@ -8,6 +8,7 @@
 #ifndef SUBBANDLIST_H
 #define	SUBBANDLIST_H
 
+#include "arrays.h"
 #include "types.h"
 
 ///stores a list of all subbands of a #CoeffArray3D

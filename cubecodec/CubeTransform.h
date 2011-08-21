@@ -8,7 +8,7 @@
 #ifndef CUBETRANSFORM_H
 #define	CUBETRANSFORM_H
 
-#include "types.h"
+#include "arrays.h"
 
 /// Transform cube to modify value of the cube used to enhance compression
 class CubeTransform

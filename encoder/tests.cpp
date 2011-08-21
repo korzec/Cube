@@ -23,10 +23,10 @@ int testCompressWriteReadDecompress()
 {       
     //generate arrays
     Coords3D subDims(16,32,4);
-    CoeffArray3D array1(extents[subDims.depth][subDims.height][subDims.width]);
-    CoeffArray3D array2(extents[subDims.depth][subDims.height][subDims.width]);
-    CoeffView3D subcubeView1 =  array1[ indices[range()][range()][range()] ];
-    CoeffView3D subcubeView2 =  array2[ indices[range()][range()][range()] ];
+    CoeffArray3D array1(boost::extents[subDims.depth][subDims.height][subDims.width]);
+    CoeffArray3D array2(boost::extents[subDims.depth][subDims.height][subDims.width]);
+    CoeffView3D subcubeView1 =  array1[ boost::indices[range()][range()][range()] ];
+    CoeffView3D subcubeView2 =  array2[ boost::indices[range()][range()][range()] ];
     for (int d = 0; d < subDims.depth; d++)
     {
         for (int h = 0; h < subDims.height; h++)
@@ -162,7 +162,7 @@ int testDumpSubcubes()
 {
     Coords3D dims(128,256,16);
     CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
-    CoeffView3D view = array[ indices[range()][range()][range()] ];
+    CoeffView3D view = array[ boost::indices[range()][range()][range()] ];
     Coords3D size(32,32,4);
     
     SubcubeIndex subcubes;
@@ -193,7 +193,7 @@ int testSubcubeIndex()
 {
     Coords3D dims(128,256,16);
     CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
-    CoeffView3D view = array[ indices
+    CoeffView3D view = array[ boost::indices
                         [range(0,dims.depth)]
                         [range(0,dims.height)]
                         [range(0,dims.width)] ];
@@ -259,7 +259,7 @@ int testSubcube()
 {
     Coords3D dims(128,256,16);
     CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
-    CoeffView3D view = array[ indices
+    CoeffView3D view = array[ boost::indices
                         [range(0,dims.depth)]
                         [range(0,dims.height)]
                         [range(0,dims.width)] ];
@@ -278,7 +278,7 @@ int testView()
 {
     Coords3D dims(32,32,4);
     CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
-    CoeffView3D view = array[ indices
+    CoeffView3D view = array[ boost::indices
                         [range(0,dims.depth)]
                         [range(0,dims.height)]
                         [range(0,dims.width)] ];
@@ -436,7 +436,7 @@ int testDeinterleave()
 {
     Coords3D dims(10,2,2);
     CoeffArray3D arrayWdata(boost::extents[dims.depth][dims.height][dims.width]);
-    CoeffView3D arrayW = arrayWdata[ indices[range()][range()][range()]];
+    CoeffView3D arrayW = arrayWdata[ boost::indices[range()][range()][range()]];
 
     ///set values;
     for (int d = 0; d < dims.depth; d++)
@@ -502,9 +502,9 @@ int testSplit()
     CoeffArray3D arrayHdata(boost::extents[1][len][1]);
     CoeffArray3D arrayDdata(boost::extents[len][1][1]);
 
-    CoeffView3D arrayW = arrayWdata[ indices[range()][range()][range()] ];
-    CoeffView3D arrayH = arrayHdata[ indices[range()][range()][range()] ];
-    CoeffView3D arrayD = arrayDdata[ indices[range()][range()][range()] ];
+    CoeffView3D arrayW = arrayWdata[ boost::indices[range()][range()][range()] ];
+    CoeffView3D arrayH = arrayHdata[ boost::indices[range()][range()][range()] ];
+    CoeffView3D arrayD = arrayDdata[ boost::indices[range()][range()][range()] ];
     
     Coords3D dims(len,1,1);
     ///set values;

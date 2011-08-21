@@ -30,8 +30,8 @@ void CompressorTestClass::tearDown()
 void CompressorTestClass::testCompress()
 {
     Coords3D dims(16,32,4);
-    CoeffArray3D array(extents[dims.depth][dims.height][dims.width]);
-    CoeffView3D subcubeView =  array[ indices[range()][range()][range()] ];
+    CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
+    CoeffView3D subcubeView =  array[ boost::indices[range()][range()][range()] ];
     
     for (int d = 0; d < dims.depth; d++)
     {
@@ -75,8 +75,8 @@ void CompressorTestClass::testCompressor()
 void CompressorTestClass::testDecompress()
 {    
     Coords3D dims(16,32,4);
-    CoeffArray3D array(extents[dims.depth][dims.height][dims.width]);
-    CoeffView3D subcubeView =  array[ indices[range()][range()][range()] ];
+    CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
+    CoeffView3D subcubeView =  array[ boost::indices[range()][range()][range()] ];
     for (int d = 0; d < dims.depth; d++)
     {
         for (int h = 0; h < dims.height; h++)
