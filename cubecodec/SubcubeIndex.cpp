@@ -6,6 +6,7 @@
  */
 
 #include "SubcubeIndex.h"
+#include <cassert>
 
 bool dumpSubcubes(SubcubeArray3D& subcubes, FloatArray3D& weights, std::string fileName);
 

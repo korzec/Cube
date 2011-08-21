@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <bitset>
+#include <cassert>
 
 /// copy a Picture to slice in CoeffCube
 bool copyArrayFromValueToCoeff(ValueArray2Dref& from, CoeffView2D& to)

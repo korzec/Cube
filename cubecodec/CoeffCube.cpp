@@ -11,6 +11,7 @@
 #include "SubcubeIndex.h"
 #include <omp.h>
 #include <cstring>
+#include <cassert>
 
 CoeffCube::CoeffCube() : available(false), cubeNumber(-1), nextIndex(-1)
 {

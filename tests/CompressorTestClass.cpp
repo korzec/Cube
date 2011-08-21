@@ -50,14 +50,14 @@ void CompressorTestClass::testCompress()
     if (true /*check result*/)
     {
         CPPUNIT_ASSERT(packet.compressedData.use_count() > 0);
-        CPPUNIT_ASSERT(packet.location.depth == location.depth);
-        CPPUNIT_ASSERT(packet.location.height == location.height);
-        CPPUNIT_ASSERT(packet.location.width == location.width);
-        CPPUNIT_ASSERT(packet.fullSize == Coords3D(array.shape()).Volume()*sizeof(CoeffType));
+        CPPUNIT_ASSERT(packet.header.location.depth == location.depth);
+        CPPUNIT_ASSERT(packet.header.location.height == location.height);
+        CPPUNIT_ASSERT(packet.header.location.width == location.width);
+        CPPUNIT_ASSERT(packet.header.fullSize == Coords3D(array.shape()).Volume()*sizeof(CoeffType));
         std::cout << std::endl;
         std::cout << "array size " << Coords3D(array.shape()).Volume() << std::endl;
-        std::cout << "fullSize " << packet.fullSize << std::endl;
-        std::cout << "compressed size " << packet.compressedSize << std::endl;
+        std::cout << "fullSize " << packet.header.fullSize << std::endl;
+        std::cout << "compressed size " << packet.header.compressedSize << std::endl;
         //LZO can expand input
         //CPPUNIT_ASSERT(packet.compressedSize <= packet.fullSize);
     }

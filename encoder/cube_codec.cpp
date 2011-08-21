@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string>
 #include <cstring>
+#include <iostream>
 
 #include "tests.h"
 //#define cimg_display 2

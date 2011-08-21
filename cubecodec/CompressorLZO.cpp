@@ -39,12 +39,12 @@ Packet CompressorLZO::Compress(CoeffView3D& subcube, Coords3D& location, Channel
     assert(result == LZO_E_OK);
 
     Packet packet;
-    packet.cubeNumer = cubeNumber;
-    packet.channel = channel;
     packet.compressedData = ucharPtr(compressedData);
-    packet.compressedSize = compressedSize;
-    packet.fullSize = fullSize; //redundant
-    packet.location = location;
+    packet.header.cubeNumer = cubeNumber;
+    packet.header.channel = channel;
+    packet.header.compressedSize = compressedSize;
+    packet.header.fullSize = fullSize; //redundant
+    packet.header.location = location;
     return packet;
 }
 
@@ -52,14 +52,14 @@ CoeffArray3DPtr CompressorLZO::Decompress(Packet& packet, Coords3D& subcubeSize)
 {
     assert(lzo_init() == LZO_E_OK);
     assert(packet.compressedData.use_count() > 0);
-    assert(packet.compressedSize > 0);
+    assert(packet.header.compressedSize > 0);
     lzo_uint fullSize;
     lzo_uint compressedSize;
     lzo_uint newSize;
     
     fullSize = subcubeSize.Volume()*sizeof(CoeffType);
-    assert((size_t)packet.fullSize == fullSize); //redundant
-    compressedSize = packet.compressedSize;
+    assert((size_t)packet.header.fullSize == fullSize); //redundant
+    compressedSize = packet.header.compressedSize;
     
     CoeffArray3DPtr array = CoeffArray3DPtr(new CoeffArray3D(
             boost::extents[subcubeSize.depth][subcubeSize.height][subcubeSize.width]));

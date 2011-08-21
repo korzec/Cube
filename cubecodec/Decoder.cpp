@@ -75,8 +75,8 @@ bool Decoder::DecompressAll()
     for (; iterator != allPackets.rend(); iterator++)
     {
         // get subcube to copy the data
-        subcube = &coeffCube.GetSubcubeIndex(iterator->second.channel)
-                ->GetSubcube(iterator->second.location);
+        subcube = &coeffCube.GetSubcubeIndex(iterator->second.header.channel)
+                ->GetSubcube(iterator->second.header.location);
         
         newArrayPtr = compressor->Decompress(iterator->second, params.codecParams.subcubeSize);
         subcube->CopyNewValues(newArrayPtr);

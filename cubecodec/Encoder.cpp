@@ -8,6 +8,7 @@
 #include "Encoder.h"
 #include "general.h"
 #include "types.h"
+#include <cassert>
 
 Encoder::Encoder() : Decoder(),  pictureInputBuffer(0)
 {

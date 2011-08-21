@@ -6,6 +6,7 @@
  */
 
 #include "Subcube.h"
+#include <cassert>
 
 Subcube::Subcube() : cube(NULL)
 {

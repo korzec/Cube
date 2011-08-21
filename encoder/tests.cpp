@@ -120,10 +120,11 @@ int testCompressWriteReadDecompress()
     { //read  packets
         newPacket1 = cubeIO.ReadPacket();
         newPacket2 = cubeIO.ReadPacket();
-        assert(packet1.compressedSize == newPacket1.compressedSize);
-        assert(packet1.fullSize == newPacket1.fullSize);
-        assert(packet1.location.Volume() == newPacket1.location.Volume());
-        for (int i = 0; i < packet1.compressedSize; i++)
+        assert(newPacket1.header.headerCode == PACKETHEADERCODE );
+        assert(packet1.header.compressedSize == newPacket1.header.compressedSize);
+        assert(packet1.header.fullSize == newPacket1.header.fullSize);
+        assert(packet1.header.location.Volume() == newPacket1.header.location.Volume());
+        for (int i = 0; i < packet1.header.compressedSize; i++)
         {
             assert(packet1.compressedData.get()[i] ==
                                  newPacket1.compressedData.get()[i]);
@@ -675,7 +676,7 @@ int testOutput() {
     // open the decoded ouput file
     std::ofstream *OutputFile = NULL;
 
-    std::string outputPictureName = "outputTest.txt";
+    std::string outputPictureName = std::string(OUTDIR) + "outputTest.txt";
     OutputFile = new std::ofstream(outputPictureName.c_str(),
             std::ios::out | std::ios::binary);
 

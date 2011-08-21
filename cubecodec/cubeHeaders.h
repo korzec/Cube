@@ -8,10 +8,41 @@
 #ifndef CUBEHEADERS_H
 #define	CUBEHEADERS_H
 
+#include "Parameters.h"
+#include "types.h"
 
 #define CUBEHEADERCODE 0x0C
 #define PACKETHEADERCODE 0x0B
 #define SEQUENCEHEADERCODE 0x31304243//"CB01" in LE
+
+
+class SequenceHeader
+{
+public:
+    int headerCode;
+    CodecParams codecParams;
+    VideoParams videoParams;
+};
+
+class CubeHeader
+{
+public:
+    char headerCode;
+    int cubeNumber;
+};
+
+class PacketHeader
+{
+public:
+    char headerCode;
+    int cubeNumer;
+    Coords3D location;
+    Channel channel;
+    int fullSize;
+    int compressedSize;
+    
+};
+
 
 
 #endif	/* CUBEHEADERS_H */

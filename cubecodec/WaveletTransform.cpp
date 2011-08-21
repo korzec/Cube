@@ -6,6 +6,7 @@
  */
 
 #include "WaveletTransform.h"
+#include <cassert>
 
 WaveletTransform::WaveletTransform()
 {
