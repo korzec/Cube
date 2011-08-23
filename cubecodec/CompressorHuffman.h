@@ -31,9 +31,8 @@ protected:
     int length;
     int maxCharLength;
     ucharPtr bitSequence;
-    bool flushed;
 public:
-    BitStream(int maxLength) : length(0), maxCharLength(maxLength), flushed(false)
+    BitStream(int maxLength) : length(0), maxCharLength(maxLength)
     {
         bitSequence.reset(new unsigned char [maxCharLength] );
         //zero the alocated memory
@@ -41,17 +40,21 @@ public:
     }
     void insertBit(unsigned char newBit)
     {
-        //TODO:if flushed abort or Unflush
-        newBit = newBit & 1;
-          
+        newBit = newBit & 1;          
         //if there is still space
-        if( length < maxCharLength*8 && !flushed)
+        if( length < maxCharLength*8 )
         {
+            if(!newBit)
+            {
+                length++;
+                return;
+            }
             //find current byte
             int byte = length>>3;
             assert(byte < maxCharLength);
-            //insert new bit shifting the previous ones to the left
-            bitSequence.get()[byte] = (bitSequence.get()[byte]<<1) | newBit;          
+            //insert new bit at its position
+            int position = 7-length%8;
+            bitSequence.get()[byte] |= (newBit<<position);         
             //move to next position
             length++;
         }  
@@ -72,26 +75,6 @@ public:
     int GetLength() { return length; }
     ucharPtr GetSequence() { return bitSequence; }
     
-    unsigned char extractBit()
-    {
-        //if there is still bits left
-        if(length > 0)
-        {
-            //find current byte
-            int byte = length>>3;
-            assert(byte < maxCharLength);
-            //get current bit value
-            unsigned char result = bitSequence.get()[byte] & 1;
-            //shift to the right to drop lsb
-            bitSequence.get()[byte]>>=1;
-            //decrease length
-            length--;
-            return result;
-        }
-        else
-            return 2;
-    }
-    
     unsigned char GetBitAt(int atBit)
     {
         //if not out of range
@@ -106,40 +89,11 @@ public:
         return 2;
     }
     
-    void FlushBits()
-    {
-        if(flushed)
-            return;
-        //move the rest of bits to the left 
-        int trail = length%8;
-        if(trail)
-        {
-            //shift last char to left 8-trail positions
-            bitSequence.get()[length>>3] <<= (8-trail);
-        }
-        flushed = true;
-    }
-    void UnflushBits()
-    { 
-        if(!flushed)
-            return;
-        int trail = length%8;
-        if(trail)
-        {
-            //shift bits back to the right
-            bitSequence.get()[length>>3] >>= (8-trail);
-        }
-        flushed = false;
-    }
-    
     std::string toString()
     {
         std::stringstream stringStream;
         
-        //treat the last few bits special
-        int trail = length%8;
-        
-        for(int i=0; i<length-trail; i++)
+        for(int i=0; i<length; i++)
         {
             //find current byte
             int byte = i>>3;
@@ -150,21 +104,7 @@ public:
                 stringStream << '1';
             else
                 stringStream << '0';
-        }  
-        //UnflushBits();
-        for(int i=length-trail; i<length; i++)
-        {
-            //find current byte
-            int byte = i>>3;
-            assert(byte < maxCharLength);
-            //output current 
-            int position = trail-1-i%8;
-            if(bitSequence.get()[byte] & 1<<position )
-                stringStream << '1';
-            else
-                stringStream << '0';
         }
-        //FlushBits();
         return stringStream.str();
     }
 };

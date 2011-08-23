@@ -4,19 +4,61 @@
 #include <cassert>
 #include <bitset>
 
-int testFlushUnflush()
+int testInsertBit()
 {
     Codeword  word;
     word.insertBit(1);
     word.insertBit(0);
     word.insertBit(1);
     assert(word.GetLength() == 3);
-    assert(word.GetSequence().get()[0] == 5);
-    
-    word.FlushBits();
+    std::bitset<8> bits = word.GetSequence().get()[0];
+    std::cout << bits << std::endl;
+    std::cout << word.toString() << std::endl;
     assert(word.GetSequence().get()[0] == 160);
-    word.UnflushBits();
-    assert(word.GetSequence().get()[0] == 5);
+    
+    //test if cloning works properly for codewords
+    assert(word.Clone().GetLength() == 3);
+    assert(word.Clone().GetSequence().get()[0] == 160);
+
+    Codeword super;
+    std::cout << super.toString() << std::endl;
+    super.insertBit(1);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(0);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(1);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(0);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(1);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(0);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(1);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(0);
+    assert(super.GetSequence().get()[0] == 170 );
+    std::cout << super.toString() << std::endl;
+    
+    super.insertBit(1);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(0);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(1);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(0);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(1);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(0);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(1);
+    std::cout << super.toString() << std::endl;
+    super.insertBit(0);
+    assert(super.GetSequence().get()[1] == 170 );
+    assert(super.GetSequence().get()[0] == 170 );
+    std::cout << super.toString() << std::endl;
+    
     return 0;
 }
 
@@ -73,66 +115,13 @@ int testHuffCompression()
 
 int testHuffTree()
 {
-    //test if cloning works properly for codewords
-    Codeword word;
-    word.insertBit(1);
-    word.insertBit(1);
-    word.insertBit(1);
-    assert(word.GetLength() == 3);
-    std::cout << word.toString() << std::endl;
-    std::cout << int(word.GetSequence().get()[0]) << std::endl;
-    assert(word.GetSequence().get()[0] == 7);
-    
-    assert(word.Clone().GetLength() == 3);
-    Codeword omg = word.Clone();
-    assert(word.Clone().GetSequence().get()[0] == 7);
-
-    Codeword super;
-    std::cout << super.toString() << std::endl;
-    super.insertBit(1);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(0);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(1);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(0);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(1);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(0);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(1);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(0);
-    assert(super.GetSequence().get()[0] == 170 );
-    std::cout << super.toString() << std::endl;
-    
-    super.insertBit(1);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(0);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(1);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(0);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(1);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(0);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(1);
-    std::cout << super.toString() << std::endl;
-    super.insertBit(0);
-    assert(super.GetSequence().get()[1] == 170 );
-    assert(super.GetSequence().get()[0] == 170 );
-    std::cout << super.toString() << std::endl;
-    
     
     CompressorHuffman compressor;
-    word = compressor.GetCodeword(0);
+    Codeword word = compressor.GetCodeword(0);
     assert(word.GetLength() > 0);
     assert(word.GetSequence().use_count() > 0);
+    std::cout << word.toString();
     CoeffPair symbolPair = compressor.GetSymbol(0);
-    
     
     //print all symbols
     CodewordMap* dict = &compressor.GetDictionary();
@@ -146,10 +135,10 @@ int testHuffTree()
     }
     assert(dict->size() == map.size());
     std::map<std::string, CoeffType>::iterator iter = map.begin();
-    for (; iter != map.end(); iter++)
-    {
-        std::cout << iter->second << "\t, " << iter->first << std::endl;
-    }
+//    for (; iter != map.end(); iter++)
+//    {
+//        std::cout << iter->second << "\t, " << iter->first << std::endl;
+//    }
     
     
     it = compressor.GetDictionary().begin();
@@ -213,7 +202,7 @@ return 0;
 
 int runTests2()
 {
-    testFlushUnflush();
+    testInsertBit();
     testHuffTree();
     testStatistics();
     return 0;
