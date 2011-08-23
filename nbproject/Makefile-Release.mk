@@ -44,6 +44,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/cubecodec/CompressorLZO.o \
 	${OBJECTDIR}/cubecodec/PictureBuffer.o \
 	${OBJECTDIR}/cubecodec/Decoder.o \
+	${OBJECTDIR}/cubecodec/CompressorHuffman.o \
 	${OBJECTDIR}/encoder/cube_encode.o \
 	${OBJECTDIR}/cubecodec/SubbandList.o \
 	${OBJECTDIR}/cubecodec/SubcubeIndex.o \
@@ -66,6 +67,7 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 TESTFILES= \
 	${TESTDIR}/TestFiles/f1 \
 	${TESTDIR}/TestFiles/f2 \
+	${TESTDIR}/TestFiles/f4 \
 	${TESTDIR}/TestFiles/f3
 
 # C Compiler Flags
@@ -141,6 +143,11 @@ ${OBJECTDIR}/cubecodec/Decoder.o: cubecodec/Decoder.cpp
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Decoder.o cubecodec/Decoder.cpp
+
+${OBJECTDIR}/cubecodec/CompressorHuffman.o: cubecodec/CompressorHuffman.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/CompressorHuffman.o cubecodec/CompressorHuffman.cpp
 
 ${OBJECTDIR}/encoder/cube_encode.o: encoder/cube_encode.cpp 
 	${MKDIR} -p ${OBJECTDIR}/encoder
@@ -225,6 +232,10 @@ ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/CubeIOTestClass.o ${TESTDIR}/tests/Cub
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} -lcppunit -lcppunit 
 
+${TESTDIR}/TestFiles/f4: ${TESTDIR}/tests/CompressorHuffmanTestClass.o ${TESTDIR}/tests/CompressorHuffmanTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f4 $^ ${LDLIBSOPTIONS} -lcppunit 
+
 ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/PictureTestClass.o ${TESTDIR}/tests/PictureTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS} -lcppunit 
@@ -252,6 +263,18 @@ ${TESTDIR}/tests/CubeIOTestRunner.o: tests/CubeIOTestRunner.cpp
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestRunner.o tests/CubeIOTestRunner.cpp
+
+
+${TESTDIR}/tests/CompressorHuffmanTestClass.o: tests/CompressorHuffmanTestClass.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestClass.o tests/CompressorHuffmanTestClass.cpp
+
+
+${TESTDIR}/tests/CompressorHuffmanTestRunner.o: tests/CompressorHuffmanTestRunner.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestRunner.o tests/CompressorHuffmanTestRunner.cpp
 
 
 ${TESTDIR}/tests/PictureTestClass.o: tests/PictureTestClass.cpp 
@@ -394,6 +417,19 @@ ${OBJECTDIR}/cubecodec/Decoder_nomain.o: ${OBJECTDIR}/cubecodec/Decoder.o cubeco
 	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Decoder_nomain.o cubecodec/Decoder.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/cubecodec/Decoder.o ${OBJECTDIR}/cubecodec/Decoder_nomain.o;\
+	fi
+
+${OBJECTDIR}/cubecodec/CompressorHuffman_nomain.o: ${OBJECTDIR}/cubecodec/CompressorHuffman.o cubecodec/CompressorHuffman.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/cubecodec/CompressorHuffman.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/CompressorHuffman_nomain.o cubecodec/CompressorHuffman.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/cubecodec/CompressorHuffman.o ${OBJECTDIR}/cubecodec/CompressorHuffman_nomain.o;\
 	fi
 
 ${OBJECTDIR}/encoder/cube_encode_nomain.o: ${OBJECTDIR}/encoder/cube_encode.o encoder/cube_encode.cpp 
@@ -584,6 +620,7 @@ ${OBJECTDIR}/cubecodec/FrameBuffer_nomain.o: ${OBJECTDIR}/cubecodec/FrameBuffer.
 	then  \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	    ${TESTDIR}/TestFiles/f2 || true; \
+	    ${TESTDIR}/TestFiles/f4 || true; \
 	    ${TESTDIR}/TestFiles/f3 || true; \
 	else  \
 	    ./${TEST} || true; \

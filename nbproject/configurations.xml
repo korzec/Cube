@@ -8,6 +8,8 @@
         <itemPath>cubecodec/Compressor.h</itemPath>
         <itemPath>cubecodec/CompressorAC.cpp</itemPath>
         <itemPath>cubecodec/CompressorAC.h</itemPath>
+        <itemPath>cubecodec/CompressorHuffman.cpp</itemPath>
+        <itemPath>cubecodec/CompressorHuffman.h</itemPath>
         <itemPath>cubecodec/CompressorLZO.cpp</itemPath>
         <itemPath>cubecodec/CompressorLZO.h</itemPath>
         <itemPath>cubecodec/CubeIO.cpp</itemPath>
@@ -81,6 +83,14 @@
         <itemPath>./tests/CubeIOTestClass.cpp</itemPath>
         <itemPath>./tests/CubeIOTestClass.h</itemPath>
         <itemPath>./tests/CubeIOTestRunner.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4"
+                     displayName="Huffman Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/CompressorHuffmanTestClass.cpp</itemPath>
+        <itemPath>tests/CompressorHuffmanTestClass.h</itemPath>
+        <itemPath>tests/CompressorHuffmanTestRunner.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f3"
                      displayName="Picture Test"
@@ -198,6 +208,21 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+        </linkerTool>
+      </folder>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -299,6 +324,24 @@
         </ccTool>
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerLibStdlibItem>CppUnit</linkerLibStdlibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
           <linkerLibItems>
             <linkerLibStdlibItem>CppUnit</linkerLibStdlibItem>
           </linkerLibItems>
