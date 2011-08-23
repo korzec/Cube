@@ -8,13 +8,11 @@
 #include "../cubecodec/types.h"
 #include "../cubecodec/Encoder.h"
 #include "../cubecodec/PictureIO.h"
+#include "../cubecodec/general.h"
 
 int cube_encode(Parameters params, std::string input, std::string output)
 {
     Encoder encoder;
-    params.codecParams.subcubeSize.width = 60;
-    params.codecParams.subcubeSize.height = 32;
-    params.codecParams.subcubeSize.depth = 4;
     
     //load params and check if they were correct
     if( ! encoder.SetParams(params))
@@ -59,6 +57,17 @@ int cube_encode(Parameters params, std::string input, std::string output)
     
     //write a file header
     encoder.WriteSequenceHeader(codedFile);
+    
+    std::vector<double> psnr;
+    std::vector<double> newPsnr;
+    
+    psnr.push_back(0);//y
+    psnr.push_back(0);//u
+    psnr.push_back(0);//v
+    psnr.push_back(0);//yuv
+
+    //how many psnr values we have accumulated
+    int psnrTimes = 0;
     
     //skip frames
     for (int i=0; i<params.start_pos; ++i)
@@ -107,6 +116,24 @@ int cube_encode(Parameters params, std::string input, std::string output)
                  encoder.WriteCubeData(codedFile);            
                  
                  gop = encoder.GetDecodedGOP();
+                 
+                 if(params.analysis)
+                 {
+                     //get PSNR of the GOP
+                     PictureVectorPtr originalGOP = encoder.GetOriginalGOP();
+                     assert(originalGOP->size() == gop->size());
+                     for(size_t i=0; i < originalGOP->size(); i++)
+                     {
+                         newPsnr = PSNR(originalGOP->at(i), gop->at(i));
+                         psnr[Ych] += newPsnr[Ych];
+                         psnr[Uch] += newPsnr[Uch];
+                         psnr[Vch] += newPsnr[Vch];
+                         psnr[3] += newPsnr[3];
+                         psnrTimes++;
+                     }
+                 }
+                 
+                 
                  if(!params.nolocal)
                      for(size_t i=0; i<gop->size(); i++ )
                      {
@@ -136,6 +163,37 @@ int cube_encode(Parameters params, std::string input, std::string output)
          }while(state == PICTURE_AVAILABLE);
          
     } while(go);
+    
+    if(params.analysis)
+    {
+        psnr[Ych] /= psnrTimes;
+        psnr[Uch] /= psnrTimes;
+        psnr[Vch] /= psnrTimes;
+        psnr[3] /= psnrTimes;
+        //print psnr values
+        std::cout << "cubeSize.depth" << ", "
+         << "levels" << ", "
+         << "subcubeSize.depth" << ", "
+         << "subcubeSize.height" << ", "
+         << "subcubeSize.width" << ", "
+         << "params.skipRatio" << ", "
+         << "psnr Y" << ", "
+         << "psnr U" << ", "
+         << "psnr V" << ", "
+         << "psnr YUV" << ", "
+         << std::endl;
+        std::cout << params.codecParams.cubeSize.depth << ", "
+         << params.codecParams.levels << ", "
+         << params.codecParams.subcubeSize.depth << ", "
+         << params.codecParams.subcubeSize.height << ", "
+         << params.codecParams.subcubeSize.width << ", "
+         << params.skipRatio << ", "
+         << psnr[0] << ", "
+         << psnr[1] << ", "
+         << psnr[2] << ", "
+         << psnr[3] << ", "
+         <<std::endl;
+    }
 
     
     inputPicture.close();

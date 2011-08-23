@@ -10,7 +10,7 @@
 #include "types.h"
 #include <cassert>
 
-Encoder::Encoder() : Decoder(),  pictureInputBuffer(0)
+Encoder::Encoder() : Decoder(),  pictureInputBuffer(0), pictureInputCopy(0)
 {
 }
 
@@ -30,6 +30,7 @@ bool Encoder::SetParams(Parameters params)
 {
     this->params = params;
     pictureInputBuffer = PictureBuffer(this->params.codecParams.cubeSize.depth);
+    pictureInputCopy = PictureBuffer(this->params.codecParams.cubeSize.depth);
     return Init();
 }
 
@@ -45,6 +46,13 @@ BufferState Encoder::Encode()
         //if we have valid gop
         if (gop.size() == (size_t) params.codecParams.cubeSize.depth)
         {
+            if(params.analysis)
+            {
+                //keep current gop for later reference
+                pictureInputCopy.RemoveOldGOP(params.codecParams.cubeSize.depth);
+                pictureInputCopy.AddGOP(gop);
+            }
+            
             cubeNumber++;
             bool ret = coeffCube.LoadGOP(gop);
             pictureInputBuffer.RemoveOldGOP(params.codecParams.cubeSize.depth);
@@ -88,7 +96,7 @@ BufferState Encoder::Encode()
                 }
 
                 if (!params.nolocal)
-                {
+                {   
                     DecompressAll();
                     if (params.analysis)
                     {
@@ -101,7 +109,6 @@ BufferState Encoder::Encode()
 
                     PictureVectorPtr outputGOP = coeffCube.GetGOP();
                     bool ret = pictureOutputBuffer.AddGOP(*outputGOP);
-                    //delete outputGOP;
                     ///check if gop could have been added
                     ///if not return WAIT state; or just PIC AVAILABLE ?
                     ///or INVALID if there was no space for new pictures;
@@ -189,4 +196,11 @@ bool Encoder::WriteCubeData(std::ostream* stream)
     }
     
     return true;
+}
+
+PictureVectorPtr Encoder::GetOriginalGOP()
+{
+    PictureVectorPtr gop(new PictureVector);
+    pictureInputCopy.GetGOP(params.codecParams.cubeSize.depth, *gop);
+    return gop;
 }

@@ -15,6 +15,7 @@ class Encoder : public Decoder
 {
 protected:
     PictureBuffer pictureInputBuffer;
+    PictureBuffer pictureInputCopy;
     ///compresses the subcubes and stores them in a #packetList
     //bool CompressSubcubes(Channel);
     ///compress all subcubes and put in #allPackets
@@ -37,6 +38,8 @@ public:
     bool WriteCubeData(std::ostream*);
     ///write sequence header
     bool WriteSequenceHeader(std::ostream* stream);
+    ///returns original GOP used for compression
+    PictureVectorPtr GetOriginalGOP();
 };
 
 #endif /* CUBE_ENCODER_H_ */

@@ -30,6 +30,7 @@ enum Channel
     Ych = 0,
     Uch = 1,
     Vch = 2,
+    AllYUVch = 9
 };
 
 #endif /* TYPES_H_ */

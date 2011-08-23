@@ -30,7 +30,10 @@ int main(int argc, char* argv[])
     string input, output;
 
     Parameters params;
-
+    params.codecParams.subcubeSize.width = 32;
+    params.codecParams.subcubeSize.height = 32;
+    params.codecParams.subcubeSize.depth = 4;
+    
     if (!parse_command_line(params, argc, argv))
         return EXIT_FAILURE;
 

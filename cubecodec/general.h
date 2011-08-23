@@ -16,6 +16,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include "Picture.h"
 
 /// copy a Picture to slice in CoeffCube
 bool copyArrayFromValueToCoeff(ValueArray2Dref& from, CoeffView2D& to);
@@ -34,4 +35,8 @@ typedef std::map<CoeffType, int> CoeffMap;
 CoeffMap getSymbolStatistics(CoeffView3D& array);
 //output a statistics map to csv file
 bool writeMap(CoeffMap map, std::string fileName);
+///computes PSNR for 2 pictures on all channels separately and also together
+std::vector<double> PSNR(Picture, Picture);
+
+
 #endif	/* GENERAL_H */

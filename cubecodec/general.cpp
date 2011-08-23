@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <bitset>
 #include <cassert>
+#include <float.h>
+#include <vector>
+#include "Picture.h"
+#include "types.h"
 
 /// copy a Picture to slice in CoeffCube
 bool copyArrayFromValueToCoeff(ValueArray2Dref& from, CoeffView2D& to)
@@ -168,3 +172,52 @@ bool writeMap(CoeffMap map, std::string fileName)
     file.close();
     return true;
 }
+
+double MSE(const ValueArray2Dref& array1, const ValueArray2Dref& array2)
+{
+    assert(array1.shape()[0] == array2.shape()[0]);
+    assert(array1.shape()[1] == array2.shape()[1]);
+    
+    Coords3D dims(array1.shape()[1], array1.shape()[0], 1);
+    
+    double sum = 0;
+    double current;
+    //loop all values        
+    for (int h = 0; h < dims.height; h++)
+    {
+        for (int w = 0; w < dims.width; w++)
+        {
+             current = (array1)[h][w] - (array2)[h][w];
+             sum += current*current;
+        }//w
+    }//h
+    //return mean
+    return sum/dims.Volume();
+}
+
+double PSNR(double mse)
+{
+    if (mse > 0)
+        return 10 * log10((255 * 255) / mse);
+    else
+        return DBL_MAX;  
+}
+
+std::vector<double> PSNR(Picture original, Picture reconstructed)
+{
+    assert(original.height() == reconstructed.height());
+    assert(original.width() == reconstructed.width());
+    //compute mse
+    double mse = -1;
+    std::vector<double> results;
+    double mseAll = 0;
+    for( int i = 0; i < NOFCHANNELS ; i++)
+    {
+        mse = MSE(original.Array((Channel)i), reconstructed.Array((Channel)i));
+        results.push_back(PSNR(mse));
+        mseAll+= mse;
+    }
+    results.push_back (PSNR ( mseAll / NOFCHANNELS ));
+    return results;
+}
+
