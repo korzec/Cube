@@ -124,7 +124,7 @@ int testCompressWriteReadDecompress()
         assert(packet1.header.compressedSize == newPacket1.header.compressedSize);
         assert(packet1.header.fullSize == newPacket1.header.fullSize);
         assert(packet1.header.location.Volume() == newPacket1.header.location.Volume());
-        for (int i = 0; i < packet1.header.compressedSize; i++)
+        for (unsigned int i = 0; i < packet1.header.compressedSize; i++)
         {
             assert(packet1.compressedData.get()[i] ==
                                  newPacket1.compressedData.get()[i]);

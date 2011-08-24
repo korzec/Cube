@@ -7,10 +7,11 @@
 
 #include "Decoder.h"
 #include "CompressorLZO.h"
+#include "CompressorHuffman.h"
 
 Decoder::Decoder() : pictureOutputBuffer(0), pictureNumber(0), cubeNumber(0)
 {
-    compressor.reset(new CompressorLZO());
+    //compressor.reset(new CompressorLZO());
 }
 
 BufferState Decoder::Decode()
@@ -131,6 +132,16 @@ bool Decoder::Init()
         params.codecParams.cubeSize.height % params.codecParams.subcubeSize.height != 0 ||
         params.codecParams.cubeSize.depth % params.codecParams.subcubeSize.depth != 0)
         return false;
+    //init the chosen compressor
+    switch(params.codecParams.compression)
+    {
+    case HuffmanCoder:
+        compressor.reset( new CompressorHuffman() );
+        break;
+    case LZO:
+        compressor.reset( new CompressorLZO() );
+        break;
+    }
     return true;
 }
 

@@ -32,7 +32,7 @@ int cube_encode(Parameters params, std::string input, std::string output)
     else
         std::cout << "opened file " << input << std::endl;
 
-    std::cout << "w " << encoder.GetParams().codecParams.cubeSize.width << " h " << encoder.GetParams().codecParams.cubeSize.height << std::endl;
+    std::cout << encoder.GetParams().toString();
 
     //open file for writing
     std::string codedFileName = output + ".wcb";
@@ -70,13 +70,17 @@ int cube_encode(Parameters params, std::string input, std::string output)
     int psnrTimes = 0;
     
     //skip frames
+    std::cout << "skipping frames: ";
     for (int i=0; i<params.start_pos; ++i)
     {
         PictureIO::ReadPicture(inputPicture,
                            encoder.GetParams().codecParams.cubeSize.width, 
                            encoder.GetParams().codecParams.cubeSize.height);
+        std::cout << frameNumber << ","; 
+        std::cout.flush();
+        frameNumber++;
     }
-    
+    std::cout << std::endl << "encoding frames: ";
     do
     {
          picture = PictureIO::ReadPicture(inputPicture,
@@ -93,9 +97,9 @@ int cube_encode(Parameters params, std::string input, std::string output)
                  std::cout << "failed to load picture to the encoder" << std::endl;
                  return EXIT_FAILURE;
              }
+             std::cout << frameNumber << ","; 
+             std::cout.flush();
              frameNumber++;
-             std::cout << "frame: " << frameNumber << std::endl; 
-             
          }
          else
          {

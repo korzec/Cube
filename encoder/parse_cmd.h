@@ -85,6 +85,22 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
             parsed[i] = true;
             params.decode = true;
         }       
+        else if (strcmp(argv[i], "-compressor") == 0)
+        {
+            parsed[i] = true;
+            i++;
+            std::cout << "USING COMPRESSOR: ";
+            //sompare strings
+            if( strcmp(argv[i], "huffman") == 0)
+                params.codecParams.compression = HuffmanCoder,
+                        std::cout << "huffman coder" << std::endl;
+            else if( strcmp(argv[i], "lzo") == 0)
+                params.codecParams.compression = LZO,
+                        std::cout << "LZO" << std::endl;
+            else
+                std::cout << "default" << std::endl;
+            parsed[i] = true;
+        }
         else if (strcmp(argv[i], "-skip") == 0)
         {
             parsed[i] = true;

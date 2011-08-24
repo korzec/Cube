@@ -19,7 +19,7 @@
 class SequenceHeader
 {
 public:
-    int headerCode;
+    unsigned int headerCode;
     CodecParams codecParams;
     VideoParams videoParams;
 };
@@ -27,19 +27,19 @@ public:
 class CubeHeader
 {
 public:
-    char headerCode;
+    unsigned char headerCode;
     int cubeNumber;
 };
 
 class PacketHeader
 {
 public:
-    char headerCode;
+    unsigned char headerCode;
     int cubeNumer;
     Coords3D location;
     Channel channel;
-    int fullSize;
-    int compressedSize;
+    unsigned int fullSize;
+    unsigned int compressedSize;
     
 };
 

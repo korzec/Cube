@@ -33,4 +33,10 @@ enum Channel
     AllYUVch = 9
 };
 
+enum CompressionType
+{
+    HuffmanCoder =0,
+    LZO =1,
+};
+
 #endif /* TYPES_H_ */

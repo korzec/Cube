@@ -28,15 +28,22 @@ public:
 class BitStream
 {
 protected:
-    int length;
-    int maxCharLength;
+    unsigned long int length;
+    unsigned int maxCharLength;
     ucharPtr bitSequence;
 public:
-    BitStream(int maxLength) : length(0), maxCharLength(maxLength)
+    BitStream(unsigned int maxLength) : length(0), maxCharLength(maxLength)
     {
         bitSequence.reset(new unsigned char [maxCharLength] );
         //zero the alocated memory
         memset(bitSequence.get(), 0, maxCharLength);
+    }
+    BitStream( unsigned int maxLength, ucharPtr data) : length(0), maxCharLength(maxLength)
+    {
+        //set length with byte grain; extra bits should be discarded by decompressor
+        length = maxLength*8;
+        //assign the memory
+        bitSequence = data;
     }
     void insertBit(unsigned char newBit)
     {
@@ -50,7 +57,7 @@ public:
                 return;
             }
             //find current byte
-            int byte = length>>3;
+            unsigned int byte = length>>3;
             assert(byte < maxCharLength);
             //insert new bit at its position
             int position = 7-length%8;
@@ -75,13 +82,13 @@ public:
     int GetLength() { return length; }
     ucharPtr GetSequence() { return bitSequence; }
     
-    unsigned char GetBitAt(int atBit)
+    unsigned char GetBitAt(unsigned long int atBit)
     {
         //if not out of range
-        if(length < atBit)
+        if(length > atBit)
         {
             //find current byte
-            int byte = atBit>>3;
+            unsigned int byte = atBit>>3;
             assert(byte < maxCharLength);
             int position = 7-atBit%8;
             return (bitSequence.get()[byte]>>position) & 1;
@@ -89,14 +96,19 @@ public:
         return 2;
     }
     
+    int ByteSize()
+    {
+        return (length>>3)+1;
+    }
+    
     std::string toString()
     {
         std::stringstream stringStream;
         
-        for(int i=0; i<length; i++)
+        for(unsigned long int i=0; i<length; i++)
         {
             //find current byte
-            int byte = i>>3;
+            unsigned int byte = i>>3;
             assert(byte < maxCharLength);
             //output current 
             int position = 7-i%8;

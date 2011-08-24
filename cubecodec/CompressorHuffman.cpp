@@ -21,15 +21,17 @@ HuffNodePtr CompressorHuffman::GenerateTree()
     HuffNodeMap queue;
     //generate statistics for the context : asume HHH context
     //generate probability value for all symbols for range {x AND .....1111111111..}
-    for(short symbol = -1024; symbol < 1024; symbol+=4)
+    for(short symbol = -32768; ; symbol+=1) // !!!!!!!!
     {
         HuffNodePtr node = HuffNodePtr(new HuffNode());
         node->symbol = symbol;
         if(symbol == 0)
-            node->weight = FLT_MAX;
+            node->weight = 1;
         else
             node->weight = 1./fabs(symbol);
         queue.insert(HuffNodePair(node->weight,node));
+        if(symbol == 32767)
+            break;
     }
     //build huffman tree using the queue
     while(queue.size() > 1)
@@ -85,8 +87,8 @@ CodewordMap& CompressorHuffman::GetDictionary()
     return dictionary;
 }
 
-Packet CompressorHuffman::Compress(CoeffView3D& subcube, Coords3D& location, Channel channel, int cubeNumer)
-{
+Packet CompressorHuffman::Compress(CoeffView3D& subcube, Coords3D& location, Channel channel, int cubeNumber)
+{   //NOTE: endianess might mix up
     //get pointer to actual data and length of data
     CoeffArray3D array(subcube);
     Coords3D dims(array.shape());
@@ -95,19 +97,57 @@ Packet CompressorHuffman::Compress(CoeffView3D& subcube, Coords3D& location, Cha
     //allocate data for compression : not more than the input?
     BitStream compressedData(fullSize);
     
-    Codeword word = GetCodeword(cubeData[0]);
+    //loop through all values and output codewords to the compression buffer
+    int symbolCount = fullSize/sizeof(CoeffType);
+    for(int i=0; i<symbolCount ; i++)
+    {
+        compressedData.insertBitStream(GetCodeword(cubeData[i]));
+    }
     
-    //BitStream.insertBitStream();
-    //read
+    int compressedSize = compressedData.ByteSize();
+    Packet packet;
+    packet.compressedData = compressedData.GetSequence();
+    packet.header.cubeNumer = cubeNumber;
+    packet.header.channel = channel;
+    packet.header.compressedSize = compressedSize;
+    packet.header.fullSize = fullSize; //redundant
+    packet.header.location = location;
     
-    //DANGER: endianess might mix up
-    
-    //compress the symbols and track the size of output
-    return Packet();
+    return packet;
 }
 CoeffArray3DPtr CompressorHuffman::Decompress(Packet& packet, Coords3D& subcubeSize)
 {
-    return CoeffArray3DPtr();
+    //allocate memory for decompressed subcube array
+    assert(packet.compressedData.use_count() > 0);
+    assert(packet.header.compressedSize > 0);
+    unsigned int fullSize;
+    unsigned int compressedSize;
+    //int newSize;
+    
+    fullSize = subcubeSize.Volume()*sizeof(CoeffType);
+    assert(packet.header.fullSize == fullSize); //redundant
+    compressedSize = packet.header.compressedSize;
+    
+    CoeffArray3DPtr array = CoeffArray3DPtr(new CoeffArray3D(
+            boost::extents[subcubeSize.depth][subcubeSize.height][subcubeSize.width]));
+    //get array memory pointer
+    CoeffType* cubeData = (CoeffType*)array->data();
+    //map the compressed data to BitStream
+    BitStream compressedData(compressedSize, packet.compressedData);
+    //read bit by bit and write coeffs as they get decoded
+    //read exact number of symbols needed and discard any trailing bits
+    int symbolCount = fullSize/sizeof(CoeffType);
+    for(int i=0, symbols=0; symbols < symbolCount; i++)
+    {
+        //TODO: fix endless loop if the input is wrong
+        CoeffPair coeffPair = this->GetSymbol( compressedData.GetBitAt(i) );
+        if(coeffPair.second)
+        {
+            cubeData[symbols] = coeffPair.first;
+            symbols++;
+        }
+    }
+    return array;
 }
 
 void CompressorHuffman::ResetWord()

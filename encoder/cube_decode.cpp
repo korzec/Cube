@@ -42,13 +42,7 @@ int cube_decode(Parameters params, std::string input, std::string output)
     }
 
     //report read parameters
-    std::cout << " width " << decoder.GetParams().codecParams.cubeSize.width << std::endl
-            << " height " << decoder.GetParams().codecParams.cubeSize.height << std::endl
-            << " depth " << decoder.GetParams().codecParams.cubeSize.depth << std::endl
-            << " levels " << decoder.GetParams().codecParams.levels << std::endl
-            << " sw " << decoder.GetParams().codecParams.subcubeSize.width << std::endl
-            << " sh " << decoder.GetParams().codecParams.subcubeSize.height << std::endl
-            << " sd " << decoder.GetParams().codecParams.subcubeSize.depth << std::endl;
+    std::cout << decoder.GetParams().toString();
             
     Picture picture;
     int frameNumber = 0;

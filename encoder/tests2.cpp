@@ -3,6 +3,12 @@
 #include "../cubecodec/CompressorHuffman.h"
 #include <cassert>
 #include <bitset>
+//#include <boost/math/distributions/normal.hpp>
+//test get bit at
+#include <boost/random/variate_generator.hpp>
+#include <boost/random.hpp>
+#include <boost/math/distributions.hpp>
+//test get symbol
 
 int testInsertBit()
 {
@@ -61,7 +67,6 @@ int testInsertBit()
     
     return 0;
 }
-
 int testHuffCompression()
 {
     //create compressor
@@ -71,6 +76,13 @@ int testHuffCompression()
     CoeffArray3D array(boost::extents[dims.depth][dims.height][dims.width]);
     CoeffView3D view = array[ boost::indices[range()][range()][range()] ];
     
+    //generate  normal distributed numbers
+    boost::mt19937 gen;
+    boost::normal_distribution<> gauss(0,64);
+    boost::math::laplace_distribution<> laplace(0,64);
+    boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > coeffsGauss(gen, gauss);
+    //boost::variate_generator<boost::mt19937&, boost::math::laplace_distribution<> > coeffsLaplace(gen, laplace);
+    
     //test with initialisation
     for (int d = 0; d < dims.depth; d++)
     {
@@ -79,19 +91,22 @@ int testHuffCompression()
             for (int w = 0; w < dims.width; w++)
             {
                 /// d = x_2n+1 - x_2n
-                view[d][h][w] = (CoeffType((random())%255)) << 2;
+                //view[d][h][w] = (CoeffType((random())%255)) << 2;
+                view[d][h][w] = ((CoeffType(coeffsGauss()) % 256 ) << 2 );
+                //view[d][h][w] = 255;
             }
         }
     }
     
-     Coords3D superDims;
+    Coords3D superDims;
     
     //compress the data 
     Packet packet = compressor.Compress(view, superDims, Ych, 666);
     //check sizes
     std::cout << "compressed size: " << packet.header.compressedSize <<std::endl;
+    std::cout << "full size: " << packet.header.fullSize <<std::endl;
     //decompress data
-    CoeffArray3DPtr data = compressor.Decompress(packet, dims );
+    CoeffArray3DPtr data = compressor.Decompress(packet, dims);
     //verify data
     Coords3D newDims(data->shape());
     assert(dims.depth == newDims.depth );
@@ -141,19 +156,15 @@ int testHuffTree()
 //    }
     
     
-    it = compressor.GetDictionary().begin();
-    for (; it != compressor.GetDictionary().end(); it++)
-    {
-        std::bitset<sizeof(CoeffType)*8> bin = it->first;
-        std::cout << it->first << "\t, " << bin << ", "
-                  << it->second.GetLength() << "\t,"
-                  << it->second.toString()
-                  << std::endl;
-    }
-    
-    
-    
-    
+//    it = compressor.GetDictionary().begin();
+//    for (; it != compressor.GetDictionary().end(); it++)
+//    {
+//        std::bitset<sizeof(CoeffType)*8> bin = it->first;
+//        std::cout << it->first << "\t, " << bin << ", "
+//                  << it->second.GetLength() << "\t,"
+//                  << it->second.toString()
+//                  << std::endl;
+//    }
     return 0;
 }
 
@@ -202,6 +213,7 @@ return 0;
 
 int runTests2()
 {
+    testHuffCompression();
     testInsertBit();
     testHuffTree();
     testStatistics();
