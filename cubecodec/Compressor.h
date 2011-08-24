@@ -15,7 +15,7 @@ class Compressor;
 
 typedef boost::shared_ptr<Compressor> CompressorPtr;
 
-///compresses the Subcube data, can be subclassed to change the compression algorithm
+///compresses the Subcube data, abstract 
 class Compressor
 {
 public:

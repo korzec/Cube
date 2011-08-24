@@ -31,107 +31,25 @@ protected:
     unsigned long int length;
     unsigned int maxCharLength;
     ucharPtr bitSequence;
+    unsigned char* bits;
 public:
-    BitStream(unsigned int maxLength) : length(0), maxCharLength(maxLength)
-    {
-        bitSequence.reset(new unsigned char [maxCharLength] );
-        //zero the alocated memory
-        memset(bitSequence.get(), 0, maxCharLength);
-    }
-    BitStream( unsigned int maxLength, ucharPtr data) : length(0), maxCharLength(maxLength)
-    {
-        //set length with byte grain; extra bits should be discarded by decompressor
-        length = maxLength*8;
-        //assign the memory
-        bitSequence = data;
-    }
-    void insertBit(unsigned char newBit)
-    {
-        newBit = newBit & 1;          
-        //if there is still space
-        if( length < maxCharLength*8 )
-        {
-            if(!newBit)
-            {
-                length++;
-                return;
-            }
-            //find current byte
-            unsigned int byte = length>>3;
-            assert(byte < maxCharLength);
-            //insert new bit at its position
-            int position = 7-length%8;
-            bitSequence.get()[byte] |= (newBit<<position);         
-            //move to next position
-            length++;
-        }  
-    }
-    void insertBitStream(BitStream stream)
-    {
-        //all bits one by one
-        for(int i = 0; i< stream.GetLength(); i++)
-            insertBit(stream.GetBitAt(i));
-    }
-    BitStream Clone()
-    {
-        BitStream word(maxCharLength); 
-        memcpy( word.bitSequence.get(), bitSequence.get(), maxCharLength);
-        word.length = length;
-        return word;
-    }
-    int GetLength() { return length; }
-    ucharPtr GetSequence() { return bitSequence; }
-    
-    unsigned char GetBitAt(unsigned long int atBit)
-    {
-        //if not out of range
-        if(length > atBit)
-        {
-            //find current byte
-            unsigned int byte = atBit>>3;
-            assert(byte < maxCharLength);
-            int position = 7-atBit%8;
-            return (bitSequence.get()[byte]>>position) & 1;
-        }  
-        return 2;
-    }
-    
-    int ByteSize()
-    {
-        return (length>>3)+1;
-    }
-    
-    std::string toString()
-    {
-        std::stringstream stringStream;
-        
-        for(unsigned long int i=0; i<length; i++)
-        {
-            //find current byte
-            unsigned int byte = i>>3;
-            assert(byte < maxCharLength);
-            //output current 
-            int position = 7-i%8;
-            if(bitSequence.get()[byte] & 1<<position )
-                stringStream << '1';
-            else
-                stringStream << '0';
-        }
-        return stringStream.str();
-    }
+    BitStream(unsigned int maxLength);
+    BitStream( unsigned int maxLength, ucharPtr data);
+    void insertBit(unsigned char newBit);
+    void insertBitStream(BitStream stream);
+    BitStream Clone();
+    int GetLength();
+    ucharPtr GetSequence();
+    unsigned char GetBitAt(unsigned long int atBit);
+    int ByteSize();
+    std::string toString();
 };
 
 class Codeword : public BitStream
 {
 public:
-    Codeword() : BitStream(MAXCODEWORDLENGTH) {}
-    Codeword Clone()
-    {
-        Codeword word; 
-        memcpy( word.bitSequence.get(), bitSequence.get(), maxCharLength);
-        word.length = length;
-        return word;
-    }
+    Codeword();
+    Codeword Clone();
 };
 
 typedef std::multimap<float, HuffNodePtr> HuffNodeMap;
