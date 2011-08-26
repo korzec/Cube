@@ -3,6 +3,8 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="f1" displayName="Code" projectFiles="true">
       <logicalFolder name="cubecodec" displayName="cubecodec" projectFiles="true">
+        <itemPath>cubecodec/BitStream.cpp</itemPath>
+        <itemPath>cubecodec/BitStream.h</itemPath>
         <itemPath>cubecodec/CoeffCube.cpp</itemPath>
         <itemPath>cubecodec/CoeffCube.h</itemPath>
         <itemPath>cubecodec/Compressor.h</itemPath>
@@ -24,6 +26,8 @@
         <itemPath>cubecodec/Encoder.h</itemPath>
         <itemPath>cubecodec/FrameBuffer.cpp</itemPath>
         <itemPath>cubecodec/FrameBuffer.h</itemPath>
+        <itemPath>cubecodec/MQcoder.cpp</itemPath>
+        <itemPath>cubecodec/MQcoder.h</itemPath>
         <itemPath>cubecodec/Packet.cpp</itemPath>
         <itemPath>cubecodec/Packet.h</itemPath>
         <itemPath>cubecodec/Parameters.h</itemPath>

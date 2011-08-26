@@ -9,6 +9,7 @@
 #define	COMPRESSORHUFFMAN_H
 
 #include "Compressor.h"
+#include "BitStream.h"
 #include <map>
 #include <cassert>
 
@@ -24,26 +25,6 @@ public:
 };
 
 #define MAXCODEWORDLENGTH 80
-
-class BitStream
-{
-protected:
-    unsigned long int length;
-    unsigned int maxCharLength;
-    ucharPtr bitSequence;
-    unsigned char* bits;
-public:
-    BitStream(unsigned int maxLength);
-    BitStream( unsigned int maxLength, ucharPtr data);
-    void insertBit(unsigned char newBit);
-    void insertBitStream(BitStream stream);
-    BitStream Clone();
-    int GetLength();
-    ucharPtr GetSequence();
-    unsigned char GetBitAt(unsigned long int atBit);
-    int ByteSize();
-    std::string toString();
-};
 
 class Codeword : public BitStream
 {
@@ -73,6 +54,8 @@ public:
     ///returns symbol if bool is true
     ///and bool value determining if the actual symbol was reached, false if not 
     CoeffPair GetSymbol(unsigned char bit);
+    
+    CoeffPair GetSymbol(unsigned long int& atBit, BitStream stream );
     ///discard the codeword currently being decoded
     void ResetWord();
 private:

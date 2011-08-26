@@ -52,12 +52,14 @@ OBJECTFILES= \
 	${OBJECTDIR}/cubecodec/CoeffCube.o \
 	${OBJECTDIR}/minilzo/minilzo.o \
 	${OBJECTDIR}/cubecodec/Subcube.o \
-	${OBJECTDIR}/encoder/tests2.o \
-	${OBJECTDIR}/encoder/cube_codec.o \
 	${OBJECTDIR}/cubecodec/Packet.o \
+	${OBJECTDIR}/cubecodec/BitStream.o \
+	${OBJECTDIR}/encoder/cube_codec.o \
+	${OBJECTDIR}/encoder/tests2.o \
 	${OBJECTDIR}/cubecodec/CompressorAC.o \
 	${OBJECTDIR}/encoder/tests.o \
 	${OBJECTDIR}/encoder/cube_decode.o \
+	${OBJECTDIR}/cubecodec/MQcoder.o \
 	${OBJECTDIR}/cubecodec/FrameBuffer.o
 
 # Test Directory
@@ -184,20 +186,25 @@ ${OBJECTDIR}/cubecodec/Subcube.o: cubecodec/Subcube.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Subcube.o cubecodec/Subcube.cpp
 
-${OBJECTDIR}/encoder/tests2.o: encoder/tests2.cpp 
-	${MKDIR} -p ${OBJECTDIR}/encoder
+${OBJECTDIR}/cubecodec/Packet.o: cubecodec/Packet.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/tests2.o encoder/tests2.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Packet.o cubecodec/Packet.cpp
+
+${OBJECTDIR}/cubecodec/BitStream.o: cubecodec/BitStream.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/BitStream.o cubecodec/BitStream.cpp
 
 ${OBJECTDIR}/encoder/cube_codec.o: encoder/cube_codec.cpp 
 	${MKDIR} -p ${OBJECTDIR}/encoder
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/cube_codec.o encoder/cube_codec.cpp
 
-${OBJECTDIR}/cubecodec/Packet.o: cubecodec/Packet.cpp 
-	${MKDIR} -p ${OBJECTDIR}/cubecodec
+${OBJECTDIR}/encoder/tests2.o: encoder/tests2.cpp 
+	${MKDIR} -p ${OBJECTDIR}/encoder
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Packet.o cubecodec/Packet.cpp
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/tests2.o encoder/tests2.cpp
 
 ${OBJECTDIR}/cubecodec/CompressorAC.o: cubecodec/CompressorAC.cpp 
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
@@ -213,6 +220,11 @@ ${OBJECTDIR}/encoder/cube_decode.o: encoder/cube_decode.cpp
 	${MKDIR} -p ${OBJECTDIR}/encoder
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/cube_decode.o encoder/cube_decode.cpp
+
+${OBJECTDIR}/cubecodec/MQcoder.o: cubecodec/MQcoder.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/MQcoder.o cubecodec/MQcoder.cpp
 
 ${OBJECTDIR}/cubecodec/FrameBuffer.o: cubecodec/FrameBuffer.cpp 
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
@@ -523,17 +535,30 @@ ${OBJECTDIR}/cubecodec/Subcube_nomain.o: ${OBJECTDIR}/cubecodec/Subcube.o cubeco
 	    ${CP} ${OBJECTDIR}/cubecodec/Subcube.o ${OBJECTDIR}/cubecodec/Subcube_nomain.o;\
 	fi
 
-${OBJECTDIR}/encoder/tests2_nomain.o: ${OBJECTDIR}/encoder/tests2.o encoder/tests2.cpp 
-	${MKDIR} -p ${OBJECTDIR}/encoder
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/encoder/tests2.o`; \
+${OBJECTDIR}/cubecodec/Packet_nomain.o: ${OBJECTDIR}/cubecodec/Packet.o cubecodec/Packet.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/cubecodec/Packet.o`; \
 	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/tests2_nomain.o encoder/tests2.cpp;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Packet_nomain.o cubecodec/Packet.cpp;\
 	else  \
-	    ${CP} ${OBJECTDIR}/encoder/tests2.o ${OBJECTDIR}/encoder/tests2_nomain.o;\
+	    ${CP} ${OBJECTDIR}/cubecodec/Packet.o ${OBJECTDIR}/cubecodec/Packet_nomain.o;\
+	fi
+
+${OBJECTDIR}/cubecodec/BitStream_nomain.o: ${OBJECTDIR}/cubecodec/BitStream.o cubecodec/BitStream.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/cubecodec/BitStream.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/BitStream_nomain.o cubecodec/BitStream.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/cubecodec/BitStream.o ${OBJECTDIR}/cubecodec/BitStream_nomain.o;\
 	fi
 
 ${OBJECTDIR}/encoder/cube_codec_nomain.o: ${OBJECTDIR}/encoder/cube_codec.o encoder/cube_codec.cpp 
@@ -549,17 +574,17 @@ ${OBJECTDIR}/encoder/cube_codec_nomain.o: ${OBJECTDIR}/encoder/cube_codec.o enco
 	    ${CP} ${OBJECTDIR}/encoder/cube_codec.o ${OBJECTDIR}/encoder/cube_codec_nomain.o;\
 	fi
 
-${OBJECTDIR}/cubecodec/Packet_nomain.o: ${OBJECTDIR}/cubecodec/Packet.o cubecodec/Packet.cpp 
-	${MKDIR} -p ${OBJECTDIR}/cubecodec
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/cubecodec/Packet.o`; \
+${OBJECTDIR}/encoder/tests2_nomain.o: ${OBJECTDIR}/encoder/tests2.o encoder/tests2.cpp 
+	${MKDIR} -p ${OBJECTDIR}/encoder
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/encoder/tests2.o`; \
 	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Packet_nomain.o cubecodec/Packet.cpp;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/tests2_nomain.o encoder/tests2.cpp;\
 	else  \
-	    ${CP} ${OBJECTDIR}/cubecodec/Packet.o ${OBJECTDIR}/cubecodec/Packet_nomain.o;\
+	    ${CP} ${OBJECTDIR}/encoder/tests2.o ${OBJECTDIR}/encoder/tests2_nomain.o;\
 	fi
 
 ${OBJECTDIR}/cubecodec/CompressorAC_nomain.o: ${OBJECTDIR}/cubecodec/CompressorAC.o cubecodec/CompressorAC.cpp 
@@ -599,6 +624,19 @@ ${OBJECTDIR}/encoder/cube_decode_nomain.o: ${OBJECTDIR}/encoder/cube_decode.o en
 	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/cube_decode_nomain.o encoder/cube_decode.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/encoder/cube_decode.o ${OBJECTDIR}/encoder/cube_decode_nomain.o;\
+	fi
+
+${OBJECTDIR}/cubecodec/MQcoder_nomain.o: ${OBJECTDIR}/cubecodec/MQcoder.o cubecodec/MQcoder.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/cubecodec/MQcoder.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/MQcoder_nomain.o cubecodec/MQcoder.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/cubecodec/MQcoder.o ${OBJECTDIR}/cubecodec/MQcoder_nomain.o;\
 	fi
 
 ${OBJECTDIR}/cubecodec/FrameBuffer_nomain.o: ${OBJECTDIR}/cubecodec/FrameBuffer.o cubecodec/FrameBuffer.cpp 
