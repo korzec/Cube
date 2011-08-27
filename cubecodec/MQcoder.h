@@ -33,8 +33,8 @@ class MQencoder
     BitStream& output;
     int codedBytes;
     
-    int C;
-    int A;
+    unsigned int C;
+    unsigned int A;
     int CT;
     CONTEXT CX;
     unsigned char D;
@@ -66,11 +66,33 @@ private:
 
 class MQdecoder
 {
+    BitStream& input;
+    BitStream& output;
+    unsigned int outputSize;
+    int codedBytes;
+    
+    unsigned int C;
+    unsigned short& Clow;
+    unsigned short& Chigh;
+    int A;
+    int CT;
+    CONTEXT CX;
+    unsigned char D;
+    unsigned char *BP;
+    unsigned char *BPST;
+    
+    const unsigned char* NLPS;
+    const unsigned char* NMPS;
+    const unsigned char* SWITCH;
+    const unsigned short* Qe;
+public:
+    MQdecoder(BitStream& input, BitStream& output, unsigned int outSize /* = 0 */);
     void DECODER();
+private:
     void INITDEC();
     unsigned char DECODE();
-    void MPS_EXCHANGE();
-    void LPS_EXCHANGE();
+    unsigned char MPS_EXCHANGE();
+    unsigned char LPS_EXCHANGE();
     void RENORMD();
     void BYTEIN();
 };

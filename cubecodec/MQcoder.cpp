@@ -215,32 +215,126 @@ void MQencoder::SETBITS()
         C -= 0x8000;
 }
 
+/* DECODER */
+
+MQdecoder::MQdecoder(BitStream& in, BitStream& out, unsigned int outSize /* = 0 */) :
+input(in), output(out), outputSize(outSize),
+         Clow (*((unsigned short*)(&C))), 
+         Chigh (*((unsigned short*)(&C)+1))
+{
+    NLPS = QeTable::NLPS;
+    NMPS = QeTable::NMPS;
+    SWITCH = QeTable::SWITCH;
+    Qe = QeTable::Qe;
+    
+    CX.I = 0;
+    CX.MPS = 0;
+    BPST = in.GetSequence().get();
+}
+
 void MQdecoder::DECODER()
 {
-    
+    INITDEC();
+    //loop until all symbols get decoded
+    //expect outputSize number of symbols
+    for(unsigned long int i=0; i < outputSize;i++)
+    {
+    //read CX , actually use just one CX
+        D = DECODE();
+        output.insertBit(D);
+    }
 }
 void MQdecoder::INITDEC()
 {
-    
+    BP = BPST;
+    C = (*BP ^ 0xFF) << 16;
+    BYTEIN();
+    C <<= 7;
+    CT = CT-7;
+    A = 0x8000;
 }
 unsigned char MQdecoder::DECODE()
 {
-    
+    A -= Qe[CX.I];
+    if(Chigh < A)
+        if(A < 0x8000)
+        {
+            D = MPS_EXCHANGE();
+            RENORMD();
+        }
+        else
+            D = CX.MPS;
+    else
+    {
+        Chigh -= A;
+        D = LPS_EXCHANGE();
+        RENORMD();
+    }
+    return D;
 }
-void MQdecoder::MPS_EXCHANGE()
+unsigned char MQdecoder::MPS_EXCHANGE()
 {
-    
+    if(A < Qe[CX.I])
+    {
+        D = 1 - CX.MPS;
+        if(SWITCH[CX.I] == 1)
+            CX.MPS = 1 - CX.MPS;
+        CX.I = NLPS[CX.I];
+    }
+    else
+    {
+        D = CX.MPS;
+        CX.I = NMPS[CX.I];
+    }
+    return D;
 }
-void MQdecoder::LPS_EXCHANGE()
+unsigned char MQdecoder::LPS_EXCHANGE()
 {
-    
+    if(A < Qe[CX.I])
+    {
+        A = Qe[CX.I];
+        D = CX.MPS;
+        CX.I = NMPS[CX.I];
+    }
+    else
+    {
+        A = Qe[CX.I];
+        D = 1 - CX.MPS;
+        if(SWITCH[CX.I] == 1)
+            CX.MPS = 1 - CX.MPS;
+        CX.I = NLPS[CX.I];
+    }
+    return D;
 }
 void MQdecoder::RENORMD()
 {
-    
+    do
+    {
+        if(CT == 0)
+            BYTEIN();
+        A <<= 1;
+        C <<= 1;
+        CT -= 1;
+    }   
+    while(A < 0x8000);
 }
-void MQdecoder::BYTEIN(){
-    
+void MQdecoder::BYTEIN()
+{
+    if(*BP == 0xFF)
+        if(*(BP+1) > 0x8F)
+            CT = 8;
+        else
+        {
+            BP += 1;
+            C += 0xFE00 - (*BP << 9); //is not going to be negative?
+            CT = 7;
+        }
+    else
+    {
+        BP += 1;
+        C += 0xFF00 - (*BP <<8); //is not going to be negative?
+        CT = 8;
+    }
 }
 
 const unsigned char QeTable::NLPS[INDEXCOUNT] = {

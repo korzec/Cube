@@ -13,6 +13,54 @@
 
 using namespace MQcoder;
 
+int testMQdecoder()
+{
+    unsigned char coded[30] = { 0x84, 0xc7, 0x3b, 0xfc, 0xe1, 0xa1, 0x43, 0x04,  
+                                0x02, 0x20, 0x00, 0x00, 0x41, 0x0d, 0xbb, 0x86, 
+                                0xf4, 0x31, 0x7f, 0xff, 0x88, 0xff, 0x37, 0x47, 
+                                0x1a, 0xdb, 0x6a, 0xdf, 0xff, 0xac,  };
+    ucharPtr inData = ucharPtr(new unsigned char[30]);
+    memcpy(inData.get(), coded, 30);
+    BitStream input(30, inData);
+    
+    BitStream output(32);
+    
+    MQdecoder mqDec(input, output, 32*8);
+    mqDec.DECODER();
+    //show result
+    std::cout << "qm decoder:" << std::endl;
+    std::bitset<8> bits;
+    int number;
+    for(int i=0; i < 32; i++)
+    {
+        bits = output.GetSequence().get()[i];
+        number = output.GetSequence().get()[i];
+        std::cout << " " << std::setw(2) << std::setfill('0') << std::hex << number << std::dec; 
+    }
+    return 0;
+}
+
+int testReference()
+{
+    unsigned int C;
+    unsigned short& Clow = (*((unsigned short*)(&C)));
+    unsigned short& Chigh = (*((unsigned short*)(&C)+1));
+    std::bitset<sizeof(unsigned short)*8> low;
+    std::bitset<sizeof(unsigned short)*8> high;
+    std::bitset<sizeof(unsigned int)*8> full;
+    
+    C = 0xFF0088AA;
+    full = C;
+    low = Clow;
+    high = Chigh;
+    
+    std::cout << "C: " << C << " : " << full << std::endl;
+    std::cout << "Clow: " << Clow << " : " << low << std::endl;
+    std::cout << "Chigh: " << Chigh << " : " << high << std::endl;
+
+    return 0;
+}
+
 int testMQencoder()
 {
     //init input data and allocate output buffer;
@@ -27,14 +75,13 @@ int testMQencoder()
     BitStream input(32, inData);
     
     BitStream output(32);
-    unsigned char* outputP = output.GetSequence().get();
     
     MQencoder qmEnc(input, output);
     qmEnc.ENCODER();
     
     std::cout << input.toString() << std::endl;
     
-    std::cout << "qm coder:" << std::endl;
+    std::cout << "qm encoder:" << std::endl;
     std::bitset<8> bits;
     int number;
     for(int i=0; i < qmEnc.GetCodedBytes(); i++)
@@ -251,6 +298,8 @@ return 0;
 
 int runTests2()
 {
+    testMQdecoder();
+    testReference();
     testMQencoder();
     testHuffCompression();
     testInsertBit();
