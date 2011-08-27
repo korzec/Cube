@@ -1,6 +1,7 @@
 #include "../cubecodec/general.h"
 #include "../cubecodec/types.h"
 #include "../cubecodec/CompressorHuffman.h"
+#include "../cubecodec/MQcoder.h"
 #include <cassert>
 #include <bitset>
 //#include <boost/math/distributions/normal.hpp>
@@ -9,6 +10,43 @@
 #include <boost/random.hpp>
 #include <boost/math/distributions.hpp>
 //test get symbol
+
+using namespace MQcoder;
+
+int testMQencoder()
+{
+    //init input data and allocate output buffer;
+    
+    unsigned char data[32] = { 0x00 ,0x02 ,0x00 ,0x51 ,0x00 ,0x00 ,0x00 ,0xC0,
+                               0x03 ,0x52 ,0x87 ,0x2A ,0xAA ,0xAA ,0xAA ,0xAA,
+                               0x82 ,0xC0 ,0x20 ,0x00 ,0xFC ,0xD7 ,0x9E ,0xF6,
+                               0xBF ,0x7F ,0xED ,0x90 ,0x4F ,0x46 ,0xA3 ,0xBF };
+    
+    ucharPtr inData = ucharPtr(new unsigned char[32]);
+    memcpy(inData.get(), data, 32);
+    BitStream input(32, inData);
+    
+    BitStream output(32);
+    unsigned char* outputP = output.GetSequence().get();
+    
+    MQencoder qmEnc(input, output);
+    qmEnc.ENCODER();
+    
+    std::cout << input.toString() << std::endl;
+    
+    std::cout << "qm coder:" << std::endl;
+    std::bitset<8> bits;
+    int number;
+    for(int i=0; i < qmEnc.GetCodedBytes(); i++)
+    {
+        bits = output.GetSequence().get()[i];
+        number = output.GetSequence().get()[i];
+        std::cout << " " << std::setw(2) << std::setfill('0') << std::hex << number << std::dec; 
+    }
+    
+    std::cout<< " coded bytes count: " << qmEnc.GetCodedBytes() <<std::endl;
+    return 0;
+}
 
 int testInsertBit()
 {
@@ -213,6 +251,7 @@ return 0;
 
 int runTests2()
 {
+    testMQencoder();
     testHuffCompression();
     testInsertBit();
     testHuffTree();

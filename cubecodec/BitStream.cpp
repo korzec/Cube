@@ -7,15 +7,15 @@
 
 #include "BitStream.h"
 
-BitStream::BitStream(unsigned int maxLength) : length(0), maxCharLength(maxLength)
+BitStream::BitStream(unsigned int byteLength) : length(0), maxByteLength(byteLength)
 {
-    bitSequence.reset(new unsigned char [maxCharLength]);
+    bitSequence.reset(new unsigned char [maxByteLength]);
     bits = bitSequence.get();
     //zero the alocated memory
-    memset(bitSequence.get(), 0, maxCharLength);
+    memset(bitSequence.get(), 0, maxByteLength);
 }
 
-BitStream::BitStream(unsigned int maxLength, ucharPtr data) : length(0), maxCharLength(maxLength)
+BitStream::BitStream(unsigned int maxLength, ucharPtr data) : length(0), maxByteLength(maxLength)
 {
     //set length with byte grain; extra bits should be discarded by decompressor
     length = maxLength * 8;
@@ -62,10 +62,26 @@ void BitStream::insertBitStream(BitStream stream)
     //}
 }
 
+void BitStream::insertByte(unsigned char newByte)
+{
+    if(length%8)
+    {
+        //copy to current byte and move by 8
+        bitSequence.get()[length >> 3] = newByte;
+        length += 8;
+    }
+    else
+    {    
+        //insert bit by bit
+        for (int atBit = 0; atBit < 8; atBit++)
+            insertBit(newByte << (7 - atBit));
+    }
+}
+
 BitStream BitStream::Clone()
 {
-    BitStream word(maxCharLength);
-    memcpy(word.bitSequence.get(), bitSequence.get(), maxCharLength);
+    BitStream word(maxByteLength);
+    memcpy(word.bitSequence.get(), bitSequence.get(), maxByteLength);
     word.length = length;
     return word;
 }
@@ -84,7 +100,7 @@ unsigned char BitStream::GetBitAt(unsigned long int atBit)
 {
     //OPT
     //if not out of range
-    //if (length > atBit)
+    if (length > atBit)
     //{
         //find current byte
         //unsigned int byte = ;
@@ -92,7 +108,7 @@ unsigned char BitStream::GetBitAt(unsigned long int atBit)
         //int position = ;
         return (bits[atBit >> 3] >> (7 - atBit % 8)) & 1;
     //}
-    //return 2;
+    return 2;
 }
 
 int BitStream::ByteSize()
@@ -108,7 +124,7 @@ std::string BitStream::toString()
     {
         //find current byte
         unsigned int byte = i >> 3;
-        assert(byte < maxCharLength);
+        assert(byte < maxByteLength);
         //output current 
         int position = 7 - i % 8;
         if (bitSequence.get()[byte] & 1 << position)

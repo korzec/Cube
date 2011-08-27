@@ -5,29 +5,61 @@
  * Created on August 26, 2011, 7:12 PM
  */
 
+#include <iomanip>
+
 #include "MQcoder.h"
 namespace MQcoder
 {
 
-MQencoder::MQencoder()
+MQencoder::MQencoder(BitStream& in, BitStream& out) : input(in), output(out), codedBytes(0)
 {
     NLPS = QeTable::NLPS;
     NMPS = QeTable::NMPS;
     SWITCH = QeTable::SWITCH;
     Qe = QeTable::Qe;
+    
+    CX.I = 0;
+    CX.MPS = 0;
+    BPST = out.GetSequence().get();
+}
+
+int MQencoder::GetCodedBytes()
+{
+    return codedBytes;
 }
 
 void MQencoder::ENCODER()
 {
     INITENC();
 
+    //loop until the end of bitstream
+    for(unsigned long int i=0;;i++)
+    {
     //read CX, D : use just one CX, read D from?
-
+    D = input.GetBitAt(i);
+    //CX = CX
+    if(D == 2)
+        break;
+   
+#ifdef QMDEBUG
+    std::cout 
+            << std::setw(4) << std::setfill(' ') << i+1
+            << " D: " << (int)D 
+            << " I: " << std::setw(2) << std::setfill(' ') <<(int)CX.I
+            << " MPS: " << (int)CX.MPS
+            << " Qe: " << std::setw(4) << std::setfill(' ') << std::hex << Qe[CX.I] << std::dec
+            << " A: " << std::setw(4) << std::setfill(' ') << std::hex << A << std::dec
+            << " C: " << std::setw(8) << std::setfill(' ') << std::hex << C << std::dec
+            << " CT: " << std::setw(2) << std::setfill(' ') << CT 
+            << " B: " << std::setw(2) << std::setfill(' ') << std::hex << (int)*BP << std::dec
+            ;
+#endif
+    
     ENCODE();
+    
+    }    //if not finished goto read CX, D
 
-    //if not finished goto read CX, D
-
-    FLUSH();
+    FLUSH();;
 }
 
 void MQencoder::INITENC()
@@ -55,12 +87,21 @@ void MQencoder::FLUSH()
     BYTEOUT();
     if (*BP != 0xFF)
     {
+#ifdef QMDEBUG
+        std::cout << " OUT: " << std::setw(2) << std::setfill(' ')<< std::hex << (int)*BP << std::dec;
+#endif
+        codedBytes++;
         BP += 1;
         *BP = 0xFF;
     }
     //HERE: Optionally remove trailing 0x7FFF pairs following the leading 0xFF
+#ifdef QMDEBUG
+    std::cout << " OUT: " << std::setw(2) << std::setfill(' ')<< std::hex << (int)*BP << std::dec;
+#endif
+    codedBytes++;
     BP += 1;
     *BP = 0xAC;
+    //codedBytes++;
     BP += 1;
 }
 
@@ -96,12 +137,13 @@ void MQencoder::CODELPS()
 void MQencoder::CODEMPS()
 {
     A -= Qe[CX.I];
-    if (A & 0x8000 == 0)
+    if (A < 0x8000)
     {
         if (A < Qe[CX.I])
             A = Qe[CX.I];
         else
             C += Qe[CX.I];
+        CX.I = NMPS[CX.I];
         RENORME();
     }
     else
@@ -114,11 +156,11 @@ void MQencoder::RENORME()
     {
         A <<= 1;
         C <<= 1;
-        CT += 1;
+        CT -= 1;
         if (CT == 0)
             BYTEOUT();
     }
-    while (A & 0x8000 == 0);
+    while (A < 0x8000);
 }
 
 void MQencoder::BYTEOUT()
@@ -126,6 +168,10 @@ void MQencoder::BYTEOUT()
     if (*BP == 0xFF)
     {
 with_carry:
+#ifdef QMDEBUG
+        std::cout << " OUT: " << std::setw(2) << std::setfill(' ')<< std::hex << (int)*BP << std::dec;
+#endif
+        codedBytes++;
         BP += 1;
         *BP = C >> 20;
         C &= 0xFFFFF;
@@ -137,6 +183,10 @@ with_carry:
         if (C < 0x8000000)
         {
 just_byte:
+#ifdef QMDEBUG
+            std::cout << " OUT: " << std::setw(2) << std::setfill(' ')<< std::hex << (int)*BP << std::dec;
+#endif
+            codedBytes++;
             BP += 1;
             *BP = C >> 19;
             C &= 0x7FFFF;

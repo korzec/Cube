@@ -191,7 +191,7 @@ Codeword::Codeword() : BitStream(MAXCODEWORDLENGTH) {}
 Codeword Codeword::Clone()
 {
     Codeword word; 
-    memcpy( word.bitSequence.get(), bitSequence.get(), maxCharLength);
+    memcpy( word.bitSequence.get(), bitSequence.get(), maxByteLength);
     word.length = length;
     return word;
 }

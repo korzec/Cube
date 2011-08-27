@@ -14,7 +14,7 @@ class BitStream
 {
 protected:
     unsigned long int length;
-    unsigned int maxCharLength;
+    unsigned int maxByteLength;
     ucharPtr bitSequence;
     unsigned char* bits;
 public:
@@ -22,6 +22,7 @@ public:
     BitStream( unsigned int maxLength, ucharPtr data);
     void insertBit(unsigned char newBit);
     void insertBitStream(BitStream stream);
+    void insertByte(unsigned char newByte);
     BitStream Clone();
     int GetLength();
     ucharPtr GetSequence();

@@ -8,6 +8,8 @@
 #ifndef MQCODER_H
 #define	MQCODER_H
 
+#include "BitStream.h"
+
 namespace MQcoder
 {
 struct QeTable
@@ -27,9 +29,13 @@ struct CONTEXT
 
 class MQencoder
 {
-    unsigned int C;
-    unsigned int A;
-    unsigned int CT;
+    BitStream& input;
+    BitStream& output;
+    int codedBytes;
+    
+    int C;
+    int A;
+    int CT;
     CONTEXT CX;
     unsigned char D;
     unsigned char *BP;
@@ -40,8 +46,10 @@ class MQencoder
     const unsigned char* SWITCH;
     const unsigned short* Qe;
 public:
-    //set input Bitstream and outbut buffer
-    MQencoder();
+    //set input Bitstream and output buffer
+    MQencoder(BitStream& input, BitStream& output );
+    //returns number of bytes written to coding buffer
+    int GetCodedBytes();
     void ENCODER();
 private:
     void INITENC();
