@@ -9,7 +9,7 @@
 
 BitStream::BitStream(unsigned int byteLength) : length(0), maxByteLength(byteLength)
 {
-    bitSequence.reset(new unsigned char [maxByteLength]);
+    bitSequence = ucharPtr(new unsigned char [maxByteLength]);
     bits = bitSequence.get();
     //zero the alocated memory
     memset(bitSequence.get(), 0, maxByteLength);

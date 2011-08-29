@@ -95,7 +95,7 @@ Packet CompressorHuffman::Compress(CoeffView3D& subcube, Coords3D& location, Cha
     unsigned int fullSize = dims.Volume() * sizeof (CoeffType);
     CoeffType* cubeData = (CoeffType*) array.data();
     //allocate data for compression : not more than the input?
-    BitStream compressedData(fullSize);
+    BitStream compressedData(fullSize*2);
 
     //loop through all values and output codewords to the compression buffer
     int symbolCount = fullSize / sizeof (CoeffType);
@@ -141,7 +141,10 @@ CoeffArray3DPtr CompressorHuffman::Decompress(Packet& packet, Coords3D& subcubeS
     for (int i = 0, symbols = 0; symbols < symbolCount; i++)
     {
         //TODO: fix endless loop if the input is wrong
-        CoeffPair coeffPair = this->GetSymbol(compressedData.GetBitAt(i));
+        unsigned char bit = compressedData.GetBitAt(i);
+        if(bit == 2)
+            break;
+        CoeffPair coeffPair = this->GetSymbol(bit);
         if (coeffPair.second)
         {
             cubeData[symbols] = coeffPair.first;

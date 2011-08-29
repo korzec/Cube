@@ -30,7 +30,6 @@ void CompressorHuffmanTestClass::tearDown()
 void CompressorHuffmanTestClass::testGenerateTree()
 {
     CompressorHuffman compressor;
-    compressor.GenerateTree();
     CoeffPair symbolPair = compressor.GetSymbol(0);
     CPPUNIT_ASSERT(true);
 }

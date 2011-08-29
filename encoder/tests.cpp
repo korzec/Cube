@@ -8,6 +8,8 @@
 #include "../cubecodec/WaveletTransform.h"
 #include "../cubecodec/Subcube.h"
 #include "../cubecodec/CompressorLZO.h"
+#include "../cubecodec/CompressorHuffman.h"
+#include "../cubecodec/CompressorAC.h"
 #include "../cubecodec/CubeIO.h"
 //#include "SubcubeIndex.h"
 #include <string>
@@ -41,7 +43,7 @@ int testCompressWriteReadDecompress()
     
     //Compress the subcubes
     Coords3D location(4,4,4);
-    CompressorPtr compressor(new CompressorLZO());
+    CompressorPtr compressor(new CompressorAC());
     Packet packet1 = compressor->Compress(subcubeView1, location, Ych, 1);
     Packet packet2 = compressor->Compress(subcubeView2, location, Ych ,1);
     
@@ -128,6 +130,10 @@ int testCompressWriteReadDecompress()
         {
             assert(packet1.compressedData.get()[i] ==
                                  newPacket1.compressedData.get()[i]);
+        }
+        assert(packet2.header.location.Volume() == newPacket2.header.location.Volume());
+        for (unsigned int i = 0; i < packet2.header.compressedSize; i++)
+        {
             assert(packet2.compressedData.get()[i] ==
                                  newPacket2.compressedData.get()[i]);
         }

@@ -26,7 +26,7 @@ int testACcompress()
         {
             for (int w = 0; w < subDims.width; w++)
             {
-                array1[d][h][w] = 89+h;//(CoeffType)rand()%2;
+                array1[d][h][w] = (CoeffType)(rand());
             }//w
         }//h
     }//d
@@ -35,6 +35,30 @@ int testACcompress()
     Coords3D location(4,4,4);
     CompressorPtr compressor(new CompressorAC());
     Packet packet1 = compressor->Compress(subcubeView1, location, Ych, 1);
+    
+//    for(unsigned int i=0; i < packet1.header.compressedSize; i++)
+//    {
+//        std::cout << " " << std::setw(2) << std::setfill('0') 
+//                << std::hex << (int)packet1.compressedData[i] << std::dec; 
+//    }   
+    std::cout.flush();
+    
+    //decompress now
+    CoeffArray3DPtr newArray1 = compressor->Decompress(packet1, subDims);
+    std::cout<<std::endl;
+    assert(subDims.Volume() == Coords3D(newArray1->shape()).Volume());
+    for (int d = 0; d < subDims.depth; d++)
+    {
+        for (int h = 0; h < subDims.height; h++)
+        {
+            for (int w = 0; w < subDims.width; w++)
+            {
+//                std::cout << w << " " << h << " " << d << " - " 
+//                        << array1[d][h][w] << " " << (*newArray1)[d][h][w] << std::endl;
+                assert(array1[d][h][w] == (*newArray1)[d][h][w]);
+            }//w
+        }//h
+    }//d
     
     std::cout << "" <<std::endl;
     std::cout << "AC compress test finished" <<std::endl;
@@ -164,7 +188,7 @@ int testMQdecoder()
                                 0x02, 0x20, 0x00, 0x00, 0x41, 0x0d, 0xbb, 0x86, 
                                 0xf4, 0x31, 0x7f, 0xff, 0x88, 0xff, 0x37, 0x47, 
                                 0x1a, 0xdb, 0x6a, 0xdf, 0xff, 0xac,  };
-    ucharPtr inData = ucharPtr(new unsigned char[30]);
+    ucharPtr inData = ucharPtr(new unsigned char[60]);
     memcpy(inData.get(), coded, 60);
     BitStream input(60, inData);
     
@@ -174,19 +198,18 @@ int testMQdecoder()
     MQdecoder mqDec(input, output, 32*8);
     mqDec.Decode();
     mqDec.Continue(output2,32*8);
-    //show result
-//    std::cout << "qm decoder:" << std::endl;
-//    std::bitset<8> bits;
-//    int number;
     for(int i=0; i < 32; i++)
     {
 //        bits = output.GetSequence().get()[i];
-//        number = output.GetSequence().get()[i];
-//        std::cout << " " << std::setw(2) << std::setfill('0') << std::hex << number << std::dec; 
+//        number = ;
+//        std::cout << " " << std::setw(2) << std::setfill('0') << std::hex
+//                << (int)output.GetSequence().get()[i] << std::dec; 
+//        std::cout << " : " << std::setw(2) << std::setfill('0') << std::hex
+//                << (int)output2.GetSequence().get()[i] << std::dec; 
+//        std::cout << " i="<< i<< std::endl;
         assert(output.GetSequence().get()[i] == data[i]);
         assert(output2.GetSequence().get()[i] == data[i]);
     }
-    
     std::cout << "qm decoder test finished" << std::endl;
     return 0;
 }
@@ -469,7 +492,6 @@ return 0;
 int runTests2()
 {
     testMQdecoder();
-    
     testACcompress();
     testBitPlaneStreamWrite();
     testBitPlaneStreamRead();

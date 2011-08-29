@@ -26,47 +26,27 @@ Packet CompressorAC::Compress(CoeffView3D& subcube, Coords3D& location, Channel 
     unsigned int fullSize = dims.Volume()*sizeof(CoeffType);
     //extra space allocated if atithmetic coding expands data instead of compacting
     ucharPtr compressedData = ucharPtr(new unsigned char [fullSize*2]);
-    
-    int singlePlaneCodeBufferSize = fullSize*2/16;
-    
-    std::vector<BitStream> compressedPlaneStreams;
-    for(unsigned int i=0; i<8*sizeof(CoeffType); i++)
-    {
-        //allocate memory for compression of a single plane
-        compressedPlaneStreams.push_back ( 
-                BitStream (singlePlaneCodeBufferSize, 
-                     ucharPtr(new unsigned char [singlePlaneCodeBufferSize]) ) 
-        );
-        
-    }
-    BitStream output(fullSize*2, compressedData);
+    BitStream compressedPlanes(fullSize*2, compressedData);
+
     //initialize to zeros needed by the stream mapping unsafeness
     memset(compressedData.get(), 0, fullSize*2);
     
     //map CoeffArray3D to ucharPtr, with empty deallocator
     ucharPtr data = ucharPtr((unsigned char*)array.data(), boost::lambda::_1);
-    
     //map all bitplanes 
     std::vector<BitPlaneStream> bitPlanes;
     for(unsigned int i=0; i<8*sizeof(CoeffType); i++)
-        bitPlanes.push_back( BitPlaneStream(fullSize*2, data, i, sizeof(CoeffType), false) );
+        bitPlanes.push_back( BitPlaneStream(fullSize, data, i, sizeof(CoeffType), false) );
+    
     //compress all bitplanes
-    for(unsigned int i=0; i<8*sizeof(CoeffType); i++)
+    MQcoder::MQencoder mqEncoder(bitPlanes[0], compressedPlanes );
+    mqEncoder.Encode();
+    for(unsigned int i=1; i<8*sizeof(CoeffType); i++)
     {
-        MQcoder::MQencoder mqEncoder(bitPlanes[i], compressedPlaneStreams[i] );
-        mqEncoder.Encode();
+        mqEncoder.Continue(bitPlanes[i]);
+//        std::cout << "i: " << i << " : " <<bitPlanes[i].toString() << std::endl;
     }
-    //concentrate compressed bitplanes into one buffer
-    int bytesWritten = 0;
-    for(unsigned int i=0; i<8*sizeof(CoeffType); i++)
-    {
-        //copy compressed bitplane to the collective buffer
-        int size = compressedPlaneStreams[i].ByteSize();
-        memcpy(compressedData.get()+bytesWritten,
-               compressedPlaneStreams[i].GetSequence().get(), size);
-        bytesWritten += size;
-    }
-
+    int bytesWritten = compressedPlanes.ByteSize();
     //output packet
     
     Packet packet;
@@ -92,6 +72,8 @@ CoeffArray3DPtr CompressorAC::Decompress(Packet& packet, Coords3D& subcubeSize)
 
     //map CoeffArray3D to ucharPtr, with empty deallocator
     ucharPtr data = ucharPtr((unsigned char*)array->data(), boost::lambda::_1);
+    //zero the buffer required by BitStream unsafeness
+    memset(data.get(), 0, fullSize);
     
     //map all bitplanes 
     std::vector<BitPlaneStream> bitPlanes;
@@ -104,10 +86,10 @@ CoeffArray3DPtr CompressorAC::Decompress(Packet& packet, Coords3D& subcubeSize)
     
     //decompress all bitplanes
     MQcoder::MQdecoder mqDecoder(compressedPlanes, bitPlanes[0] , singlePlaneBitSize );
-    for(unsigned int i=0; i<8*sizeof(CoeffType); i++)
+    mqDecoder.Decode();
+    for(unsigned int i=1; i<8*sizeof(CoeffType); i++)
     {
-        bitPlanes[i];
-        mqDecoder.Decode();
+        mqDecoder.Continue(bitPlanes[i], singlePlaneBitSize);
     }
     
     
