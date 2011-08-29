@@ -91,6 +91,14 @@ int BitStream::GetLength()
     return length;
 }
 
+bool BitStream::SetLength(unsigned long int newLength)
+{
+    if(newLength>>3 > maxByteLength )
+        return false;
+    length = newLength;
+    return true;
+}
+
 ucharPtr BitStream::GetSequence()
 {
     return bitSequence;
@@ -113,24 +121,27 @@ unsigned char BitStream::GetBitAt(unsigned long int atBit)
 
 int BitStream::ByteSize()
 {
-    return (length >> 3) + 1;
+    return ((length-1) >> 3) + 1;
 }
 
 std::string BitStream::toString()
 {
     std::stringstream stringStream;
 
-    for (unsigned long int i = 0; i < length; i++)
-    {
-        //find current byte
-        unsigned int byte = i >> 3;
-        assert(byte < maxByteLength);
-        //output current 
-        int position = 7 - i % 8;
-        if (bitSequence.get()[byte] & 1 << position)
-            stringStream << '1';
-        else
-            stringStream << '0';
-    }
+    for(int j=0; j < GetLength();j++)
+        stringStream << (int)GetBitAt(j);
+    
+//    for (unsigned long int i = 0; i < length; i++)
+//    {
+//        //find current byte
+//        unsigned int byte = i >> 3;
+//        assert(byte < maxByteLength);
+//        //output current 
+//        int position = 7 - i % 8;
+//        if (bitSequence.get()[byte] & 1 << position)
+//            stringStream << '1';
+//        else
+//            stringStream << '0';
+//    }
     return stringStream.str();
 }

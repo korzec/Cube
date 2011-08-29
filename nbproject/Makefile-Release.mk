@@ -256,49 +256,49 @@ ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/PictureTestClass.o ${TESTDIR}/tests/Pi
 ${TESTDIR}/tests/CompressorTestClass.o: tests/CompressorTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestClass.o tests/CompressorTestClass.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestClass.o tests/CompressorTestClass.cpp
 
 
 ${TESTDIR}/tests/CompressorTestRunner.o: tests/CompressorTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestRunner.o tests/CompressorTestRunner.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestRunner.o tests/CompressorTestRunner.cpp
 
 
 ${TESTDIR}/tests/CubeIOTestClass.o: tests/CubeIOTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestClass.o tests/CubeIOTestClass.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestClass.o tests/CubeIOTestClass.cpp
 
 
 ${TESTDIR}/tests/CubeIOTestRunner.o: tests/CubeIOTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestRunner.o tests/CubeIOTestRunner.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestRunner.o tests/CubeIOTestRunner.cpp
 
 
 ${TESTDIR}/tests/CompressorHuffmanTestClass.o: tests/CompressorHuffmanTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestClass.o tests/CompressorHuffmanTestClass.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestClass.o tests/CompressorHuffmanTestClass.cpp
 
 
 ${TESTDIR}/tests/CompressorHuffmanTestRunner.o: tests/CompressorHuffmanTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestRunner.o tests/CompressorHuffmanTestRunner.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestRunner.o tests/CompressorHuffmanTestRunner.cpp
 
 
 ${TESTDIR}/tests/PictureTestClass.o: tests/PictureTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestClass.o tests/PictureTestClass.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestClass.o tests/PictureTestClass.cpp
 
 
 ${TESTDIR}/tests/PictureTestRunner.o: tests/PictureTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
 
 
 ${OBJECTDIR}/cubecodec/Picture_nomain.o: ${OBJECTDIR}/cubecodec/Picture.o cubecodec/Picture.cpp 

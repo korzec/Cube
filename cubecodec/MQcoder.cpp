@@ -11,7 +11,7 @@
 namespace MQcoder
 {
 
-MQencoder::MQencoder(BitStream& in, BitStream& out) : input(in), output(out), codedBytes(0)
+MQencoder::MQencoder(BitStream& in, BitStream& out) : input(&in), output(&out), codedBytes(0)
 {
     NLPS = QeTable::NLPS;
     NMPS = QeTable::NMPS;
@@ -20,12 +20,28 @@ MQencoder::MQencoder(BitStream& in, BitStream& out) : input(in), output(out), co
     
     CX.I = 0;
     CX.MPS = 0;
-    BPST = out.GetSequence().get();
+    BPST = output->GetSequence().get();
 }
 
 int MQencoder::GetCodedBytes()
 {
     return codedBytes;
+}
+
+bool MQencoder::Encode()
+{
+    ENCODER();
+    return true;
+}
+
+bool MQencoder::Continue(BitStream& in)
+{
+    input = &in;
+    CX.I = 0;
+    CX.MPS = 0;
+    BPST = BP;
+    ENCODER();
+    return true;
 }
 
 void MQencoder::ENCODER()
@@ -36,7 +52,7 @@ void MQencoder::ENCODER()
     for(unsigned long int i=0;;i++)
     {
     //read CX, D : use just one CX, read D from?
-    D = input.GetBitAt(i);
+    D = input->GetBitAt(i);
     //CX = CX
     if(D == 2)
         break;
@@ -59,14 +75,15 @@ void MQencoder::ENCODER()
     
     }    //if not finished goto read CX, D
 
-    FLUSH();;
+    FLUSH();
+    output->SetLength(codedBytes*8);
 }
 
 void MQencoder::INITENC()
 {
     A = 0x8000;
     C = 0;
-    BP = BPST - 1;
+    BP = BPST - 1; //not sure if it uses the out-of-bouds  byte
     CT = 12;
 }
 
@@ -218,7 +235,7 @@ void MQencoder::SETBITS()
 /* DECODER */
 
 MQdecoder::MQdecoder(BitStream& in, BitStream& out, unsigned int outSize /* = 0 */) :
-input(in), output(out), outputSize(outSize),
+input(&in), output(&out), outputSize(outSize),
          Clow (*((unsigned short*)(&C))), 
          Chigh (*((unsigned short*)(&C)+1))
 {
@@ -229,7 +246,28 @@ input(in), output(out), outputSize(outSize),
     
     CX.I = 0;
     CX.MPS = 0;
-    BPST = in.GetSequence().get();
+    BPST = input->GetSequence().get();
+}
+
+bool MQdecoder::Decode()
+{
+    DECODER();
+    return true;
+}
+
+bool MQdecoder::Continue(BitStream& out, unsigned int outSize)
+{
+    //use new output
+    output = &out;
+    outputSize = outSize;
+    //reset context
+    CX.I = 0;
+    CX.MPS = 0;
+    //set data start pointer to the byte after the last consumed byte
+    //ammend for 2 bytes of ending code
+    BPST = BP + 2;
+    DECODER();
+    return true;
 }
 
 void MQdecoder::DECODER()
@@ -241,7 +279,7 @@ void MQdecoder::DECODER()
     {
     //read CX , actually use just one CX
         D = DECODE();
-        output.insertBit(D);
+        output->insertBit(D);
     }
 }
 void MQdecoder::INITDEC()

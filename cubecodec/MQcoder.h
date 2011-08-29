@@ -10,6 +10,7 @@
 
 #include "BitStream.h"
 
+//implements MQ-coder as of JBIG2 standard
 namespace MQcoder
 {
 struct QeTable
@@ -29,8 +30,8 @@ struct CONTEXT
 
 class MQencoder
 {
-    BitStream& input;
-    BitStream& output;
+    BitStream* input;
+    BitStream* output;
     int codedBytes;
     
     unsigned int C;
@@ -50,8 +51,10 @@ public:
     MQencoder(BitStream& input, BitStream& output );
     //returns number of bytes written to coding buffer
     int GetCodedBytes();
-    void ENCODER();
+    bool Encode();
+    bool Continue(BitStream& in);
 private:
+    void ENCODER();
     void INITENC();
     void ENCODE();
     void FLUSH();
@@ -66,8 +69,8 @@ private:
 
 class MQdecoder
 {
-    BitStream& input;
-    BitStream& output;
+    BitStream* input;
+    BitStream* output;
     unsigned int outputSize;
     int codedBytes;
     
@@ -87,8 +90,11 @@ class MQdecoder
     const unsigned short* Qe;
 public:
     MQdecoder(BitStream& input, BitStream& output, unsigned int outSize /* = 0 */);
-    void DECODER();
+    ///continues decoding from the same compressed stream into the new output stream
+    bool Continue(BitStream& output, unsigned int outSize);
+    bool Decode();
 private:
+    void DECODER();
     void INITDEC();
     unsigned char DECODE();
     unsigned char MPS_EXCHANGE();
