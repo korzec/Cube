@@ -69,6 +69,8 @@ int cube_decode(Parameters params, std::string input, std::string output)
                 {
                     PictureIO::WritePicture(*outputPicture, gop->at(i));
                     frameNumber++;
+                    std::cout << frameNumber <<',';
+                    std::cout.flush();
                 }
                 decoder.DeleteOldOutputGOP();
                 break;

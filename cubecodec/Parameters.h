@@ -29,12 +29,15 @@ public:
     bool test;
     bool stats;
     float skipRatio;
+    bool nofile;
+    bool dumpCubes;
     std::string output;
     std::string input;
 
     Parameters() : 
     start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
-    analysis(false), decode(false), test(false), stats(false), skipRatio(0)
+    analysis(false), decode(false), test(false), stats(false), skipRatio(0), 
+    nofile(false), dumpCubes(false)
     {}   
     std::string toString(bool localConfig = false)
     {

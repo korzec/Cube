@@ -162,6 +162,16 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
             parsed[i] = true;
             params.nolocal = false;
         }
+        else if (strcmp(argv[i], "-dumpcubes") == 0)
+        {
+            parsed[i] = true;
+            params.dumpCubes = true;
+        }
+        else if (strcmp(argv[i], "-nofile") == 0)
+        {
+            parsed[i] = true;
+            params.nofile = true;
+        }
         else if (strcmp(argv[i], "-test") == 0)
         {
             parsed[i] = true;

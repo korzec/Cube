@@ -60,7 +60,7 @@ BufferState Encoder::Encode()
 
             if (coeffCube.ForwardTransform())
             {
-                if (params.analysis && !params.nolocal)
+                if (params.dumpCubes)
                 {
                     std::stringstream ss1;
                     ss1 << OUTDIR << "tr" << cubeNumber << "cube.raw";
@@ -99,10 +99,10 @@ BufferState Encoder::Encode()
                             }
                 }
 
-                if (params.analysis)
+                if (params.analysis || !params.nolocal)
                 {   
                     DecompressAll();
-                    if (!params.nolocal)
+                    if (params.dumpCubes)
                     {
                         std::stringstream ss2;
                         ss2 << OUTDIR << "sm" << cubeNumber << "cube.raw";

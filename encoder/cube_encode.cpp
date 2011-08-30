@@ -36,7 +36,9 @@ int cube_encode(Parameters params, std::string input, std::string output)
 
     //open file for writing
     std::string codedFileName = output + ".wcb";
-    std::ofstream* codedFile = new std::ofstream(codedFileName.c_str(), std::ios::out | std::ios::binary);
+    std::ofstream* codedFile = NULL;
+    if(!params.nofile)
+        codedFile = new std::ofstream(codedFileName.c_str(), std::ios::out | std::ios::binary);
     
     /// open the decoded output file
     std::ofstream *outputPicture = NULL;
@@ -170,6 +172,13 @@ int cube_encode(Parameters params, std::string input, std::string output)
     
     if(params.analysis)
     {
+        std::string filename;
+        
+        size_t pos = input.find_last_of("/");
+        if(pos != std::string::npos)
+            filename.assign(input.begin() + pos + 1, input.end());
+        else
+            filename = input;
  
         std::ofstream psnrFile("psnr_results.csv", std::ios::app );
         std::stringstream stringStream;
@@ -192,6 +201,7 @@ int cube_encode(Parameters params, std::string input, std::string output)
          << "psnr YUV" << ", " 
          << "filename" << ", " 
          << "frames" << ", " 
+         << "PSNRDATA" << ", " 
          << std::endl;
         std::cout << stringStream.str();
         
@@ -213,6 +223,7 @@ int cube_encode(Parameters params, std::string input, std::string output)
          << psnr[3] << ", "
          << input << ", "
          << frameNumber << ", "
+         << "PSNRDATACODE" << ", " 
          <<std::endl;
         
         psnrFile << stringStream.str();
