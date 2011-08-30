@@ -7,6 +7,7 @@
 #include <vector>
 #include "Picture.h"
 #include "types.h"
+#include "Packet.h"
 
 /// copy a Picture to slice in CoeffCube
 bool copyArrayFromValueToCoeff(ValueArray2Dref& from, CoeffView2D& to)
@@ -221,3 +222,19 @@ std::vector<double> PSNR(Picture original, Picture reconstructed)
     return results;
 }
 
+typedef std::multimap<float, Packet> PacketMap;
+typedef std::pair<float, Packet> PacketPair;
+
+void packetCompressionRatios(PacketMap &packets)
+{
+    PacketMap::iterator it = packets.begin();
+    for(;it != packets.end(); it++)
+    {
+        std::cout << "w: "  << it->second.header.location.width
+                  << " h: " << it->second.header.location.height
+                  << " d: " << it->second.header.location.depth
+                  << " r: " << (float)it->second.header.compressedSize/it->second.header.fullSize
+                  << " c: " << it->second.header.channel
+                  << " s: " << it->first << std::endl;
+    }
+}

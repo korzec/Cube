@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     if (!parse_command_line(params, argc, argv))
         return EXIT_FAILURE;
 
-    if(!params.notest)
+    if(params.test)
         runTests();   
     
     if (argc < 2)
@@ -60,6 +60,8 @@ int main(int argc, char* argv[])
     else
         input = argv[argc - 2];
 
+    params.input = input;
+    
     //check we have real inputs
     if ((input.length() == 0) || (output.length() == 0))
     {

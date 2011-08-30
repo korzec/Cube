@@ -16,6 +16,7 @@
 #include <deque>
 #include <map>
 #include "CubeStream.h"
+#include "Parameters.h"
 
 typedef std::multimap<float, Packet> PacketMap;
 typedef std::pair<float, Packet> PacketPair;

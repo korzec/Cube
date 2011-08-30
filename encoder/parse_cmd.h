@@ -75,6 +75,30 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
                     strtoul(argv[i], NULL, 10);
             parsed[i] = true;
         }
+        else if (strcmp(argv[i], "-sw") == 0)
+        {
+            parsed[i] = true;
+            i++;
+            params.codecParams.subcubeSize.width =
+                    strtoul(argv[i], NULL, 10);
+            parsed[i] = true;
+        }
+        else if (strcmp(argv[i], "-sh") == 0)
+        {
+            parsed[i] = true;
+            i++;
+            params.codecParams.subcubeSize.height =
+                    strtoul(argv[i], NULL, 10);
+            parsed[i] = true;
+        }
+        else if (strcmp(argv[i], "-sd") == 0)
+        {
+            parsed[i] = true;
+            i++;
+            params.codecParams.subcubeSize.depth =
+                    strtoul(argv[i], NULL, 10);
+            parsed[i] = true;
+        }
         i++;
     }
 
@@ -97,6 +121,9 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
             else if( strcmp(argv[i], "lzo") == 0)
                 params.codecParams.compression = LZO,
                         std::cout << "LZO" << std::endl;
+            else if( strcmp(argv[i], "AC") == 0)
+                params.codecParams.compression = AC,
+                        std::cout << "arithmetic coding of bitplanes" << std::endl;
             else
                 std::cout << "default" << std::endl;
             parsed[i] = true;
@@ -118,6 +145,11 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
             parsed[i] = true;
             params.analysis = true;
         }        
+        else if (strcmp(argv[i], "-stats") == 0)
+        {
+            parsed[i] = true;
+            params.stats = true;
+        }        
         else if (strcmp(argv[i], "-levels") == 0)
         {
             parsed[i] = true;
@@ -130,10 +162,10 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
             parsed[i] = true;
             params.nolocal = false;
         }
-        else if (strcmp(argv[i], "-notest") == 0)
+        else if (strcmp(argv[i], "-test") == 0)
         {
             parsed[i] = true;
-            params.notest = true;
+            params.test = true;
         }
         else if (strcmp(argv[i], "-start") == 0)
         {

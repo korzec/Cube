@@ -37,6 +37,7 @@ enum CompressionType
 {
     HuffmanCoder =0,
     LZO =1,
+    AC = 2,
 };
 
 #endif /* TYPES_H_ */

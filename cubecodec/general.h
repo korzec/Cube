@@ -17,6 +17,7 @@
 #include <fstream>
 #include <map>
 #include "Picture.h"
+#include "Packet.h"
 
 /// copy a Picture to slice in CoeffCube
 bool copyArrayFromValueToCoeff(ValueArray2Dref& from, CoeffView2D& to);
@@ -38,5 +39,9 @@ bool writeMap(CoeffMap map, std::string fileName);
 ///computes PSNR for 2 pictures on all channels separately and also together
 std::vector<double> PSNR(Picture, Picture);
 
+typedef std::multimap<float, Packet> PacketMap;
+//typedef std::pair<float, Packet> PacketPair;
+
+void packetCompressionRatios(PacketMap &packets);
 
 #endif	/* GENERAL_H */

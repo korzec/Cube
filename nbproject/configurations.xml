@@ -5,6 +5,7 @@
       <logicalFolder name="cubecodec" displayName="cubecodec" projectFiles="true">
         <itemPath>cubecodec/BitStream.cpp</itemPath>
         <itemPath>cubecodec/BitStream.h</itemPath>
+        <itemPath>cubecodec/CodecParams.h</itemPath>
         <itemPath>cubecodec/CoeffCube.cpp</itemPath>
         <itemPath>cubecodec/CoeffCube.h</itemPath>
         <itemPath>cubecodec/Compressor.h</itemPath>

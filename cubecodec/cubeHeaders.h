@@ -8,7 +8,7 @@
 #ifndef CUBEHEADERS_H
 #define	CUBEHEADERS_H
 
-#include "Parameters.h"
+#include "CodecParams.h"
 #include "types.h"
 
 #define CUBEHEADERCODE 0x0C

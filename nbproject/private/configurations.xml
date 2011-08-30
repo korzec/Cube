@@ -27,9 +27,6 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 3 src7.yuv out/codedfile</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 48 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -decode out/codedfile out/decodedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -decode -skip 0.9 out/codedfile.wcb out/decodedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 4 -start 16 -stop 24 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
@@ -37,8 +34,11 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 4 -start 16 -stop 24 -analysis -local -levels 2 -skip 0.8 rawvideo/src7_704x576.yuv out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 704 -height 576 -depth 4 -start 16 -stop 24 -analysis -local -levels 2 -skip 0.8 rawvideo/src7_704x576.yuv out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 704 -height 576 -depth 4 -start 16 -stop 20 -analysis -local -levels 2 -skip 0.8 rawvideo/src7_704x576.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -compressor AC -width 704 -height 576 -depth 4 -start 16 -stop 20 -analysis -local -levels 2 -skip 0.8 rawvideo/src7_704x576.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -compressor AC -width 704 -height 576 -depth 0 -start 16 -stop 16 -analysis -local -levels 2 -skip 0.8 rawvideo/src7_704x576.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -compressor AC -width 704 -height 576 -depth 16 -start 0 -stop 16 -analysis -local -levels 2 -skip 0.8 rawvideo/src7_704x576.yuv out/codedfile</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -width 704 -height 576 -depth 4 -start 16 -stop 20 -analysis -local -levels 2 -skip 0.8 rawvideo/src7_704x576.yuv out/codedfile</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -compressor AC -width 704 -height 576 -depth 16 -start 0 -stop 16 -analysis -local -levels 2 -skip 0.8 rawvideo/src7_704x576.yuv out/codedfile</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
@@ -72,7 +72,6 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 2 src7.yuv codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 src7.yuv codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 src7.yuv codedfile -start 16 -stop 32</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 32 src7.yuv codedfile </runcommandpicklistitem>
@@ -82,8 +81,9 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 src7.yuv out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 720 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 rawvideo/ out/codedfile</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -width 704 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 rawvideo/src7_704x576.yuv out/codedfile</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -compressor AC -width 704 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 rawvideo/src7_704x576.yuv out/codedfile</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -width 704 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 rawvideo/src7_704x576.yuv out/codedfile</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -compressor AC -width 704 -height 576 -depth 16 -start 16 -stop 128 -analysis -local -levels 2 rawvideo/src7_704x576.yuv out/codedfile</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

@@ -20,7 +20,10 @@ MQencoder::MQencoder(BitStream& in, BitStream& out) : input(&in), output(&out), 
     
     CX.I = 0;
     CX.MPS = 0;
-    BPST = output->GetSequence().get();
+    BPST = output->GetSequence().get()+1;
+    //first dummy byte
+    *(BPST-1) = 0x00;
+    codedBytes++;
 }
 
 int MQencoder::GetCodedBytes()
@@ -83,7 +86,7 @@ void MQencoder::INITENC()
 {
     A = 0x8000;
     C = 0;
-    BP = BPST - 1; //not sure if it uses the out-of-bouds  byte
+    BP = BPST - 1 ; //not sure if it uses the out-of-bouds byte
     CT = 12;
 }
 
@@ -246,7 +249,7 @@ input(&in), output(&out), outputSize(outSize),
     
     CX.I = 0;
     CX.MPS = 0;
-    BPST = input->GetSequence().get();
+    BPST = input->GetSequence().get()+1;
 }
 
 bool MQdecoder::Decode()

@@ -10,31 +10,8 @@
 
 #include "arrays.h"
 #include "types.h"
-
-class CodecParams
-{
-public:
-    Coords3D cubeSize;
-    Coords3D subcubeSize;
-    int levels;
-    CompressionType compression;
-    
-    CodecParams() : cubeSize(0,0,4), subcubeSize(32,32,4), levels(1), compression(HuffmanCoder)
-    {}
-
-};
-
-class VideoParams
-{
-public:
-    int fpsNumerator;
-    int fpsDenominator;
-    int frameCount;
-
-    VideoParams() : fpsNumerator(30), fpsDenominator(1), frameCount(0)
-    {
-    }
-};
+#include <string>
+#include "CodecParams.h"
 
 ///parameters of encoding
 class Parameters
@@ -49,12 +26,15 @@ public:
     bool nolocal;
     bool analysis;
     bool decode;
-    bool notest;
+    bool test;
+    bool stats;
     float skipRatio;
+    std::string output;
+    std::string input;
 
     Parameters() : 
     start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
-    analysis(false), decode(false), notest(false), skipRatio(0)
+    analysis(false), decode(false), test(false), stats(false), skipRatio(0)
     {}   
     std::string toString(bool localConfig = false)
     {
@@ -69,7 +49,7 @@ public:
             << " sub_d " << codecParams.subcubeSize.depth << std::endl;
         if(localConfig)
                 stream << " skipRatio " << skipRatio << std::endl
-                       << " notest " << notest << std::endl;
+                       << " notest " << test << std::endl;
         return stream.str();
     }
 };

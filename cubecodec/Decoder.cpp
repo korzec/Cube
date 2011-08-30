@@ -8,6 +8,7 @@
 #include "Decoder.h"
 #include "CompressorLZO.h"
 #include "CompressorHuffman.h"
+#include "CompressorAC.h"
 
 Decoder::Decoder() : pictureOutputBuffer(0), pictureNumber(0), cubeNumber(0)
 {
@@ -141,6 +142,8 @@ bool Decoder::Init()
     case LZO:
         compressor.reset( new CompressorLZO() );
         break;
+    case AC:
+        compressor.reset( new CompressorAC() );
     }
     return true;
 }

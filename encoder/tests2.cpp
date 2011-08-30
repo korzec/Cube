@@ -180,7 +180,8 @@ int testMQdecoder()
                                0x82 ,0xC0 ,0x20 ,0x00 ,0xFC ,0xD7 ,0x9E ,0xF6,
                                0xBF ,0x7F ,0xED ,0x90 ,0x4F ,0x46 ,0xA3 ,0xBF };
     
-    unsigned char coded[60] = { 0x84, 0xc7, 0x3b, 0xfc, 0xe1, 0xa1, 0x43, 0x04,  
+    unsigned char coded[61] = { 0x00,
+                                0x84, 0xc7, 0x3b, 0xfc, 0xe1, 0xa1, 0x43, 0x04,  
                                 0x02, 0x20, 0x00, 0x00, 0x41, 0x0d, 0xbb, 0x86, 
                                 0xf4, 0x31, 0x7f, 0xff, 0x88, 0xff, 0x37, 0x47, 
                                 0x1a, 0xdb, 0x6a, 0xdf, 0xff, 0xac,  
@@ -188,9 +189,9 @@ int testMQdecoder()
                                 0x02, 0x20, 0x00, 0x00, 0x41, 0x0d, 0xbb, 0x86, 
                                 0xf4, 0x31, 0x7f, 0xff, 0x88, 0xff, 0x37, 0x47, 
                                 0x1a, 0xdb, 0x6a, 0xdf, 0xff, 0xac,  };
-    ucharPtr inData = ucharPtr(new unsigned char[60]);
-    memcpy(inData.get(), coded, 60);
-    BitStream input(60, inData);
+    ucharPtr inData = ucharPtr(new unsigned char[61]);
+    memcpy(inData.get(), coded, 61);
+    BitStream input(61, inData);
     
     BitStream output(32);
     BitStream output2(32);
@@ -248,7 +249,8 @@ int testMQencoder()
                                0x82 ,0xC0 ,0x20 ,0x00 ,0xFC ,0xD7 ,0x9E ,0xF6,
                                0xBF ,0x7F ,0xED ,0x90 ,0x4F ,0x46 ,0xA3 ,0xBF, };
     
-    unsigned char coded[30] = { 0x84, 0xc7, 0x3b, 0xfc, 0xe1, 0xa1, 0x43, 0x04,  
+    unsigned char coded[31] = { 0x00,
+                                0x84, 0xc7, 0x3b, 0xfc, 0xe1, 0xa1, 0x43, 0x04,  
                                 0x02, 0x20, 0x00, 0x00, 0x41, 0x0d, 0xbb, 0x86, 
                                 0xf4, 0x31, 0x7f, 0xff, 0x88, 0xff, 0x37, 0x47, 
                                 0x1a, 0xdb, 0x6a, 0xdf, 0xff, 0xac,  };
@@ -265,22 +267,23 @@ int testMQencoder()
     
     MQencoder qmEnc(input, output);
     qmEnc.Encode();
-    assert(qmEnc.GetCodedBytes() == 30);
-    assert(output.GetLength() == 30*8);
+    assert(qmEnc.GetCodedBytes() == 31);
+    assert(output.GetLength() == 31*8);
     for(int i=0; i < qmEnc.GetCodedBytes(); i++)
     {
         assert(output.GetSequence()[i] == coded[i]);
     }
     
     qmEnc.Continue(input2);
-    assert(qmEnc.GetCodedBytes() == 60);
-    assert(output.GetLength() == 60*8);
-    for(int i=30; i < qmEnc.GetCodedBytes(); i++)
+    assert(qmEnc.GetCodedBytes() == 61);
+    assert(output.GetLength() == 61*8);
+    std::cout << "continue encoder:" << std::endl;
+    for(int i=31; i < qmEnc.GetCodedBytes(); i++)
     {
+//        std::cout << " " << std::setw(2) << std::setfill('0') << std::hex
+//                << (int)output.GetSequence()[i] << " : "<< (int)coded[i-30] << std::dec; 
         assert(output.GetSequence()[i] == coded[i-30]);
     }
-    
-    std::cout << "qm decoder test finished" << std::endl;
 //    std::cout<< " coded bytes count: " << qmEnc.GetCodedBytes() <<std::endl;
     return 0;
 }

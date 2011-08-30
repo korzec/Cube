@@ -60,7 +60,7 @@ BufferState Encoder::Encode()
 
             if (coeffCube.ForwardTransform())
             {
-                if (params.analysis)
+                if (params.analysis && !params.nolocal)
                 {
                     std::stringstream ss1;
                     ss1 << OUTDIR << "tr" << cubeNumber << "cube.raw";
@@ -74,8 +74,10 @@ BufferState Encoder::Encode()
                 
                 CompressAll();
                 
+                //packetCompressionRatios(allPackets);
+                
                 // get statistics for the cube
-                if(params.analysis)
+                if(params.stats)
                 {
                     SubbandList* list = coeffCube.GetSubbandList();
                     CoeffView3D* view;
@@ -90,15 +92,17 @@ BufferState Encoder::Encode()
                                 view = &list[ch].GetSubband(level, (Orientation)orient );
                                 std::stringstream name;
                                 name << OUTDIR << "stats_ch" << ch << "_level"
-                                        << level << "_orient" << orient <<".csv";
+                                        << level << "_orient" << orient 
+                                         << "_cn" << cubeNumber
+                                        <<".csv";
                                 writeMap(getSymbolStatistics(*view), name.str() );
                             }
                 }
 
-                if (!params.nolocal)
+                if (params.analysis)
                 {   
                     DecompressAll();
-                    if (params.analysis)
+                    if (!params.nolocal)
                     {
                         std::stringstream ss2;
                         ss2 << OUTDIR << "sm" << cubeNumber << "cube.raw";

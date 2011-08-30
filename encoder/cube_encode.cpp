@@ -170,23 +170,38 @@ int cube_encode(Parameters params, std::string input, std::string output)
     
     if(params.analysis)
     {
+ 
+        std::ofstream psnrFile("psnr_results.csv", std::ios::app );
+        std::stringstream stringStream;
+        
         psnr[Ych] /= psnrTimes;
         psnr[Uch] /= psnrTimes;
         psnr[Vch] /= psnrTimes;
         psnr[3] /= psnrTimes;
         //print psnr values
-        std::cout << "cubeSize.depth" << ", "
+ 
+        stringStream << "cubeSize.depth" << ", "
          << "levels" << ", "
-         << "subcubeSize.depth" << ", "
-         << "subcubeSize.height" << ", "
-         << "subcubeSize.width" << ", "
-         << "params.skipRatio" << ", "
+         << "sub.depth" << ", "
+         << "sub.height" << ", "
+         << "sub.width" << ", "
+         << "skipRatio" << ", "
          << "psnr Y" << ", "
          << "psnr U" << ", "
          << "psnr V" << ", "
-         << "psnr YUV" << ", "
+         << "psnr YUV" << ", " 
+         << "filename" << ", " 
+         << "frames" << ", " 
          << std::endl;
-        std::cout << params.codecParams.cubeSize.depth << ", "
+        std::cout << stringStream.str();
+        
+        if(psnrFile.tellp() == 0)
+        {
+            psnrFile << stringStream.str();
+        }
+        stringStream.str("");
+        
+        stringStream << params.codecParams.cubeSize.depth << ", "
          << params.codecParams.levels << ", "
          << params.codecParams.subcubeSize.depth << ", "
          << params.codecParams.subcubeSize.height << ", "
@@ -196,7 +211,12 @@ int cube_encode(Parameters params, std::string input, std::string output)
          << psnr[1] << ", "
          << psnr[2] << ", "
          << psnr[3] << ", "
+         << input << ", "
+         << frameNumber << ", "
          <<std::endl;
+        
+        psnrFile << stringStream.str();
+        std::cout << stringStream.str();
     }
 
     
