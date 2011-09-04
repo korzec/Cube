@@ -19,7 +19,7 @@ public:
     int levels;
     CompressionType compression;
     
-    CodecParams() : cubeSize(0,0,4), subcubeSize(32,32,4), levels(1), compression(HuffmanCoder)
+    CodecParams() : cubeSize(0,0,4), subcubeSize(32,32,4), levels(1), compression(AC)
     {}
 
 };

@@ -10,9 +10,10 @@
 
 #include "../cubecodec/types.h"
 #include "../cubecodec/Parameters.h"
+#include <iostream>
 
 /// displays a help message
-static void display_help()
+void display_help()
 {
     std::cout << "\nCube wavelet video coder.";
     std::cout << "\n";
@@ -116,12 +117,12 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
             std::cout << "USING COMPRESSOR: ";
             //sompare strings
             if( strcmp(argv[i], "huffman") == 0)
-                params.codecParams.compression = HuffmanCoder,
+                params.codecParams.compression = Huffman,
                         std::cout << "huffman coder" << std::endl;
             else if( strcmp(argv[i], "lzo") == 0)
                 params.codecParams.compression = LZO,
                         std::cout << "LZO" << std::endl;
-            else if( strcmp(argv[i], "AC") == 0)
+            else if( strcmp(argv[i], "ac") == 0)
                 params.codecParams.compression = AC,
                         std::cout << "arithmetic coding of bitplanes" << std::endl;
             else

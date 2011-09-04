@@ -18,7 +18,6 @@
 #include "tests.h"
 //#define cimg_display 2
 //#include "cimg/CImg.h"
-#include "parse_cmd.h"
 #include "cube_codec.h"
 
 using namespace std;

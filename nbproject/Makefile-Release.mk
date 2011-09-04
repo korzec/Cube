@@ -44,6 +44,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/cubecodec/CompressorLZO.o \
 	${OBJECTDIR}/cubecodec/PictureBuffer.o \
 	${OBJECTDIR}/cubecodec/Decoder.o \
+	${OBJECTDIR}/encoder/parse_cmd.o \
 	${OBJECTDIR}/cubecodec/CompressorHuffman.o \
 	${OBJECTDIR}/encoder/cube_encode.o \
 	${OBJECTDIR}/cubecodec/SubbandList.o \
@@ -57,8 +58,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/encoder/cube_codec.o \
 	${OBJECTDIR}/encoder/tests2.o \
 	${OBJECTDIR}/cubecodec/CompressorAC.o \
-	${OBJECTDIR}/encoder/tests.o \
 	${OBJECTDIR}/encoder/cube_decode.o \
+	${OBJECTDIR}/encoder/tests.o \
 	${OBJECTDIR}/cubecodec/MQcoder.o \
 	${OBJECTDIR}/cubecodec/FrameBuffer.o
 
@@ -146,6 +147,11 @@ ${OBJECTDIR}/cubecodec/Decoder.o: cubecodec/Decoder.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Decoder.o cubecodec/Decoder.cpp
 
+${OBJECTDIR}/encoder/parse_cmd.o: encoder/parse_cmd.cpp 
+	${MKDIR} -p ${OBJECTDIR}/encoder
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/parse_cmd.o encoder/parse_cmd.cpp
+
 ${OBJECTDIR}/cubecodec/CompressorHuffman.o: cubecodec/CompressorHuffman.cpp 
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
 	${RM} $@.d
@@ -211,15 +217,15 @@ ${OBJECTDIR}/cubecodec/CompressorAC.o: cubecodec/CompressorAC.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/CompressorAC.o cubecodec/CompressorAC.cpp
 
-${OBJECTDIR}/encoder/tests.o: encoder/tests.cpp 
-	${MKDIR} -p ${OBJECTDIR}/encoder
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/tests.o encoder/tests.cpp
-
 ${OBJECTDIR}/encoder/cube_decode.o: encoder/cube_decode.cpp 
 	${MKDIR} -p ${OBJECTDIR}/encoder
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/cube_decode.o encoder/cube_decode.cpp
+
+${OBJECTDIR}/encoder/tests.o: encoder/tests.cpp 
+	${MKDIR} -p ${OBJECTDIR}/encoder
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/tests.o encoder/tests.cpp
 
 ${OBJECTDIR}/cubecodec/MQcoder.o: cubecodec/MQcoder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
@@ -256,49 +262,49 @@ ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/PictureTestClass.o ${TESTDIR}/tests/Pi
 ${TESTDIR}/tests/CompressorTestClass.o: tests/CompressorTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestClass.o tests/CompressorTestClass.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestClass.o tests/CompressorTestClass.cpp
 
 
 ${TESTDIR}/tests/CompressorTestRunner.o: tests/CompressorTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestRunner.o tests/CompressorTestRunner.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorTestRunner.o tests/CompressorTestRunner.cpp
 
 
 ${TESTDIR}/tests/CubeIOTestClass.o: tests/CubeIOTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestClass.o tests/CubeIOTestClass.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestClass.o tests/CubeIOTestClass.cpp
 
 
 ${TESTDIR}/tests/CubeIOTestRunner.o: tests/CubeIOTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestRunner.o tests/CubeIOTestRunner.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CubeIOTestRunner.o tests/CubeIOTestRunner.cpp
 
 
 ${TESTDIR}/tests/CompressorHuffmanTestClass.o: tests/CompressorHuffmanTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestClass.o tests/CompressorHuffmanTestClass.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestClass.o tests/CompressorHuffmanTestClass.cpp
 
 
 ${TESTDIR}/tests/CompressorHuffmanTestRunner.o: tests/CompressorHuffmanTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestRunner.o tests/CompressorHuffmanTestRunner.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/CompressorHuffmanTestRunner.o tests/CompressorHuffmanTestRunner.cpp
 
 
 ${TESTDIR}/tests/PictureTestClass.o: tests/PictureTestClass.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestClass.o tests/PictureTestClass.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestClass.o tests/PictureTestClass.cpp
 
 
 ${TESTDIR}/tests/PictureTestRunner.o: tests/PictureTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
+	$(COMPILE.cc) -O2 -Wall -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/PictureTestRunner.o tests/PictureTestRunner.cpp
 
 
 ${OBJECTDIR}/cubecodec/Picture_nomain.o: ${OBJECTDIR}/cubecodec/Picture.o cubecodec/Picture.cpp 
@@ -429,6 +435,19 @@ ${OBJECTDIR}/cubecodec/Decoder_nomain.o: ${OBJECTDIR}/cubecodec/Decoder.o cubeco
 	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Decoder_nomain.o cubecodec/Decoder.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/cubecodec/Decoder.o ${OBJECTDIR}/cubecodec/Decoder_nomain.o;\
+	fi
+
+${OBJECTDIR}/encoder/parse_cmd_nomain.o: ${OBJECTDIR}/encoder/parse_cmd.o encoder/parse_cmd.cpp 
+	${MKDIR} -p ${OBJECTDIR}/encoder
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/encoder/parse_cmd.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/parse_cmd_nomain.o encoder/parse_cmd.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/encoder/parse_cmd.o ${OBJECTDIR}/encoder/parse_cmd_nomain.o;\
 	fi
 
 ${OBJECTDIR}/cubecodec/CompressorHuffman_nomain.o: ${OBJECTDIR}/cubecodec/CompressorHuffman.o cubecodec/CompressorHuffman.cpp 
@@ -600,19 +619,6 @@ ${OBJECTDIR}/cubecodec/CompressorAC_nomain.o: ${OBJECTDIR}/cubecodec/CompressorA
 	    ${CP} ${OBJECTDIR}/cubecodec/CompressorAC.o ${OBJECTDIR}/cubecodec/CompressorAC_nomain.o;\
 	fi
 
-${OBJECTDIR}/encoder/tests_nomain.o: ${OBJECTDIR}/encoder/tests.o encoder/tests.cpp 
-	${MKDIR} -p ${OBJECTDIR}/encoder
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/encoder/tests.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/tests_nomain.o encoder/tests.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/encoder/tests.o ${OBJECTDIR}/encoder/tests_nomain.o;\
-	fi
-
 ${OBJECTDIR}/encoder/cube_decode_nomain.o: ${OBJECTDIR}/encoder/cube_decode.o encoder/cube_decode.cpp 
 	${MKDIR} -p ${OBJECTDIR}/encoder
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/encoder/cube_decode.o`; \
@@ -624,6 +630,19 @@ ${OBJECTDIR}/encoder/cube_decode_nomain.o: ${OBJECTDIR}/encoder/cube_decode.o en
 	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/cube_decode_nomain.o encoder/cube_decode.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/encoder/cube_decode.o ${OBJECTDIR}/encoder/cube_decode_nomain.o;\
+	fi
+
+${OBJECTDIR}/encoder/tests_nomain.o: ${OBJECTDIR}/encoder/tests.o encoder/tests.cpp 
+	${MKDIR} -p ${OBJECTDIR}/encoder
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/encoder/tests.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -O2 -Wall -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/encoder/tests_nomain.o encoder/tests.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/encoder/tests.o ${OBJECTDIR}/encoder/tests_nomain.o;\
 	fi
 
 ${OBJECTDIR}/cubecodec/MQcoder_nomain.o: ${OBJECTDIR}/cubecodec/MQcoder.o cubecodec/MQcoder.cpp 

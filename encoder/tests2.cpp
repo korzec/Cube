@@ -143,7 +143,6 @@ int testMQencodeDecode()
     qmEnc.Encode();
     //assert(qmEnc.GetCodedBytes());
     std::bitset<8> bits;
-    int number;
     std::cout << "MQ coded: " << qmEnc.GetCodedBytes() <<std::endl;
 //    for(int i=0; i < qmEnc.GetCodedBytes(); i++)
 //    {

@@ -136,7 +136,7 @@ bool Decoder::Init()
     //init the chosen compressor
     switch(params.codecParams.compression)
     {
-    case HuffmanCoder:
+    case Huffman:
         compressor.reset( new CompressorHuffman() );
         break;
     case LZO:

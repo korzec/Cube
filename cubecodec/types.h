@@ -35,9 +35,9 @@ enum Channel
 
 enum CompressionType
 {
-    HuffmanCoder =0,
-    LZO =1,
-    AC = 2,
+    AC = 0,
+    Huffman = 1,
+    LZO = 2,
 };
 
 #endif /* TYPES_H_ */
