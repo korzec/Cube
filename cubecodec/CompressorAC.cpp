@@ -10,6 +10,7 @@
 #include "MQcoder.h"
 #include <cassert>
 #include <boost/lambda/lambda.hpp>
+//#include <iostream>
 
 CompressorAC::CompressorAC()
 {
@@ -20,6 +21,22 @@ Packet CompressorAC::Compress(CoeffView3D& subcube, Coords3D& location, Channel 
 
     CoeffArray3D array(subcube);
     Coords3D dims(array.shape());
+    
+    //extra step to change number representation
+    //to sign+absolute instead of U2
+    short* value;
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                value = &(array)[d][h][w];
+                if(*value & 0x8000) //if negative
+                    *value = (-*value) | 0x8000;
+            }//w
+        }//h
+    }//d
     
     //TODO: implement arithemtics coding
     //initialize storage for coded data
@@ -92,6 +109,23 @@ CoeffArray3DPtr CompressorAC::Decompress(Packet& packet, Coords3D& subcubeSize)
         mqDecoder.Continue(bitPlanes[i], singlePlaneBitSize);
     }
     
+    //extra step to recover number representation
+    //to U2 from sign+absolute
+    Coords3D dims = subcubeSize;
+    CoeffArray3D* array_ptr = array.get();
+    short* value;
+    for (int d = 0; d < dims.depth; d++)
+    {
+        for (int h = 0; h < dims.height; h++)
+        {
+            for (int w = 0; w < dims.width; w++)
+            {
+                value = &(*array_ptr)[d][h][w];
+                if(*value & 0x8000) //if negative
+                    *value = -(*value & 0x7FFF);
+            }//w
+        }//h
+    }//d
     
     //check if decompressed size matches the subcube size
     return array;
