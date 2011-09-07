@@ -11,6 +11,8 @@
         <itemPath>cubecodec/Compressor.h</itemPath>
         <itemPath>cubecodec/CompressorAC.cpp</itemPath>
         <itemPath>cubecodec/CompressorAC.h</itemPath>
+        <itemPath>cubecodec/CompressorCopy.cpp</itemPath>
+        <itemPath>cubecodec/CompressorCopy.h</itemPath>
         <itemPath>cubecodec/CompressorHuffman.cpp</itemPath>
         <itemPath>cubecodec/CompressorHuffman.h</itemPath>
         <itemPath>cubecodec/CompressorLZO.cpp</itemPath>

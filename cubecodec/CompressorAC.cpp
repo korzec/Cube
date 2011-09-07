@@ -67,22 +67,22 @@ Packet CompressorAC::Compress(CoeffView3D& subcube, Coords3D& location, Channel 
     //output packet
     
     Packet packet;
-    packet.header.cubeNumer = cubeNumber;
+//    packet.header.cubeNumer = cubeNumber;
     packet.header.channel = channel;
     packet.compressedData = compressedData;
     packet.header.compressedSize = bytesWritten;
-    packet.header.fullSize = fullSize; //redundant
+//    packet.header.fullSize = fullSize; //redundant
     packet.header.location = location;
     return packet;
 }
 
 CoeffArray3DPtr CompressorAC::Decompress(Packet& packet, Coords3D& subcubeSize)
 {
-    assert(packet.compressedData.use_count() > 0);
-    assert(packet.header.compressedSize > 0);
+//    assert(packet.compressedData.use_count() > 0);
+//    assert(packet.header.compressedSize > 0);
     
     unsigned int fullSize = subcubeSize.Volume()*sizeof(CoeffType);
-    assert(fullSize == packet.header.fullSize);
+//    assert(fullSize == packet.header.fullSize);
     
     CoeffArray3DPtr array = CoeffArray3DPtr(new CoeffArray3D(
                                                              boost::extents[subcubeSize.depth][subcubeSize.height][subcubeSize.width]));

@@ -10,6 +10,19 @@
 #include "../cubecodec/PictureIO.h"
 #include "../cubecodec/general.h"
 
+std::streampos fileSize( const char* filePath ){
+
+    std::streampos fsize = 0;
+    std::ifstream file( filePath, std::ios::binary );
+
+    fsize = file.tellg();
+    file.seekg( 0, std::ios::end );
+    fsize = file.tellg() - fsize;
+    file.close();
+
+    return fsize;
+}
+
 int cube_encode(Parameters params, std::string input, std::string output)
 {
     Encoder encoder;
@@ -170,7 +183,20 @@ int cube_encode(Parameters params, std::string input, std::string output)
          
     } while(go);
     
-    if(params.analysis)
+    
+    inputPicture.close();
+    if(codedFile)
+        codedFile->close();
+    if(outputPicture)
+            outputPicture->close();
+    
+    std::streampos out = fileSize(codedFileName.c_str());
+    std::streampos in = fileSize(input.c_str());
+    std::cout << "Compression ratio: " 
+                << (float)out/(float)in << std::endl;
+    
+    
+    if(params.analysis | params.analysis2)
     {
         std::string filename;
         
@@ -202,6 +228,7 @@ int cube_encode(Parameters params, std::string input, std::string output)
          << "filename" << ", " 
          << "frames" << ", " 
          << "PSNRDATA" << ", " 
+         << "CR" << ", "
          << std::endl;
         std::cout << stringStream.str();
         
@@ -224,17 +251,17 @@ int cube_encode(Parameters params, std::string input, std::string output)
          << input << ", "
          << frameNumber << ", "
          << "PSNRDATACODE" << ", " 
+         << (float)out/(float)in << ", " 
          <<std::endl;
         
         psnrFile << stringStream.str();
         std::cout << stringStream.str();
     }
 
-    
-    inputPicture.close();
-    if(codedFile)
-        codedFile->close();
-    if(outputPicture)
-            outputPicture->close();
+    //output compression ratio:
+//    if(codedFile != NULL)
+//        std::cout << "Compression ratio: " 
+//                << (float)codedFile->tellp()/(float)inputPicture.tellg() << std::endl;
+
     return 0;
 }

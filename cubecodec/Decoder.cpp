@@ -9,6 +9,7 @@
 #include "CompressorLZO.h"
 #include "CompressorHuffman.h"
 #include "CompressorAC.h"
+#include "CompressorCopy.h"
 
 Decoder::Decoder() : pictureOutputBuffer(0), pictureNumber(0), cubeNumber(0)
 {
@@ -136,6 +137,9 @@ bool Decoder::Init()
     //init the chosen compressor
     switch(params.codecParams.compression)
     {
+    case Copy:
+        compressor.reset( new CompressorCopy() );
+        break;
     case Huffman:
         compressor.reset( new CompressorHuffman() );
         break;
@@ -143,6 +147,7 @@ bool Decoder::Init()
         compressor.reset( new CompressorLZO() );
         break;
     case AC:
+    default:
         compressor.reset( new CompressorAC() );
     }
     return true;

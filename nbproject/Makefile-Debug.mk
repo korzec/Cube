@@ -53,6 +53,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/cubecodec/CoeffCube.o \
 	${OBJECTDIR}/minilzo/minilzo.o \
 	${OBJECTDIR}/cubecodec/Subcube.o \
+	${OBJECTDIR}/cubecodec/CompressorCopy.o \
 	${OBJECTDIR}/cubecodec/Packet.o \
 	${OBJECTDIR}/cubecodec/BitStream.o \
 	${OBJECTDIR}/encoder/cube_codec.o \
@@ -191,6 +192,11 @@ ${OBJECTDIR}/cubecodec/Subcube.o: cubecodec/Subcube.cpp
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Subcube.o cubecodec/Subcube.cpp
+
+${OBJECTDIR}/cubecodec/CompressorCopy.o: cubecodec/CompressorCopy.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/CompressorCopy.o cubecodec/CompressorCopy.cpp
 
 ${OBJECTDIR}/cubecodec/Packet.o: cubecodec/Packet.cpp 
 	${MKDIR} -p ${OBJECTDIR}/cubecodec
@@ -552,6 +558,19 @@ ${OBJECTDIR}/cubecodec/Subcube_nomain.o: ${OBJECTDIR}/cubecodec/Subcube.o cubeco
 	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/Subcube_nomain.o cubecodec/Subcube.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/cubecodec/Subcube.o ${OBJECTDIR}/cubecodec/Subcube_nomain.o;\
+	fi
+
+${OBJECTDIR}/cubecodec/CompressorCopy_nomain.o: ${OBJECTDIR}/cubecodec/CompressorCopy.o cubecodec/CompressorCopy.cpp 
+	${MKDIR} -p ${OBJECTDIR}/cubecodec
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/cubecodec/CompressorCopy.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Wall -DDEBUG -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/cubecodec/CompressorCopy_nomain.o cubecodec/CompressorCopy.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/cubecodec/CompressorCopy.o ${OBJECTDIR}/cubecodec/CompressorCopy_nomain.o;\
 	fi
 
 ${OBJECTDIR}/cubecodec/Packet_nomain.o: ${OBJECTDIR}/cubecodec/Packet.o cubecodec/Packet.cpp 

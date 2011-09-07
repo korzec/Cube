@@ -233,7 +233,7 @@ void packetCompressionRatios(PacketMap &packets)
         std::cout << "w: "  << it->second.header.location.width
                   << " h: " << it->second.header.location.height
                   << " d: " << it->second.header.location.depth
-                  << " r: " << (float)it->second.header.compressedSize/it->second.header.fullSize
+//                  << " r: " << (float)it->second.header.compressedSize/it->second.header.fullSize
                   << " c: " << it->second.header.channel
                   << " s: " << it->first << std::endl;
     }

@@ -125,6 +125,9 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
             else if( strcmp(argv[i], "ac") == 0)
                 params.codecParams.compression = AC,
                         std::cout << "arithmetic coding of bitplanes" << std::endl;
+            else if( strcmp(argv[i], "copy") == 0)
+                params.codecParams.compression = Copy,
+                        std::cout << "no compression - just copy" << std::endl;
             else
                 std::cout << "default" << std::endl;
             parsed[i] = true;
@@ -145,6 +148,11 @@ bool parse_command_line(Parameters& params, int argc, char **argv)
         {
             parsed[i] = true;
             params.analysis = true;
+        }        
+        else if (strcmp(argv[i], "-analysis2") == 0)
+        {
+            parsed[i] = true;
+            params.analysis2 = true;
         }        
         else if (strcmp(argv[i], "-stats") == 0)
         {

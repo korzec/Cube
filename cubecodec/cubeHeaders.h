@@ -35,10 +35,10 @@ class PacketHeader
 {
 public:
     unsigned char headerCode;
-    int cubeNumer;
+//    int cubeNumer;
     Coords3D location;
     Channel channel;
-    unsigned int fullSize;
+//    unsigned int fullSize;
     unsigned int compressedSize;
     
 };

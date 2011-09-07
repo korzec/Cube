@@ -107,10 +107,10 @@ Packet CompressorHuffman::Compress(CoeffView3D& subcube, Coords3D& location, Cha
     int compressedSize = compressedData.ByteSize();
     Packet packet;
     packet.compressedData = compressedData.GetSequence();
-    packet.header.cubeNumer = cubeNumber;
+//    packet.header.cubeNumer = cubeNumber;
     packet.header.channel = channel;
     packet.header.compressedSize = compressedSize;
-    packet.header.fullSize = fullSize; //redundant
+//    packet.header.fullSize = fullSize; //redundant
     packet.header.location = location;
 
     return packet;
@@ -119,14 +119,14 @@ Packet CompressorHuffman::Compress(CoeffView3D& subcube, Coords3D& location, Cha
 CoeffArray3DPtr CompressorHuffman::Decompress(Packet& packet, Coords3D& subcubeSize)
 {
     //allocate memory for decompressed subcube array
-    assert(packet.compressedData.use_count() > 0);
-    assert(packet.header.compressedSize > 0);
+//    assert(packet.compressedData.use_count() > 0);
+//    assert(packet.header.compressedSize > 0);
     unsigned int fullSize;
     unsigned int compressedSize;
     //int newSize;
 
     fullSize = subcubeSize.Volume() * sizeof (CoeffType);
-    assert(packet.header.fullSize == fullSize); //redundant
+//    assert(packet.header.fullSize == fullSize); //redundant
     compressedSize = packet.header.compressedSize;
 
     CoeffArray3DPtr array = CoeffArray3DPtr(new CoeffArray3D(

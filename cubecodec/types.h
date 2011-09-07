@@ -38,6 +38,7 @@ enum CompressionType
     AC = 0,
     Huffman = 1,
     LZO = 2,
+    Copy = 3,
 };
 
 #endif /* TYPES_H_ */

@@ -31,13 +31,14 @@ public:
     float skipRatio;
     bool nofile;
     bool dumpCubes;
+    bool analysis2;
     std::string output;
     std::string input;
 
     Parameters() : 
     start_pos(0), end_pos(INT_MAX), verbose(false), nolocal(true), 
     analysis(false), decode(false), test(false), stats(false), skipRatio(0), 
-    nofile(false), dumpCubes(false)
+    nofile(false), dumpCubes(false), analysis2(false)
     {}   
     std::string toString(bool localConfig = false)
     {

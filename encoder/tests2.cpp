@@ -384,7 +384,7 @@ int testHuffCompression()
     Packet packet = compressor.Compress(view, superDims, Ych, 666);
     //check sizes
     std::cout << "compressed size: " << packet.header.compressedSize <<std::endl;
-    std::cout << "full size: " << packet.header.fullSize <<std::endl;
+    //std::cout << "full size: " << packet.header.fullSize <<std::endl;
     //decompress data
     CoeffArray3DPtr data = compressor.Decompress(packet, dims);
     //verify data
