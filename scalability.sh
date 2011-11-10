@@ -37,5 +37,5 @@ do
 	done
 done
 done
-sh psnrgraph.sh pdf test_scalability psnr_cd*L3*.yuv.csv
+sh psnrgraph.sh ps2pdf test_scalability psnr_cd*L3*.yuv.csv
 open test_scalability.pdf
